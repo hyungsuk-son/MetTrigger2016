@@ -1466,7 +1466,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     selectDec(*jets) = false; // To select objects for Overlap removal
 
     // pT cut
-    if (jetPt > m_jetPtCut && jetEta < m_jetEtaCut) {
+    if (jetPt > m_jetPtCut && fabs(jetEta) < m_jetEtaCut) {
       dec_baseline(*jets) = true;
       selectDec(*jets) = true; // To select objects for Overlap removal
     }
@@ -1937,7 +1937,12 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
       bool isORjet = false;
 
       for (const auto& muon : *m_goodMuon) {
-        if (DeltaR(jet->eta(), muon->eta(), jet->phi(), muon->phi()) < m_ORJETdeltaR) isORjet = true;
+        if (DeltaR(jet->eta(), muon->eta(), jet->phi(), muon->phi()) < m_ORJETdeltaR) {
+          int ntrks = 0;
+          std::vector<int> ntrks_vec = jet->auxdata<std::vector<int> >("NumTrkPt1000");
+          if (ntrks_vec.size() > 0) ntrks = ntrks_vec[primVertex->index()];
+          if (ntrks < 5) isORjet = true;
+        }
       }
 
       for (const auto& electron : *m_goodElectron) {
@@ -1998,7 +2003,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     //Info("execute()", "  mjj = %.2f GeV", mjj);
 
     if ( jet1_pt >  m_diJet1PtCut && jet2_pt > m_diJet2PtCut ){
-      if ( jet1_rapidity < m_diJetEtaCut && jet2_rapidity < m_diJetEtaCut ){
+      if ( fabs(jet1_rapidity) < m_diJetEtaCut && fabs(jet2_rapidity) < m_diJetEtaCut ){
         if ( m_jetCleaningTight->accept( *m_signalJet->at(0) ) ){ //Tight Leading Jet 
           pass_diJet = true;
         }
@@ -2038,7 +2043,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
       if ( m_signalJet->size() > 2 && pass_diJet ){
         if (m_signalJet->at(0) != jet && m_signalJet->at(1) != jet){
           //cout << "m_signalJet->at(0) = " << m_signalJet->at(0) << " jet = " << jet << endl;
-          if (signal_jet_pt > m_CJVptCut) {
+          if (signal_jet_pt > m_CJVptCut && fabs(signal_jet_rapidity) < m_diJetEtaCut) {
             if ( (jet1_rapidity > jet2_rapidity) && (signal_jet_rapidity < jet1_rapidity && signal_jet_rapidity > jet2_rapidity)){
               pass_CJV = false;
             }
