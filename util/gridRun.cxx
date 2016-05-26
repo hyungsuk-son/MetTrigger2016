@@ -40,7 +40,7 @@ int main( int argc, char* argv[] ) {
 //  SH::scanDQ2 (sh, "data15_13TeV.00270816.physics_Main.merge.AOD.f611_m1463");
   // If you know the name of all your grid datasets you can also skip the dq2-ls step and add the datasets directly
 //  SH::addGrid (sh, "data15_13TeV.00281411.physics_Main.merge.AOD.f629_m1504");
-  SH::addGrid (sh, "data15_13TeV.00282784.physics_Main.merge.AOD.f640_m1511");
+  SH::addGrid (sh, "data16_13TeV.00299241.physics_Main.merge.AOD.f698_m1594");
 
   // Set the name of the input TTree. It's always "CollectionTree"
   // for xAOD files.
@@ -85,7 +85,7 @@ int main( int argc, char* argv[] ) {
   EL::PrunDriver driver;  //grid
 //  EL::GridDriver driver; //grid in the background
 
-  driver.options()->setString("nc_outputSampleName", "user.hson.xAOD.03262016.%in:name[2]%.%in:name[6]%"); //For PrunDriver
+  driver.options()->setString("nc_outputSampleName", "user.hson.xAOD.05252016.%in:name[2]%.%in:name[6]%"); //For PrunDriver
 //  driver.outputSampleName = "user.hson.gridtest1.11142015.%in:name[2]%.%in:name[6]%"; //For GridDriver
 //  driver.options()->setDouble("nc_nFiles", 1); // FOR TESTING!
 //  driver.options()->setDouble("nc_nFilesPerJob", 1);

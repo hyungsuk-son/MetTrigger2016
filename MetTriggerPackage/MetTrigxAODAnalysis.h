@@ -240,6 +240,133 @@ public:
     TH1 *h_emulmet_phi; //!
 
 
+    // HLT Trigger study
+    // No selection
+
+    // Turn-on Curves
+    TH1 *h_offline_met_pass_hlt_xe60; //!
+    TH1 *h_offline_met_pass_hlt_xe100; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe60; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe100; //!
+
+    TH1 *h_offline_met_pass_hlt_xe80_mht; //!
+    TH1 *h_offline_met_pass_hlt_xe120_mht; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe80_mht; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe120_mht; //!
+
+    TH1 *h_offline_met_pass_hlt_xe80_topocl; //!
+    TH1 *h_offline_met_pass_hlt_xe120_topocl; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe80_topocl; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe120_topocl; //!
+
+    TH1 *h_offline_met_pass_hlt_xe80_topocl_ps; //!
+    TH1 *h_offline_met_pass_hlt_xe120_topocl_ps; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps; //!
+
+    TH1 *h_offline_met_pass_hlt_xe80_topocl_puc; //!
+    TH1 *h_offline_met_pass_hlt_xe120_topocl_puc; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc; //!
+    TH1 *h_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc; //!
+
+    // Resolution
+    TH2 *h_hlt_ex_offline_sumet; //!
+    TH2 *h_hlt_mht_ex_offline_sumet; //!
+    TH2 *h_hlt_topocl_ex_offline_sumet; //!
+    TH2 *h_hlt_topocl_ps_ex_offline_sumet; //!
+    TH2 *h_hlt_topocl_puc_ex_offline_sumet; //!
+    TH2 *h_hlt_ex_hlt_sumet; //!
+    TH2 *h_hlt_mht_ex_hlt_mht_sumet; //!
+    TH2 *h_hlt_topocl_ex_hlt_topocl_sumet; //!
+    TH2 *h_hlt_topocl_ps_ex_hlt_topocl_ps_sumet; //!
+    TH2 *h_hlt_topocl_puc_ex_hlt_topocl_puc_sumet; //!
+
+    // Linearily
+    TH2 *h_hlt_lin; //!
+    TH2 *h_hlt_mht_lin; //!
+    TH2 *h_hlt_topocl_lin; //!
+    TH2 *h_hlt_topocl_ps_lin; //!
+    TH2 *h_hlt_topocl_puc_lin; //!
+
+    // Correlation plots
+    TH2 *h_corr_met_l1_offline; //!
+    TH2 *h_corr_met_hlt_offline; //!
+    TH2 *h_corr_met_hlt_mht_offline; //!
+    TH2 *h_corr_met_hlt_topocl_offline; //!
+    TH2 *h_corr_met_hlt_topocl_ps_offline; //!
+    TH2 *h_corr_met_hlt_topocl_puc_offline; //!
+
+
+    // HLT Trigger study
+    // BCID study
+
+    // HLT and Offline MET objects
+    TH1 *h_bcid_l1_met; //!
+    TH1 *h_bcid_hlt_met; //!
+    TH1 *h_bcid_hlt_mht_met; //!
+    TH1 *h_bcid_hlt_topocl_met; //!
+    TH1 *h_bcid_hlt_topocl_ps_met; //!
+    TH1 *h_bcid_hlt_topocl_puc_met; //!
+    TH1 *h_bcid_met; //!
+    TH1 *h_bcid_emulmet; //!
+
+    // Turn-on Curves
+    TH1 *h_bcid_offline_met_pass_hlt_xe60; //!
+    TH1 *h_bcid_offline_met_pass_hlt_xe100; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe60; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe100; //!
+
+    TH1 *h_bcid_offline_met_pass_hlt_xe80_mht; //!
+    TH1 *h_bcid_offline_met_pass_hlt_xe120_mht; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe80_mht; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe120_mht; //!
+
+    TH1 *h_bcid_offline_met_pass_hlt_xe80_topocl; //!
+    TH1 *h_bcid_offline_met_pass_hlt_xe120_topocl; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl; //!
+
+    TH1 *h_bcid_offline_met_pass_hlt_xe80_topocl_ps; //!
+    TH1 *h_bcid_offline_met_pass_hlt_xe120_topocl_ps; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps; //!
+
+    TH1 *h_bcid_offline_met_pass_hlt_xe80_topocl_puc; //!
+    TH1 *h_bcid_offline_met_pass_hlt_xe120_topocl_puc; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc; //!
+    TH1 *h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc; //!
+
+    // Resolution
+    TH2 *h_bcid_hlt_ex_offline_sumet; //!
+    TH2 *h_bcid_hlt_mht_ex_offline_sumet; //!
+    TH2 *h_bcid_hlt_topocl_ex_offline_sumet; //!
+    TH2 *h_bcid_hlt_topocl_ps_ex_offline_sumet; //!
+    TH2 *h_bcid_hlt_topocl_puc_ex_offline_sumet; //!
+    TH2 *h_bcid_hlt_ex_hlt_sumet; //!
+    TH2 *h_bcid_hlt_mht_ex_hlt_mht_sumet; //!
+    TH2 *h_bcid_hlt_topocl_ex_hlt_topocl_sumet; //!
+    TH2 *h_bcid_hlt_topocl_ps_ex_hlt_topocl_ps_sumet; //!
+    TH2 *h_bcid_hlt_topocl_puc_ex_hlt_topocl_puc_sumet; //!
+
+    // Linearily
+    TH2 *h_bcid_hlt_lin; //!
+    TH2 *h_bcid_hlt_mht_lin; //!
+    TH2 *h_bcid_hlt_topocl_lin; //!
+    TH2 *h_bcid_hlt_topocl_ps_lin; //!
+    TH2 *h_bcid_hlt_topocl_puc_lin; //!
+
+    // Correlation plots
+    TH2 *h_bcid_corr_met_l1_offline; //!
+    TH2 *h_bcid_corr_met_hlt_offline; //!
+    TH2 *h_bcid_corr_met_hlt_mht_offline; //!
+    TH2 *h_bcid_corr_met_hlt_topocl_offline; //!
+    TH2 *h_bcid_corr_met_hlt_topocl_ps_offline; //!
+    TH2 *h_bcid_corr_met_hlt_topocl_puc_offline; //!
+
+
+
+
+
     // Zinv study
     TH1 *h_zvv_offline_met; //!
 
