@@ -57,7 +57,7 @@ int main( int argc, char* argv[] ) {
 //  job.options()->setDouble (EL::Job::optMaxEvents, 500);
   job.options()->setDouble (EL::Job::optRetries, 30);
   job.options()->setDouble (EL::Job::optCacheSize, 10*1024*1024);
-  job.options()->setDouble (EL::Job::optCacheLearnEntries, 50);
+  job.options()->setDouble (EL::Job::optCacheLearnEntries, 20);
 
 /*  
   // For ntuple
@@ -85,7 +85,7 @@ int main( int argc, char* argv[] ) {
   EL::PrunDriver driver;  //grid
 //  EL::GridDriver driver; //grid in the background
 
-  driver.options()->setString("nc_outputSampleName", "user.hson.xAOD.05252016.%in:name[2]%.%in:name[6]%"); //For PrunDriver
+  driver.options()->setString("nc_outputSampleName", "user.hson.xAOD.05282016test1.%in:name[2]%.%in:name[6]%"); //For PrunDriver
 //  driver.outputSampleName = "user.hson.gridtest1.11142015.%in:name[2]%.%in:name[6]%"; //For GridDriver
 //  driver.options()->setDouble("nc_nFiles", 1); // FOR TESTING!
 //  driver.options()->setDouble("nc_nFilesPerJob", 1);

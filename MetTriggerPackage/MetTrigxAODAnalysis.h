@@ -138,7 +138,7 @@ public:
 
     // Cutflow
     bool m_useBitsetCutflow; //!
-    int m_eventCutflow[20]; //!
+    int m_eventCutflow[40]; //!
 
     // Enable Overlap Removal tool
     bool m_doORtool; //!
@@ -187,6 +187,7 @@ public:
     TH1 *h_act_interaction; //!
 
     TH1 *h_bcid; //!
+    TH1 *h_pass_bcid; //!
 
     TH1 *h_l1_mex; //!
     TH1 *h_l1_mey; //!
@@ -233,11 +234,17 @@ public:
     TH1 *h_sumet; //!
     TH1 *h_met_phi; //!
 
-    TH1 *h_emulmet_ex; //!
-    TH1 *h_emulmet_ey; //!
-    TH1 *h_emulmet; //!
-    TH1 *h_emulsumet; //!
-    TH1 *h_emulmet_phi; //!
+    TH1 *h_emulmet_nomu_ex; //!
+    TH1 *h_emulmet_nomu_ey; //!
+    TH1 *h_emulmet_nomu; //!
+    TH1 *h_emulsumet_nomu; //!
+    TH1 *h_emulmet_nomu_phi; //!
+
+    TH1 *h_emulmet_noelec_ex; //!
+    TH1 *h_emulmet_noelec_ey; //!
+    TH1 *h_emulmet_noelec; //!
+    TH1 *h_emulsumet_noelec; //!
+    TH1 *h_emulmet_noelec_phi; //!
 
 
     // HLT Trigger study
@@ -308,7 +315,8 @@ public:
     TH1 *h_bcid_hlt_topocl_ps_met; //!
     TH1 *h_bcid_hlt_topocl_puc_met; //!
     TH1 *h_bcid_met; //!
-    TH1 *h_bcid_emulmet; //!
+    TH1 *h_bcid_emulmet_nomu; //!
+    TH1 *h_bcid_emulmet_noelec; //!
 
     // Turn-on Curves
     TH1 *h_bcid_offline_met_pass_hlt_xe60; //!
