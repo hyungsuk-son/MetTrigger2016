@@ -594,6 +594,7 @@ EL::StatusCode MetTrigxAODAnalysis :: initialize ()
   m_isoMuonPtMin = 10.; ///GeV
   m_isoMuonPtMax = 500.; ///GeV
   m_recoSF = true;
+  m_idSF = true;
   m_isoSF = true;
   m_ttvaSF = true;
 
@@ -959,7 +960,7 @@ EL::StatusCode MetTrigxAODAnalysis :: initialize ()
 
 
   // Initialize Cutflow count array
-  for (int i=0; i<20; i++) {
+  for (int i=0; i<40; i++) {
     m_eventCutflow[i]=0;
   }  
 
@@ -994,8 +995,13 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   }
 
   // Calculate EventWeight
-  if (m_isData) // it's data!
-    mcEventWeight = 1.0;
+  if (m_isData) {// it's data!
+    mcEventWeight = 1.;
+    mcEventWeight_Zmumu = 1.;
+    mcEventWeight_Wmunu = 1.;
+    mcEventWeight_Zee = 1.;
+    mcEventWeight_Wenu = 1.;
+  }
   else {
     float pu_weight = m_prwTool->getCombinedWeight(*eventInfo); // Get Pile-up weight
     mcEventWeight = eventInfo->mcEventWeight() * pu_weight;
@@ -2437,6 +2443,8 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   bool pass_diJet = false; // Select DiJet
   bool pass_CJV = true; // Central Jet Veto (CJV)
   bool pass_dPhijetmet = true; // deltaPhi(Jet,MET)
+  bool pass_dPhijetmet_nomu = true; // deltaPhi(Jet_i,MET_nomu)
+  bool pass_dPhijetmet_noelec = true; // deltaPhi(Jet,MET_noelec)
   bool pass_dPhiDijetMet = true; // deltaPhi(Jet1,MET) or deltaPhi(Jet2,MET)
   bool pass_dPhiDijetMet_nomu = true; // deltaPhi(Jet1,MET_nomu) or deltaPhi(Jet2,MET_nomu)
   bool pass_dPhiDijetMet_noelec = true; // deltaPhi(Jet1,MET_noelec) or deltaPhi(Jet2,MET_noelec)
@@ -2504,10 +2512,23 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
       float signal_jet_rapidity = jet->rapidity();
       float signal_jet_phi = jet->phi();
 
-      // dphijetmet
-      float dPhijetmet = DeltaPhi(signal_jet_phi,MET_phi);
-      //Info("execute()", "  delta phi = %.2f", dPhijetmet);
-      if ( dPhijetmet < 0.5 ) pass_dPhijetmet = false;
+      // dPhi(Jet_i,MET)
+      // For Zvv
+      if (m_isZvv){
+        float dPhijetmet = DeltaPhi(signal_jet_phi,MET_phi);
+        //Info("execute()", "  delta phi = %.2f", dPhijetmet);
+        if ( dPhijetmet < 0.4 ) pass_dPhijetmet = false;
+      }
+      // For Zmumu
+      if (m_isZmumu){
+        float dPhijetmet_nomu = DeltaPhi(signal_jet_phi,emulMET_nomu_phi);
+        if ( dPhijetmet_nomu < 0.4 ) pass_dPhijetmet_nomu = false;
+      }
+      // For Zee
+      if (m_isZee){
+        float dPhijetmet_noelec = DeltaPhi(signal_jet_phi,emulMET_noelec_phi);
+        if ( dPhijetmet_noelec < 0.4 ) pass_dPhijetmet_noelec = false;
+      }
 
       // Central Jet Veto (CJV)
       if ( m_signalJet->size() > 2 && pass_diJet ){
@@ -2672,60 +2693,60 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
       if ( MET > m_metCut ) {
         if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zvv]MET cut");
         m_eventCutflow[6]+=1;
-/*
-        Info("execute()", "=====================================");
-        Info("execute()", " Event # = %llu", eventInfo->eventNumber());
-        Info("execute()", " Good Event number = %i", m_eventCutflow[6]);
-        Info("execute()", " MET = %.3f GeV", MET);
-        Info("execute()", " RefElectron = %.3f GeV", ((*m_met)["RefElectron"]->met()) * 0.001);
-        Info("execute()", " RefPhoton = %.3f GeV", ((*m_met)["RefPhoton"]->met()) * 0.001);
-        Info("execute()", " RefTau = %.3f GeV", ((*m_met)["RefTau"]->met()) * 0.001);
-        Info("execute()", " RefMuon = %.3f GeV", ((*m_met)["RefMuon"]->met()) * 0.001);
-        Info("execute()", " RefJet = %.3f GeV", ((*m_met)["RefJet"]->met()) * 0.001);
-        Info("execute()", " SoftClus = %.3f GeV", ((*m_met)["SoftClus"]->met()) * 0.001);
-        Info("execute()", " PVSoftTrk = %.3f GeV", ((*m_met)["PVSoftTrk"]->met()) * 0.001);
-        Info("execute()", " # of good jets = %lu", m_signalJet->size());
-        if (m_signalJet->size() > 0){
-          int jetCount = 0;
-          for (const auto& jet : *m_signalJet) {
-            jetCount++;
-            Info("execute()", " jet # : %i", jetCount);
-            Info("execute()", " jet pt = %.3f GeV", jet->pt() * 0.001);
-            Info("execute()", " jet eta = %.3f GeV", jet->eta());
-            Info("execute()", " jet phi = %.3f GeV", jet->phi());
-          }
-        }
-        if (m_goodElectron->size() > 0){
-          int eleCount = 0;
-          for (const auto& electron : *m_goodElectron) {
-            eleCount++;
-            Info("execute()", " electron # : %i", eleCount);
-            Info("execute()", " electron pt = %.3f GeV", electron->pt() * 0.001);
-            Info("execute()", " electron eta = %.3f GeV", electron->eta());
-            Info("execute()", " electron phi = %.3f GeV", electron->phi());
-          }
-        }
-        if (m_goodMuon->size() > 0){
-          int muCount = 0;
-          for (const auto& muon : *m_goodMuon) {
-            muCount++;
-            Info("execute()", " muon # : %i", muCount);
-            Info("execute()", " muon pt = %.3f GeV", muon->pt() * 0.001);
-            Info("execute()", " muon eta = %.3f GeV", muon->eta());
-            Info("execute()", " muon phi = %.3f GeV", muon->phi());
-          }
-        }
-        if (m_goodTau->size() > 0){
-          int tauCount = 0;
-          for (const auto& tau : *m_goodTau) {
-            tauCount++;
-            Info("execute()", " tau # : %i", tauCount);
-            Info("execute()", " tau pt = %.3f GeV", tau->pt() * 0.001);
-            Info("execute()", " tau eta = %.3f GeV", tau->eta());
-            Info("execute()", " tau phi = %.3f GeV", tau->phi());
-          }
-        }
-*/
+        /*
+           Info("execute()", "=====================================");
+           Info("execute()", " Event # = %llu", eventInfo->eventNumber());
+           Info("execute()", " Good Event number = %i", m_eventCutflow[6]);
+           Info("execute()", " MET = %.3f GeV", MET);
+           Info("execute()", " RefElectron = %.3f GeV", ((*m_met)["RefElectron"]->met()) * 0.001);
+           Info("execute()", " RefPhoton = %.3f GeV", ((*m_met)["RefPhoton"]->met()) * 0.001);
+           Info("execute()", " RefTau = %.3f GeV", ((*m_met)["RefTau"]->met()) * 0.001);
+           Info("execute()", " RefMuon = %.3f GeV", ((*m_met)["RefMuon"]->met()) * 0.001);
+           Info("execute()", " RefJet = %.3f GeV", ((*m_met)["RefJet"]->met()) * 0.001);
+           Info("execute()", " SoftClus = %.3f GeV", ((*m_met)["SoftClus"]->met()) * 0.001);
+           Info("execute()", " PVSoftTrk = %.3f GeV", ((*m_met)["PVSoftTrk"]->met()) * 0.001);
+           Info("execute()", " # of good jets = %lu", m_signalJet->size());
+           if (m_signalJet->size() > 0){
+           int jetCount = 0;
+           for (const auto& jet : *m_signalJet) {
+           jetCount++;
+           Info("execute()", " jet # : %i", jetCount);
+           Info("execute()", " jet pt = %.3f GeV", jet->pt() * 0.001);
+           Info("execute()", " jet eta = %.3f GeV", jet->eta());
+           Info("execute()", " jet phi = %.3f GeV", jet->phi());
+           }
+           }
+           if (m_goodElectron->size() > 0){
+           int eleCount = 0;
+           for (const auto& electron : *m_goodElectron) {
+           eleCount++;
+           Info("execute()", " electron # : %i", eleCount);
+           Info("execute()", " electron pt = %.3f GeV", electron->pt() * 0.001);
+           Info("execute()", " electron eta = %.3f GeV", electron->eta());
+           Info("execute()", " electron phi = %.3f GeV", electron->phi());
+           }
+           }
+           if (m_goodMuon->size() > 0){
+           int muCount = 0;
+           for (const auto& muon : *m_goodMuon) {
+           muCount++;
+           Info("execute()", " muon # : %i", muCount);
+           Info("execute()", " muon pt = %.3f GeV", muon->pt() * 0.001);
+           Info("execute()", " muon eta = %.3f GeV", muon->eta());
+           Info("execute()", " muon phi = %.3f GeV", muon->phi());
+           }
+           }
+           if (m_goodTau->size() > 0){
+           int tauCount = 0;
+           for (const auto& tau : *m_goodTau) {
+           tauCount++;
+           Info("execute()", " tau # : %i", tauCount);
+           Info("execute()", " tau pt = %.3f GeV", tau->pt() * 0.001);
+           Info("execute()", " tau eta = %.3f GeV", tau->eta());
+           Info("execute()", " tau phi = %.3f GeV", tau->phi());
+           }
+           }
+           */
         if (m_goodElectron->size() == 0) {
           if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zvv]Electron Veto");
           m_eventCutflow[7]+=1;
@@ -2748,9 +2769,13 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                       if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zvv]CJV");
                       m_eventCutflow[13]+=1;
                       if ( pass_dPhiDijetMet ) {
-                        if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zvv]dPhi(j,MET) cut");
+                        if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zvv]dPhi(dijet,MET) cut");
                         m_eventCutflow[14]+=1;
                         //h_zvv_offline_met->Fill( MET ); // GeV
+                        if ( pass_dPhijetmet ) {
+                          if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zvv]dPhi(jet_i,MET) cut");
+                          m_eventCutflow[15]+=1;
+                        }
                       }
                     }
                   }
@@ -2770,42 +2795,46 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
 
   if (m_isZmumu){
     if ( m_trigDecisionTool->isPassed("HLT_xe70") ) {
-      if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("MET Trigger");
-      m_eventCutflow[15]+=1;
+      if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]MET Trigger");
+      m_eventCutflow[16]+=1;
       if ( emulMET_nomu > m_metCut ) {
         if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]MET cut");
-        m_eventCutflow[16]+=1;
+        m_eventCutflow[17]+=1;
         if (m_goodElectron->size() == 0) {
           if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]Electron Veto");
-          m_eventCutflow[17]+=1;
+          m_eventCutflow[18]+=1;
           if ( m_goodMuon->size() > 1) {
-            if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]At least Two Electrons");
-            m_eventCutflow[18]+=1;
+            if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]At least Two Muons");
+            m_eventCutflow[19]+=1;
             if (m_goodTau->size() == 0) {
               if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]Tau Veto");
-              m_eventCutflow[19]+=1;
+              m_eventCutflow[20]+=1;
               if ( pass_Zmumu && m_goodMuon->size() == 2 && mll_muon > 66. && mll_muon < 116. ){
                 if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]mll cut");
-                m_eventCutflow[20]+=1;
+                m_eventCutflow[21]+=1;
                 if ( m_signalJet->size() > 1 ) {
                   if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]At least Two Jets");
-                  m_eventCutflow[21]+=1;
+                  m_eventCutflow[22]+=1;
                   if ( pass_diJet ) {
                     if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]DiJet");
-                    m_eventCutflow[22]+=1;
+                    m_eventCutflow[23]+=1;
                     if ( mjj > m_mjjCut ) {
                       if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]mjj cut");
-                      m_eventCutflow[23]+=1;
+                      m_eventCutflow[24]+=1;
                       if ( pass_CJV ) {
                         if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]CJV cut");
-                        m_eventCutflow[24]+=1;
+                        m_eventCutflow[25]+=1;
                         if ( pass_dPhiDijetMet_nomu ) {
-                          if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]dPhi(j,MET) cut");
-                          m_eventCutflow[25]+=1;
+                          if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]dPhi(dijet,MET) cut");
+                          m_eventCutflow[26]+=1;
                           // Calculate muon SF
                           if (!m_isData) {
                             double totalMuonSF_Zmumu = GetTotalMuonSF(*m_goodMuon, m_recoSF, m_isoSF, m_ttvaSF);
                             //Info("execute()", " Zmumu Total Muon SF = %.3f ", totalMuonSF_Zmumu);
+                            if ( pass_dPhijetmet_nomu ) {
+                              if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]dPhi(jet_i,MET) cut");
+                              m_eventCutflow[27]+=1;
+                            }
                           }
                         }
                       }
@@ -2857,35 +2886,54 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
 
 
 
-
   //-------------------------------
   // Z -> ee + JET EVENT SELECTION
   //-------------------------------
 
   if (m_isZee){
     if ( m_trigDecisionTool->isPassed("HLT_e24_lhmedium_L1EM20VH") || m_trigDecisionTool->isPassed("HLT_e60_lhmedium") || m_trigDecisionTool->isPassed("HLT_e120_lhloose") ) {
-    //if (m_trigDecisionTool->isPassed("HLT_e24_lhmedium_iloose_L1EM20VH") || m_trigDecisionTool->isPassed("HLT_e60_lhmedium*")) {
-      m_eventCutflow[26]+=1;
-      if ( emulMET_noelec > m_metCut ) {
-        m_eventCutflow[27]+=1;
+      if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]Electron Trigger");
+      m_eventCutflow[28]+=1;
+      if ( MET > m_metCut ) {
+        if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]MET cut");
+        m_eventCutflow[29]+=1;
         if (m_goodElectron->size() > 1) {
-          m_eventCutflow[28]+=1;
+          if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]At least Two Electron");
+          m_eventCutflow[30]+=1;
           if ( m_goodMuon->size() == 0) {
-            m_eventCutflow[29]+=1;
+            if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]Muon Veto");
+            m_eventCutflow[31]+=1;
             if (m_goodTau->size() == 0) {
-              m_eventCutflow[30]+=1;
+              if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]Tau Veto");
+              m_eventCutflow[32]+=1;
               if ( pass_Zee && m_goodElectron->size() == 2 && mll_electron > 66. && mll_electron < 116. ) {
-                m_eventCutflow[31]+=1;
+                if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]mll cut");
+                m_eventCutflow[33]+=1;
                 if ( m_signalJet->size() > 1 ) {
-                  m_eventCutflow[32]+=1;
+                  if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]At least Two Jets");
+                  m_eventCutflow[34]+=1;
                   if ( pass_diJet ) {
-                    m_eventCutflow[33]+=1;
+                    if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]DiJet");
+                    m_eventCutflow[35]+=1;
                     if ( mjj > m_mjjCut ) {
-                      m_eventCutflow[34]+=1;
+                      if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]mjj cut");
+                      m_eventCutflow[36]+=1;
                       if ( pass_CJV ) {
-                        m_eventCutflow[35]+=1;
-                        if ( pass_dPhiDijetMet_noelec ) {
-                          m_eventCutflow[36]+=1;
+                        if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]CJV cut");
+                        m_eventCutflow[37]+=1;
+                        if ( pass_dPhiDijetMet ) {
+                          if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]dPhi(j,MET) cut");
+                          m_eventCutflow[38]+=1;
+                          // Calculate electron SF
+                          if (!m_isData) {
+                            float totalElectronSF_Zee = GetTotalElectronSF(*m_goodElectron, m_recoSF, m_idSF, m_isoSF);
+                            //Info("execute()", " Zee Total Electron SF = %.3f ", totalElectronSF_Zee);
+                            mcEventWeight_Zee = mcEventWeight * totalElectronSF_Zee;
+                            if ( pass_dPhijetmet_noelec ) {
+                              if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]dPhi(jet_i,MET_noelec) cut");
+                              m_eventCutflow[39]+=1;
+                            }
+                          }
                         }
                       }
                     }
@@ -2898,6 +2946,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
       }
     }
   }
+
 
 
 
@@ -3255,27 +3304,30 @@ EL::StatusCode MetTrigxAODAnalysis :: finalize ()
 
   // print out Cutflow
   Info("finalize()", "================================================");
-  Info("finalize()", "================  VBF Cutflow  =================");
+  Info("finalize()", "===============  Base Cutflow  =================");
   for(int i=0; i<5; ++i) {
     int j = i+1;
     Info("finalize()", "Event cutflow (%i) = %i", j, m_eventCutflow[i]);
   }
   if (m_isZvv){
-    for(int i=5; i<15 ; ++i) {
+    Info("finalize()", "================  Zvv Cutflow  =================");
+    for(int i=5; i<16 ; ++i) {
       int j = i+1;
       Info("finalize()", "Zvv Event cutflow (%i) = %i", j, m_eventCutflow[i]);
     }
   }
-  if (m_isZee){
-    for(int i=15; i<26 ; ++i) {
-      int j = i+1;
-      Info("finalize()", "Zee Event cutflow (%i) = %i", j, m_eventCutflow[i]);
+  if (m_isZmumu){
+    Info("finalize()", "===============  Zmumu Cutflow  ================");
+    for(int i=16; i<28 ; ++i) {
+      int j = i-10;
+      Info("finalize()", "Zmumu Event cutflow (%i) = %i", j, m_eventCutflow[i]);
     }
   }
-  if (m_isZmumu){
-    for(int i=16; i<37 ; ++i) {
-      int j = i+1;
-      Info("finalize()", "Zmumu Event cutflow (%i) = %i", j, m_eventCutflow[i]);
+  if (m_isZee){
+    Info("finalize()", "================  Zee Cutflow  =================");
+    for(int i=28; i<40 ; ++i) {
+      int j = i-22;
+      Info("finalize()", "Zee Event cutflow (%i) = %i", j, m_eventCutflow[i]);
     }
   }
 
@@ -3925,6 +3977,70 @@ EL::StatusCode MetTrigxAODAnalysis :: histFinalize ()
     return sf;
 
   }
+
+
+
+  float MetTrigxAODAnalysis :: GetGoodElectronSF(xAOD::Electron& elec,
+      const bool recoSF, const bool idSF, const bool isoSF) {
+
+    float sf(1.);
+
+    if (recoSF) {
+      double sf_reco(1.);
+      if (m_elecEfficiencySFTool_reco->getEfficiencyScaleFactor( elec, sf_reco ) == CP::CorrectionCode::Ok) {
+        sf *= sf_reco;
+        //Info("execute()", "  GetGoodElectronSF: sf_reco = %.5f ", sf_reco );
+      }
+      else {
+        Error("execute()", " GetGoodElectronSF: Reco getEfficiencyScaleFactor returns Error CorrectionCode");
+      }
+    }
+
+    if (idSF) {
+      double sf_id(1.);
+      if (m_elecEfficiencySFTool_id_Loose->getEfficiencyScaleFactor( elec, sf_id ) == CP::CorrectionCode::Ok) {
+        sf *= sf_id;
+        //Info("execute()", "  GetGoodElectronSF: sf_id = %.5f ", sf_id );
+      }
+      else {
+        Error("execute()", " GetGoodElectronSF: Id (Loose) getEfficiencyScaleFactor returns Error CorrectionCode");
+      }
+    }
+
+    if (isoSF) {
+      double sf_iso(1.);
+      if (m_elecEfficiencySFTool_iso_Loose->getEfficiencyScaleFactor( elec, sf_iso ) == CP::CorrectionCode::Ok) {
+        sf *= sf_iso;
+        //Info("execute()", "  GetGoodElectronSF: sf_iso = %.5f ", sf_iso );
+      }
+      else {
+        Error("execute()", " GetGoodElectronSF: Iso (Loose) getEfficiencyScaleFactor returns Error CorrectionCode");
+      }
+    }
+
+    //Info("execute()", "  GetGoodElectronSF: Good Electron SF = %.5f ", sf );
+    dec_scalefactor(elec) = sf;
+    return sf;
+
+  }
+
+
+  float MetTrigxAODAnalysis :: GetTotalElectronSF(xAOD::ElectronContainer& electrons,
+      bool recoSF, bool idSF, bool isoSF) {
+
+    float sf(1.);
+
+    for (const auto& electron : electrons) {
+      sf *= GetGoodElectronSF(*electron, recoSF, idSF, isoSF);
+    }
+
+    //Info("execute()", "  GetTotalElectronSF: Total Electron SF = %.5f ", sf );
+    return sf;
+
+  }
+
+
+
 
   int MetTrigxAODAnalysis :: NumIsoTracks(const xAOD::TrackParticleContainer* inTracks,
       xAOD::Vertex* primVertex, float Pt_Low, float Pt_High) {

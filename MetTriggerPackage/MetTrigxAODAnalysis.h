@@ -125,6 +125,10 @@ public:
     int m_eventCounter; //!
     int m_numCleanEvents; //!
     float mcEventWeight; //!
+    float mcEventWeight_Zmumu; //!
+    float mcEventWeight_Wmunu; //!
+    float mcEventWeight_Zee; //!
+    float mcEventWeight_Wenu; //!
     int mcChannelNumber; //!
 
     bool m_isData; //!
@@ -165,6 +169,7 @@ public:
     float m_isoMuonPtMin; //!
     float m_isoMuonPtMax; //!
     bool m_recoSF; //!
+    bool m_idSF; //!
     bool m_isoSF; //!
     bool m_ttvaSF; //!
 
@@ -515,6 +520,12 @@ public:
 
     double GetTotalMuonSF(xAOD::MuonContainer& muons,
         bool recoSF, bool isoSF, bool ttvaSF);
+
+    float GetGoodElectronSF(xAOD::Electron& elec,
+        const bool recoSF, const bool idSF, const bool isoSF);
+
+    float GetTotalElectronSF(xAOD::ElectronContainer& electrons,
+        bool recoSF, bool idSF, bool isoSF);
 
     int NumIsoTracks(const xAOD::TrackParticleContainer* inTracks,
         xAOD::Vertex* primVertex, float Pt_Low, float Pt_High);
