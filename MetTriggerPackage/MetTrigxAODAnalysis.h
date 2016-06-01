@@ -142,7 +142,7 @@ public:
 
     // Cutflow
     bool m_useBitsetCutflow; //!
-    int m_eventCutflow[40]; //!
+    int m_eventCutflow[52]; //!
 
     // Enable Overlap Removal tool
     bool m_doORtool; //!

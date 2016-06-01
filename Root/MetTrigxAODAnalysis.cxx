@@ -563,11 +563,11 @@ EL::StatusCode MetTrigxAODAnalysis :: initialize ()
   m_useBitsetCutflow = true;
 
   // Event Channel
-  m_isZvv = true;
+  m_isZvv = false;
   m_isZmumu = false;
-  m_isWmunu = false;
+  m_isWmunu = true;
   m_isZee = false;
-  m_isWenu = false;
+  m_isWenu = true;
 
   // Enable Overlap Removal tool
   m_doORtool = false;
@@ -960,7 +960,7 @@ EL::StatusCode MetTrigxAODAnalysis :: initialize ()
 
 
   // Initialize Cutflow count array
-  for (int i=0; i<40; i++) {
+  for (int i=0; i<52; i++) {
     m_eventCutflow[i]=0;
   }  
 
@@ -1018,14 +1018,20 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   if (m_isData){
     m_Bcid = eventInfo->bcid();
     h_bcid->Fill(m_Bcid);
-    if ( (m_Bcid == 1) ||
-        (m_Bcid >= 170 && m_Bcid <= 170+11) || (m_Bcid >= 219 && m_Bcid <= 219+11) ||
-        (m_Bcid >= 328 && m_Bcid <= 328+11) || (m_Bcid >= 437 && m_Bcid <= 437+11) ||
-        (m_Bcid >= 1113 && m_Bcid <= 1113+11) || (m_Bcid >= 1222 && m_Bcid <= 1222+11) ||
-        (m_Bcid >= 1331 && m_Bcid <= 1331+11) || (m_Bcid >= 2007 && m_Bcid <= 2007+11) ||
-        (m_Bcid >= 2116 && m_Bcid <= 2116+11) || (m_Bcid >= 2225 && m_Bcid <= 2225+11) ||
-        (m_Bcid >= 2901 && m_Bcid <= 2901+11) || (m_Bcid >= 3010 && m_Bcid <= 3010+11) ||
-        (m_Bcid >= 3119 && m_Bcid <= 3119+11) ){
+    if ( (m_Bcid == 20) ||
+        (m_Bcid >= 106 && m_Bcid <= 106+11) || (m_Bcid >= 157 && m_Bcid <= 157+11) ||
+        (m_Bcid >= 268 && m_Bcid <= 268+11) || (m_Bcid >= 379 && m_Bcid <= 379+11) ||
+        (m_Bcid >= 490 && m_Bcid <= 490+11) || (m_Bcid >= 601 && m_Bcid <= 601+11) ||
+        (m_Bcid >= 712 && m_Bcid <= 712+11) || (m_Bcid >= 823 && m_Bcid <= 823+11) ||
+        (m_Bcid >= 1051 && m_Bcid <= 1051+11) || (m_Bcid >= 1162 && m_Bcid <= 1162+11) ||
+        (m_Bcid >= 1273 && m_Bcid <= 1273+11) || (m_Bcid >= 1384 && m_Bcid <= 1384+11) ||
+        (m_Bcid >= 1495 && m_Bcid <= 1495+11) || (m_Bcid >= 1606 && m_Bcid <= 1606+11) ||
+        (m_Bcid >= 1717 && m_Bcid <= 1717+11) || (m_Bcid >= 1945 && m_Bcid <= 1945+11) ||
+        (m_Bcid >= 2056 && m_Bcid <= 2056+11) || (m_Bcid >= 2167 && m_Bcid <= 2167+11) ||
+        (m_Bcid >= 2278 && m_Bcid <= 2278+11) || (m_Bcid >= 2389 && m_Bcid <= 2389+11) ||
+        (m_Bcid >= 2500 && m_Bcid <= 2500+11) || (m_Bcid >= 2611 && m_Bcid <= 2611+11) ||
+        (m_Bcid >= 2839 && m_Bcid <= 2839+11) || (m_Bcid >= 2950 && m_Bcid <= 2950+11) ||
+        (m_Bcid >= 3061 && m_Bcid <= 3061+11) || (m_Bcid >= 3172 && m_Bcid <= 3172+11) ){
       m_passBcid = false;
     }
     else {
@@ -1033,10 +1039,9 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     }
   }
 
-
   /*
-  // if data check if event passes GRL
-  if(m_isData){ // it's data!
+    // if data check if event passes GRL
+    if(m_isData){ // it's data!
     if(!m_grl->passRunLB(*eventInfo)){
       return EL::StatusCode::SUCCESS; // go to next event
     }
@@ -2418,6 +2423,8 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   } // end for loop over shallow copied jets
 
 
+
+
   //------------------------
   // Define DiJet Properties
   // -----------------------
@@ -2426,25 +2433,37 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   TLorentzVector jet2;
   float jet1_pt = 0;
   float jet2_pt = 0;
+  float jet3_pt = 0;
   float jet1_phi = 0;
   float jet2_phi = 0;
+  float jet3_phi = 0;
+  float jet1_eta = 0;
+  float jet2_eta = 0;
+  float jet3_eta = 0;
   float jet1_rapidity = 0;
   float jet2_rapidity = 0;
+  float jet3_rapidity = 0;
 
   float signalJet_ht = 0;
   float dPhiJet1Met = 0;
   float dPhiJet2Met = 0;
+  float dPhiJet3Met = 0;
   float dPhiJet1Met_nomu = 0;
   float dPhiJet2Met_nomu = 0;
+  float dPhiJet3Met_nomu = 0;
   float dPhiJet1Met_noelec = 0;
   float dPhiJet2Met_noelec = 0;
+  float dPhiJet3Met_noelec = 0;
 
   float mjj = 0;
   bool pass_diJet = false; // Select DiJet
   bool pass_CJV = true; // Central Jet Veto (CJV)
-  bool pass_dPhijetmet = true; // deltaPhi(Jet,MET)
+  bool pass_dPhijetmet = true; // deltaPhi(Jet_i,MET)
   bool pass_dPhijetmet_nomu = true; // deltaPhi(Jet_i,MET_nomu)
   bool pass_dPhijetmet_noelec = true; // deltaPhi(Jet,MET_noelec)
+  float dPhiMinjetmet = 10.; // initialize with 10. to obtain minimum value of deltaPhi(Jet_i,MET)
+  float dPhiMinjetmet_nomu = 10.; // initialize with 10. to obtain minimum value of deltaPhi(Jet_i,MET)
+  float dPhiMinjetmet_noelec = 10.; // initialize with 10. to obtain minimum value of deltaPhi(Jet_i,MET)
   bool pass_dPhiDijetMet = true; // deltaPhi(Jet1,MET) or deltaPhi(Jet2,MET)
   bool pass_dPhiDijetMet_nomu = true; // deltaPhi(Jet1,MET_nomu) or deltaPhi(Jet2,MET_nomu)
   bool pass_dPhiDijetMet_noelec = true; // deltaPhi(Jet1,MET_noelec) or deltaPhi(Jet2,MET_noelec)
@@ -2460,6 +2479,8 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     jet2_pt = m_signalJet->at(1)->pt() * 0.001;
     jet1_phi = m_signalJet->at(0)->phi();
     jet2_phi = m_signalJet->at(1)->phi();
+    jet1_eta = m_signalJet->at(0)->eta();
+    jet2_eta = m_signalJet->at(1)->eta();
     jet1_rapidity = m_signalJet->at(0)->rapidity();
     jet2_rapidity = m_signalJet->at(1)->rapidity();
     auto dijet = jet1 + jet2;
@@ -2503,6 +2524,19 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   } // DiJet selection loop
 
 
+  // For jet3
+  if (m_signalJet->size() > 2) {
+    jet3_pt = m_signalJet->at(2)->pt() * 0.001;
+    jet3_phi = m_signalJet->at(2)->phi();
+    jet3_eta = m_signalJet->at(2)->eta();
+    jet3_rapidity = m_signalJet->at(2)->rapidity();
+    // deltaPhi(Jet3,MET)
+    dPhiJet3Met = DeltaPhi(jet3_phi, MET_phi);
+    dPhiJet3Met_nomu = DeltaPhi(jet3_phi, emulMET_nomu_phi);
+    dPhiJet3Met_noelec = DeltaPhi(jet3_phi, emulMET_noelec_phi);
+  }
+
+
   // N_jet >= 1
   if (m_signalJet->size() > 0) {
 
@@ -2512,22 +2546,33 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
       float signal_jet_rapidity = jet->rapidity();
       float signal_jet_phi = jet->phi();
 
-      // dPhi(Jet_i,MET)
+      // Calculate dPhi(Jet_i,MET) and dPhi_min(Jet_i,MET)
       // For Zvv
       if (m_isZvv){
         float dPhijetmet = DeltaPhi(signal_jet_phi,MET_phi);
-        //Info("execute()", "  delta phi = %.2f", dPhijetmet);
+        //Info("execute()", " [Zvv] Event # = %llu", eventInfo->eventNumber());
+        //Info("execute()", " [Zvv] dPhi = %.2f", dPhijetmet);
         if ( dPhijetmet < 0.4 ) pass_dPhijetmet = false;
+        dPhiMinjetmet = std::min(dPhiMinjetmet, dPhijetmet);
+        //Info("execute()", " [Zvv] dPhi_min = %.2f", dPhiMinjetmet);
       }
       // For Zmumu
       if (m_isZmumu){
         float dPhijetmet_nomu = DeltaPhi(signal_jet_phi,emulMET_nomu_phi);
+        //Info("execute()", " [Zmumu] Event # = %llu", eventInfo->eventNumber());
+        //Info("execute()", " [Zmumu] dPhi = %.2f", dPhijetmet_nomu);
         if ( dPhijetmet_nomu < 0.4 ) pass_dPhijetmet_nomu = false;
+        dPhiMinjetmet_nomu = std::min(dPhiMinjetmet_nomu, dPhijetmet_nomu);
+        //Info("execute()", " [Zmumu] dPhi_min = %.2f", dPhiMinjetmet_nomu);
       }
       // For Zee
       if (m_isZee){
         float dPhijetmet_noelec = DeltaPhi(signal_jet_phi,emulMET_noelec_phi);
+        //Info("execute()", " [Zee] Event # = %llu", eventInfo->eventNumber());
+        //Info("execute()", " [Zee] dPhi = %.2f", dPhijetmet_noelec);
         if ( dPhijetmet_noelec < 0.4 ) pass_dPhijetmet_noelec = false;
+        dPhiMinjetmet_noelec = std::min(dPhiMinjetmet_noelec, dPhijetmet_noelec);
+        //Info("execute()", " [Zee] dPhi_min = %.2f", dPhiMinjetmet_noelec);
       }
 
       // Central Jet Veto (CJV)
@@ -2551,7 +2596,8 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
 
   } //N_jet >= 1
 
- 
+
+
 
   //----------------------------------
   // Define Zmumu and Wmunu Selection
@@ -2561,24 +2607,20 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   bool pass_Wmunu = false; // Select Wmunu channel
   float mll_muon = 0.; // For Zmumu channel
   float mT_muon = 0.;// For Wmunu channel
+  // Zmumu muons
+  float muon1_pt = 0.;
+  float muon2_pt = 0.;
+  float muon1_charge = 0.;
+  float muon2_charge = 0.;
+
   if (m_isZmumu || m_isWmunu){
-    // Zmumu muons
-    TLorentzVector muon1;
-    TLorentzVector muon2;
-    float muon1_pt = 0.;
-    float muon2_pt = 0.;
-    float muon1_charge = 0.;
-    float muon2_charge = 0.;
-    // Wmunu muon
-    float muon_pt = 0.;
-    float muon_phi = 0.;
 
     // Zmumu Selection
     if (m_goodMuon->size() > 1) {
       std::partial_sort(m_goodMuon->begin(), m_goodMuon->begin()+2, m_goodMuon->end(), DescendingPt());
 
-      muon1 = m_goodMuon->at(0)->p4();
-      muon2 = m_goodMuon->at(1)->p4();
+      TLorentzVector muon1 = m_goodMuon->at(0)->p4();
+      TLorentzVector muon2 = m_goodMuon->at(1)->p4();
       muon1_pt = m_goodMuon->at(0)->pt() * 0.001;
       muon2_pt = m_goodMuon->at(1)->pt() * 0.001;
       muon1_charge = m_goodMuon->at(0)->charge();
@@ -2599,8 +2641,8 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
 
     // Wmunu Selection
     if (m_goodMuon->size() == 1) {
-      muon_pt = m_goodMuon->at(0)->pt() * 0.001;
-      muon_phi = m_goodMuon->at(0)->phi();
+      float muon_pt = m_goodMuon->at(0)->pt() * 0.001;
+      float muon_phi = m_goodMuon->at(0)->phi();
       mT_muon = TMath::Sqrt( 2. * muon_pt * MET * ( 1. - TMath::Cos(muon_phi - MET_phi) ) );
 
       if ( muon_pt > 25. ){
@@ -2611,28 +2653,28 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   }
 
 
-  //----------------------
-  // Define Zee Selection
-  // ---------------------
+  //-------------------------------
+  // Define Zee and Wenu Selection
+  // ------------------------------
 
   bool pass_Zee = false; // Select Zee channel
-  float mll_electron = 0;
-  if (m_isZee){
-    TLorentzVector electron1;
-    TLorentzVector electron2;
-    float electron1_pt = 0;
-    float electron2_pt = 0;
-    float electron1_charge = 0;
-    float electron2_charge = 0;
+  bool pass_Wenu = false; // Select Wenu channel
+  float mll_electron = 0.; // Select Zee channel
+  float mT_electron = 0.;// For Wenu channel
+  // Zee electrons
+  float electron1_pt = 0.;
+  float electron2_pt = 0.;
+  float electron1_charge = 0.;
+  float electron2_charge = 0.;
 
-
+  if (m_isZee || m_isWenu){
 
     // Zee Selection
     if (m_goodElectron->size() > 1) {
       std::partial_sort(m_goodElectron->begin(), m_goodElectron->begin()+2, m_goodElectron->end(), DescendingPt());
 
-      electron1 = m_goodElectron->at(0)->p4();
-      electron2 = m_goodElectron->at(1)->p4();
+      TLorentzVector electron1 = m_goodElectron->at(0)->p4();
+      TLorentzVector electron2 = m_goodElectron->at(1)->p4();
       electron1_pt = m_goodElectron->at(0)->pt() * 0.001;
       electron2_pt = m_goodElectron->at(1)->pt() * 0.001;
       electron1_charge = m_goodElectron->at(0)->charge();
@@ -2649,8 +2691,19 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
           //Info("execute()", "  Leading electron = %.2f GeV, Subleading electron = %.2f GeV", electron1_pt, electron2_pt);
         }
       }
-
     } // Zee selection loop
+
+    // Wenu Selection
+    if (m_goodElectron->size() == 1) {
+      float electron_pt = m_goodElectron->at(0)->pt() * 0.001;
+      float electron_phi = m_goodElectron->at(0)->phi();
+      mT_electron = TMath::Sqrt( 2. * electron_pt * MET * ( 1. - TMath::Cos(electron_phi - MET_phi) ) );
+
+      if ( electron_pt > 25. ){
+        pass_Wenu = true;
+      }
+    } //Wenu Selection loop
+
   }
 
 
@@ -2682,12 +2735,13 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   // VBF study 
   //-----------
 
+
   //-------------------------------
   // Z -> vv + JET EVENT SELECTION
   //-------------------------------
 
   if (m_isZvv){
-    if ( m_trigDecisionTool->isPassed("HLT_xe80") ) {
+    if ( m_trigDecisionTool->isPassed("HLT_xe70") ) {
       if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zvv]MET Trigger");
       m_eventCutflow[5]+=1;
       if ( MET > m_metCut ) {
@@ -2789,6 +2843,8 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   }
 
 
+
+
   //---------------------------------
   // Z -> mumu + JET EVENT SELECTION
   //---------------------------------
@@ -2804,7 +2860,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
           if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]Electron Veto");
           m_eventCutflow[18]+=1;
           if ( m_goodMuon->size() > 1) {
-            if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]At least Two Muons");
+            if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]At least Two Electrons");
             m_eventCutflow[19]+=1;
             if (m_goodTau->size() == 0) {
               if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]Tau Veto");
@@ -2831,58 +2887,26 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                           if (!m_isData) {
                             double totalMuonSF_Zmumu = GetTotalMuonSF(*m_goodMuon, m_recoSF, m_isoSF, m_ttvaSF);
                             //Info("execute()", " Zmumu Total Muon SF = %.3f ", totalMuonSF_Zmumu);
-                            if ( pass_dPhijetmet_nomu ) {
-                              if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]dPhi(jet_i,MET) cut");
-                              m_eventCutflow[27]+=1;
-                            }
+                            mcEventWeight_Zmumu = mcEventWeight * totalMuonSF_Zmumu;
                           }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+                          if ( pass_dPhijetmet_nomu ) {
+                            if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zmumu]dPhi(jet_i,MET) cut");
+                            m_eventCutflow[27]+=1;
+                          } // pass diPhijetMET
+                        } // pass dPhiDijetMet
+                      } // pass CJV
+                    } // mjj Cut
+                  } // pass diJet
+                } // at least 1 jet
+              } // pass Zmumu 
+            } // Tau veto
+          } // at least 1 muon
+        } // Electron veto
+      } // MET cut
+    } // HLT_xe70
+  } // m_isZmumu
 
 
-  //---------------------------------
-  // W -> munu + JET EVENT SELECTION
-  //---------------------------------
-
-  if (m_isWmunu){
-    if ( m_trigDecisionTool->isPassed("HLT_xe70") ) {
-      if ( emulMET_nomu > m_metCut ) {
-        if (m_goodElectron->size() == 0) {
-          if ( m_goodMuon->size() > 0 ) {
-            if (m_goodTau->size() == 0) {
-              if ( pass_Wmunu && m_goodMuon->size() == 1 && mT_muon > 30. && mT_muon < 100. ){
-                if ( m_signalJet->size() > 1 ) {
-                  if ( pass_diJet ) {
-                    if ( mjj > m_mjjCut ) {
-                      if ( pass_CJV ) {
-                        if ( pass_dPhiDijetMet_nomu ) {
-                          // Calculate muon SF
-                          if (!m_isData) {
-                            double totalMuonSF_Wmunu = GetTotalMuonSF(*m_goodMuon, m_recoSF, m_isoSF, m_ttvaSF);
-                            Info("execute()", " Wmunu Total Muon SF = %.3f ", totalMuonSF_Wmunu);
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 
 
 
@@ -2894,7 +2918,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     if ( m_trigDecisionTool->isPassed("HLT_e24_lhmedium_L1EM20VH") || m_trigDecisionTool->isPassed("HLT_e60_lhmedium") || m_trigDecisionTool->isPassed("HLT_e120_lhloose") ) {
       if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]Electron Trigger");
       m_eventCutflow[28]+=1;
-      if ( MET > m_metCut ) {
+      if ( emulMET_noelec > m_metCut ) {
         if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]MET cut");
         m_eventCutflow[29]+=1;
         if (m_goodElectron->size() > 1) {
@@ -2921,8 +2945,8 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                       if ( pass_CJV ) {
                         if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]CJV cut");
                         m_eventCutflow[37]+=1;
-                        if ( pass_dPhiDijetMet ) {
-                          if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]dPhi(j,MET) cut");
+                        if ( pass_dPhiDijetMet_noelec ) {
+                          if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]dPhi(dijet,MET) cut");
                           m_eventCutflow[38]+=1;
                           // Calculate electron SF
                           if (!m_isData) {
@@ -2930,7 +2954,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                             //Info("execute()", " Zee Total Electron SF = %.3f ", totalElectronSF_Zee);
                             mcEventWeight_Zee = mcEventWeight * totalElectronSF_Zee;
                             if ( pass_dPhijetmet_noelec ) {
-                              if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]dPhi(jet_i,MET_noelec) cut");
+                              if (m_useBitsetCutflow) m_BitsetCutflow->FillCutflow("[Zee]dPhi(jet_i,MET) cut");
                               m_eventCutflow[39]+=1;
                             }
                           }
@@ -2939,6 +2963,63 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+  //---------------------------------
+  // W -> munu + JET EVENT SELECTION
+  //---------------------------------
+
+  if (m_isWmunu){
+    if ( m_trigDecisionTool->isPassed("HLT_mu20_iloose_L1MU15") || m_trigDecisionTool->isPassed("HLT_mu50") ) {
+      m_eventCutflow[40]+=1;
+      if ( MET > 25. ) {
+        m_eventCutflow[41]+=1;
+        if (m_goodElectron->size() == 0) {
+          m_eventCutflow[42]+=1;
+          if (m_goodTau->size() == 0) {
+            m_eventCutflow[43]+=1;
+            if ( m_goodMuon->size() == 1 && pass_Wmunu && mT_muon > 50. ){
+              m_eventCutflow[44]+=1;
+              if ( m_signalJet->size() > 0 ) {
+                m_eventCutflow[45]+=1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+
+  //---------------------------------
+  // W -> enu + JET EVENT SELECTION
+  //---------------------------------
+
+  if (m_isWenu){
+    if ( m_trigDecisionTool->isPassed("HLT_e24_lhmedium_iloose_L1EM20VH") || m_trigDecisionTool->isPassed("HLT_e60_lhmedium") ) {
+      m_eventCutflow[46]+=1;
+      if ( MET > 25. ) {
+        m_eventCutflow[47]+=1;
+        if ( m_goodMuon->size() == 0 ) {
+          m_eventCutflow[48]+=1;
+          if (m_goodTau->size() == 0) {
+            m_eventCutflow[49]+=1;
+            if ( m_goodElectron->size() == 1 && pass_Wenu && mT_electron > 50. ){
+              m_eventCutflow[50]+=1;
+              if ( m_signalJet->size() > 0 ) {
+                m_eventCutflow[51]+=1;
               }
             }
           }
@@ -3328,6 +3409,20 @@ EL::StatusCode MetTrigxAODAnalysis :: finalize ()
     for(int i=28; i<40 ; ++i) {
       int j = i-22;
       Info("finalize()", "Zee Event cutflow (%i) = %i", j, m_eventCutflow[i]);
+    }
+  }
+  if (m_isWmunu){
+    Info("finalize()", "===============  Wmunu Cutflow  =================");
+    for(int i=40; i<46 ; ++i) {
+      int j = i-34;
+      Info("finalize()", "Wmunu Event cutflow (%i) = %i", j, m_eventCutflow[i]);
+    }
+  }
+  if (m_isWenu){
+    Info("finalize()", "================  Wenu Cutflow  =================");
+    for(int i=46; i<52 ; ++i) {
+      int j = i-40;
+      Info("finalize()", "Wenu Event cutflow (%i) = %i", j, m_eventCutflow[i]);
     }
   }
 
