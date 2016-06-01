@@ -1018,20 +1018,14 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   if (m_isData){
     m_Bcid = eventInfo->bcid();
     h_bcid->Fill(m_Bcid);
-    if ( (m_Bcid == 20) ||
-        (m_Bcid >= 106 && m_Bcid <= 106+11) || (m_Bcid >= 157 && m_Bcid <= 157+11) ||
-        (m_Bcid >= 268 && m_Bcid <= 268+11) || (m_Bcid >= 379 && m_Bcid <= 379+11) ||
-        (m_Bcid >= 490 && m_Bcid <= 490+11) || (m_Bcid >= 601 && m_Bcid <= 601+11) ||
-        (m_Bcid >= 712 && m_Bcid <= 712+11) || (m_Bcid >= 823 && m_Bcid <= 823+11) ||
-        (m_Bcid >= 1051 && m_Bcid <= 1051+11) || (m_Bcid >= 1162 && m_Bcid <= 1162+11) ||
-        (m_Bcid >= 1273 && m_Bcid <= 1273+11) || (m_Bcid >= 1384 && m_Bcid <= 1384+11) ||
-        (m_Bcid >= 1495 && m_Bcid <= 1495+11) || (m_Bcid >= 1606 && m_Bcid <= 1606+11) ||
-        (m_Bcid >= 1717 && m_Bcid <= 1717+11) || (m_Bcid >= 1945 && m_Bcid <= 1945+11) ||
-        (m_Bcid >= 2056 && m_Bcid <= 2056+11) || (m_Bcid >= 2167 && m_Bcid <= 2167+11) ||
-        (m_Bcid >= 2278 && m_Bcid <= 2278+11) || (m_Bcid >= 2389 && m_Bcid <= 2389+11) ||
-        (m_Bcid >= 2500 && m_Bcid <= 2500+11) || (m_Bcid >= 2611 && m_Bcid <= 2611+11) ||
-        (m_Bcid >= 2839 && m_Bcid <= 2839+11) || (m_Bcid >= 2950 && m_Bcid <= 2950+11) ||
-        (m_Bcid >= 3061 && m_Bcid <= 3061+11) || (m_Bcid >= 3172 && m_Bcid <= 3172+11) ){
+    if ( (m_Bcid == 1) ||
+        (m_Bcid >= 170 && m_Bcid <= 170+11) || (m_Bcid >= 219 && m_Bcid <= 219+11) ||
+        (m_Bcid >= 328 && m_Bcid <= 328+11) || (m_Bcid >= 437 && m_Bcid <= 437+11) ||
+        (m_Bcid >= 1113 && m_Bcid <= 1113+11) || (m_Bcid >= 1222 && m_Bcid <= 1222+11) ||
+        (m_Bcid >= 1331 && m_Bcid <= 1331+11) || (m_Bcid >= 2007 && m_Bcid <= 2007+11) ||
+        (m_Bcid >= 2116 && m_Bcid <= 2116+11) || (m_Bcid >= 2225 && m_Bcid <= 2225+11) ||
+        (m_Bcid >= 2901 && m_Bcid <= 2901+11) || (m_Bcid >= 3010 && m_Bcid <= 3010+11) ||
+        (m_Bcid >= 3119 && m_Bcid <= 3119+11) ){
       m_passBcid = false;
     }
     else {
@@ -1039,9 +1033,10 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     }
   }
 
+
   /*
-    // if data check if event passes GRL
-    if(m_isData){ // it's data!
+  // if data check if event passes GRL
+  if(m_isData){ // it's data!
     if(!m_grl->passRunLB(*eventInfo)){
       return EL::StatusCode::SUCCESS; // go to next event
     }
