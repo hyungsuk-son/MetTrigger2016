@@ -27,9 +27,9 @@ int main( int argc, char* argv[] ) {
   // use SampleHandler to scan all of the subdirectories of a directory for particular MC single file:
   //const char* inputFilePath = gSystem->ExpandPathName ("$ALRB_TutorialData/r6630/");
   //SH::ScanDir().sampleDepth(1).samplePattern("AOD.05352803._000031.pool.root.1").scan(sh, inputFilePath);
-  const char* inputFilePath = gSystem->ExpandPathName ("/afs/cern.ch/user/h/hson/public/dataset");
+  const char* inputFilePath = gSystem->ExpandPathName ("/cluster/tufts/atlas08/DATA/Run2");
   //SH::ScanDir().filePattern("AOD.06828599._000351.pool.root.1").scan(sh,inputFilePath); // Data15
-  SH::ScanDir().filePattern("data16_13TeV.00299288.physics_Main.merge.AOD.f698_m1594._lb0022._0001.1").scan(sh,inputFilePath); // Data16
+  SH::ScanDir().filePattern("AOD.08517453._*.pool.root.1").scan(sh,inputFilePath); // Data16
   //SH::ScanDir().filePattern("DAOD_EXOT5.07992543._000007.pool.root.1").scan(sh,inputFilePath); // MC Zvv
   //SH::ScanDir().filePattern("DAOD_EXOT5.07992459._000012.pool.root.1").scan(sh,inputFilePath); // MC Zmumu
 

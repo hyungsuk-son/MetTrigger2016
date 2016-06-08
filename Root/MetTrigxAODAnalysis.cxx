@@ -123,15 +123,23 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_bcid = new TH1F("h_bcid", "Bunch Crossing ID;BCID", 3600, 0, 3600);
   wk()->addOutput (h_bcid);
   // Remove first 12 bunches for each train
-  h_pass_bcid = new TH1F("h_pass_bcid", "Bunch Crossing ID;BCID", 3600, 0, 3600);
-  wk()->addOutput (h_pass_bcid);
+  h_cleanBC_bcid = new TH1F("h_cleanBC_bcid", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  wk()->addOutput (h_cleanBC_bcid);
+
+  // EventCount
+  h_eventcount = new TH1F("h_eventcount", "Total Events", 1, 0, 1);
+  h_eventcount_pass_L1_XE50 = new TH1F("h_eventcount_pass_L1_XE50", "The number of events passing L1_XE50", 1, 0, 1);
+  h_eventcount_pass_HLT_xe80_tc_lcw_L1XE50 = new TH1F("h_eventcount_pass_HLT_xe80_tc_lcw_L1XE50", "The number of events passing HLT_xe80_tc_lcw_L1XE50", 1, 0, 1);
+  wk()->addOutput (h_eventcount);
+  wk()->addOutput (h_eventcount_pass_L1_XE50);
+  wk()->addOutput (h_eventcount_pass_HLT_xe80_tc_lcw_L1XE50);
 
   // L1 MET
   h_l1_mex = new TH1F("h_l1_mex", "L1 METx (GeV);METx (GeV)", 150, -150,  150); // L1 METx [GeV]
   h_l1_mey = new TH1F("h_l1_mey", "L1 METy (GeV);METy (GeV)", 150, -150,  150); // L1 METy [GeV]
   h_l1_met = new TH1F("h_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
   h_l1_sumet = new TH1F("h_l1_sumet", "L1 SumEt (GeV);SumEt (GeV)", 250, 0, 2000); // L1 SumET [GeV]
-  h_l1_phi = new TH1F("h_l1_phi", "L1 MET #phi (rad);MET #phi (rad)", 32, -3.1416, 3.1416); // L1 phi [GeV]
+  h_l1_phi = new TH1F("h_l1_phi", "L1 MET #phi (rad);MET #phi (rad)", 32, -3.2, 3.2); // L1 phi [GeV]
   wk()->addOutput (h_l1_mex);
   wk()->addOutput (h_l1_mey);
   wk()->addOutput (h_l1_met);
@@ -143,7 +151,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_hlt_ey = new TH1F("h_hlt_ey", "HLT (CELL) Missing E_{y};E_{y} (GeV)", 150, -150,  150); // HLT MEy [GeV]
   h_hlt_met = new TH1F("h_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_hlt_sumet = new TH1F("h_hlt_sumet", "HLT (CELL) Sum |E_{T}|;SumE_{T} (GeV)", 200, 0, 2000); // HLT SumET [GeV]
-  h_hlt_phi = new TH1F("h_hlt_phi", "HLT (CELL) MET #phi (rad);#phi (rad)", 32, -3.1416, 3.1416); // HLT phi [GeV]
+  h_hlt_phi = new TH1F("h_hlt_phi", "HLT (CELL) MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // HLT phi [GeV]
   wk()->addOutput (h_hlt_ex);
   wk()->addOutput (h_hlt_ey);
   wk()->addOutput (h_hlt_met);
@@ -155,7 +163,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_hlt_mht_ey = new TH1F("h_hlt_mht_ey", "HLT (MHT) Missing E_{y};E_{y} (GeV)", 150, -150,  150); // HLT MEy [GeV]
   h_hlt_mht_met = new TH1F("h_hlt_mht_met", "HLT (MHT) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_hlt_mht_sumet = new TH1F("h_hlt_mht_sumet", "HLT (MHT) Sum |E_{T}|;SumE_{T} (GeV)", 200, 0, 2000); // HLT SumET [GeV]
-  h_hlt_mht_phi = new TH1F("h_hlt_mht_phi", "HLT (MHT) MET #phi (rad);#phi (rad)", 32, -3.1416, 3.1416); // HLT phi [GeV]
+  h_hlt_mht_phi = new TH1F("h_hlt_mht_phi", "HLT (MHT) MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // HLT phi [GeV]
   wk()->addOutput (h_hlt_mht_ex);
   wk()->addOutput (h_hlt_mht_ey);
   wk()->addOutput (h_hlt_mht_met);
@@ -167,7 +175,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_hlt_topocl_ey = new TH1F("h_hlt_topocl_ey", "HLT (topocl) Missing E_{y};E_{y} (GeV)", 150, -150,  150); // HLT MEy [GeV]
   h_hlt_topocl_met = new TH1F("h_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_hlt_topocl_sumet = new TH1F("h_hlt_topocl_sumet", "HLT (topocl) Sum |E_{T}|;SumE_{T} (GeV)", 200, 0, 2000); // HLT SumET [GeV]
-  h_hlt_topocl_phi = new TH1F("h_hlt_topocl_phi", "HLT (topocl) MET #phi (rad);#phi (rad)", 32, -3.1416, 3.1416); // HLT phi [GeV]
+  h_hlt_topocl_phi = new TH1F("h_hlt_topocl_phi", "HLT (topocl) MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // HLT phi [GeV]
   wk()->addOutput (h_hlt_topocl_ex);
   wk()->addOutput (h_hlt_topocl_ey);
   wk()->addOutput (h_hlt_topocl_met);
@@ -179,7 +187,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_hlt_topocl_ps_ey = new TH1F("h_hlt_topocl_ps_ey", "HLT (topocl_PS) Missing E_{y};E_{y} (GeV)", 150, -150,  150); // HLT MEy [GeV]
   h_hlt_topocl_ps_met = new TH1F("h_hlt_topocl_ps_met", "HLT (topocl_PS) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_hlt_topocl_ps_sumet = new TH1F("h_hlt_topocl_ps_sumet", "HLT (topocl_PS) Sum |E_{T}|;SumE_{T} (GeV)", 200, 0, 2000); // HLT SumET [GeV]
-  h_hlt_topocl_ps_phi = new TH1F("h_hlt_topocl_ps_phi", "HLT (topocl_PS) MET #phi (rad);#phi (rad)", 32, -3.1416, 3.1416); // HLT phi [GeV]
+  h_hlt_topocl_ps_phi = new TH1F("h_hlt_topocl_ps_phi", "HLT (topocl_PS) MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // HLT phi [GeV]
   wk()->addOutput (h_hlt_topocl_ps_ex);
   wk()->addOutput (h_hlt_topocl_ps_ey);
   wk()->addOutput (h_hlt_topocl_ps_met);
@@ -191,12 +199,23 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_hlt_topocl_puc_ey = new TH1F("h_hlt_topocl_puc_ey", "HLT (topocl_PUC) Missing E_{y};E_{y} (GeV)", 150, -150,  150); // HLT MEy [GeV]
   h_hlt_topocl_puc_met = new TH1F("h_hlt_topocl_puc_met", "HLT (topocl_PUC) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_hlt_topocl_puc_sumet = new TH1F("h_hlt_topocl_puc_sumet", "HLT (topocl_PUC) Sum |E_{T}|;SumE_{T} (GeV)", 200, 0, 2000); // HLT SumET [GeV]
-  h_hlt_topocl_puc_phi = new TH1F("h_hlt_topocl_puc_phi", "HLT (topocl_PUC) MET #phi (rad);#phi (rad)", 32, -3.1416, 3.1416); // HLT phi [GeV]
+  h_hlt_topocl_puc_phi = new TH1F("h_hlt_topocl_puc_phi", "HLT (topocl_PUC) MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // HLT phi [GeV]
   wk()->addOutput (h_hlt_topocl_puc_ex);
   wk()->addOutput (h_hlt_topocl_puc_ey);
   wk()->addOutput (h_hlt_topocl_puc_met);
   wk()->addOutput (h_hlt_topocl_puc_sumet);
   wk()->addOutput (h_hlt_topocl_puc_phi);
+
+  
+  // The calorimeter clusters (CaloCluster)
+  h_calocluster_n = new TH1F("h_calocluster_n", "CaloCluster multiplicity;multiplicity", 100, 0, 1000);
+  h_calocluster_e = new TH1F("h_calocluster_e", "CaloCluster energy;Energy (GeV)", 200, -50, 150); // [GeV]
+  h_calocluster_phi = new TH1F("h_calocluster_phi", "CaloCluster #phi;#phi", 32, -3.2, 3.2);
+  h_calocluster_eta = new TH1F("h_calocluster_eta", "CaloCluster #eta;#eta", 100, -5, 5);
+  wk()->addOutput (h_calocluster_n);
+  wk()->addOutput (h_calocluster_e);
+  wk()->addOutput (h_calocluster_phi);
+  wk()->addOutput (h_calocluster_eta);
 
 
 
@@ -208,7 +227,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_met_ey = new TH1F("h_met_ey", "Missing E_{y};E_{y} (GeV)", 150, -150,  150); // MEy [GeV]
   h_met = new TH1F("h_met", "Offline Missing E_{T};ME_{T} (GeV)", 250, 0, 500); // MET [GeV]
   h_sumet = new TH1F("h_sumet", "Offline Sum E_{T};SumE_{T} (GeV)", 200, 0, 2000); // SumET [GeV]
-  h_met_phi = new TH1F("h_met_phi", "MET #phi (rad);#phi (rad)", 32, -3.1416, 3.1416); // MET phi [GeV]
+  h_met_phi = new TH1F("h_met_phi", "MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // MET phi [GeV]
   wk()->addOutput (h_met_ex);
   wk()->addOutput (h_met_ey);
   wk()->addOutput (h_met);
@@ -220,7 +239,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_emulmet_noelec_ey = new TH1F("h_emulmet_noelec_ey", "Emulated Missing E_{y};E_{y} (GeV)", 150, -150,  150); // MEy [GeV]
   h_emulmet_noelec = new TH1F("h_emulmet_noelec", "Emulated Missing E_{T};ME_{T} (GeV)", 250, 0, 500); // MET [GeV]
   h_emulsumet_noelec = new TH1F("h_emulsumet_noelec", "Emulated Sum E_{T};SumE_{T} (GeV)", 200, 0, 2000); // SumET [GeV]
-  h_emulmet_noelec_phi = new TH1F("h_emulmet_noelec_phi", "Emulated MET #phi (rad);#phi (rad)", 32, -3.1416, 3.1416); // MET phi [GeV]
+  h_emulmet_noelec_phi = new TH1F("h_emulmet_noelec_phi", "Emulated MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // MET phi [GeV]
   wk()->addOutput (h_emulmet_noelec_ex);
   wk()->addOutput (h_emulmet_noelec_ey);
   wk()->addOutput (h_emulmet_noelec);
@@ -232,7 +251,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_emulmet_nomu_ey = new TH1F("h_emulmet_nomu_ey", "Emulated Missing E_{y};E_{y} (GeV)", 150, -150,  150); // MEy [GeV]
   h_emulmet_nomu = new TH1F("h_emulmet_nomu", "Emulated Missing E_{T};ME_{T} (GeV)", 250, 0, 500); // MET [GeV]
   h_emulsumet_nomu = new TH1F("h_emulsumet_nomu", "Emulated Sum E_{T};SumE_{T} (GeV)", 200, 0, 2000); // SumET [GeV]
-  h_emulmet_nomu_phi = new TH1F("h_emulmet_nomu_phi", "Emulated MET #phi (rad);#phi (rad)", 32, -3.1416, 3.1416); // MET phi [GeV]
+  h_emulmet_nomu_phi = new TH1F("h_emulmet_nomu_phi", "Emulated MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // MET phi [GeV]
   wk()->addOutput (h_emulmet_nomu_ex);
   wk()->addOutput (h_emulmet_nomu_ey);
   wk()->addOutput (h_emulmet_nomu);
@@ -270,7 +289,23 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
 
 
   // HLT Trigger study
-  // No selection
+  //////////////////
+  // No selection //
+  //////////////////
+
+  // BCID study
+  h_bcid_pass_hlt_xe60 = new TH1F("h_bcid_pass_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_bcid_pass_l1_XE50_hlt_xe60 = new TH1F("h_bcid_pass_l1_XE50_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_bcid_pass_hlt_xe80_mht = new TH1F("h_bcid_pass_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_bcid_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_bcid_pass_l1_XE50_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_bcid_pass_hlt_xe80_topocl = new TH1F("h_bcid_pass_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_bcid_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_bcid_pass_l1_XE50_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  wk()->addOutput (h_bcid_pass_hlt_xe60);
+  wk()->addOutput (h_bcid_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_bcid_pass_hlt_xe80_mht);
+  wk()->addOutput (h_bcid_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_bcid_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_bcid_pass_l1_XE50_hlt_xe80_topocl);
 
   // Turn-on Curves
   h_offline_met_pass_hlt_xe60 = new TH1F("h_offline_met_pass_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
@@ -338,6 +373,19 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   h_corr_met_hlt_topocl_puc_offline = new TH2F("h_corr_met_hlt_topocl_puc_offline", "HLT (topocl_puc) vs Offline |Missing E_{T}|;HLT (topocl_puc) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_corr_met_hlt_topocl_puc_offline);
 
+  // MET Resolution
+  // Offline MET vs HLT MET
+  h_hlt_met_vs_offline_met = new TH1F("h_hlt_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_hlt_mht_met_vs_offline_met = new TH1F("h_hlt_mht_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_hlt_topocl_met_vs_offline_met = new TH1F("h_hlt_topocl_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_hlt_topocl_ps_met_vs_offline_met = new TH1F("h_hlt_topocl_ps_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_hlt_topocl_puc_met_vs_offline_met = new TH1F("h_hlt_topocl_puc_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  wk()->addOutput (h_hlt_met_vs_offline_met);
+  wk()->addOutput (h_hlt_mht_met_vs_offline_met);
+  wk()->addOutput (h_hlt_topocl_met_vs_offline_met);
+  wk()->addOutput (h_hlt_topocl_ps_met_vs_offline_met);
+  wk()->addOutput (h_hlt_topocl_puc_met_vs_offline_met);
+
   // HLT MEx vs Offline SumET
   h_hlt_ex_offline_sumet = new TH2F("h_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_hlt_mht_ex_offline_sumet = new TH2F("h_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -373,129 +421,785 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_hlt_topocl_ps_lin);
   wk()->addOutput (h_hlt_topocl_puc_lin);
 
+
+
+
+  // pass cleanBC
+
   // BCID study
+  h_cleanBC_bcid_pass_hlt_xe60 = new TH1F("h_cleanBC_bcid_pass_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_cleanBC_bcid_pass_l1_XE50_hlt_xe60 = new TH1F("h_cleanBC_bcid_pass_l1_XE50_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_cleanBC_bcid_pass_hlt_xe80_mht = new TH1F("h_cleanBC_bcid_pass_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_cleanBC_bcid_pass_hlt_xe80_topocl = new TH1F("h_cleanBC_bcid_pass_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  wk()->addOutput (h_cleanBC_bcid_pass_hlt_xe60);
+  wk()->addOutput (h_cleanBC_bcid_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_cleanBC_bcid_pass_hlt_xe80_mht);
+  wk()->addOutput (h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_cleanBC_bcid_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl);
 
   // Offline and HLT MET
-  h_bcid_l1_met = new TH1F("h_bcid_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
-  h_bcid_hlt_met = new TH1F("h_bcid_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
-  h_bcid_hlt_mht_met = new TH1F("h_bcid_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
-  h_bcid_hlt_topocl_met = new TH1F("h_bcid_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
-  h_bcid_hlt_topocl_ps_met = new TH1F("h_bcid_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
-  h_bcid_hlt_topocl_puc_met = new TH1F("h_bcid_hlt_topocl_puc_met", "HLT (topocl_puc) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
-  h_bcid_met = new TH1F("h_bcid_met", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_emulmet_noelec = new TH1F("h_bcid_emulmet_noelec", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
-  h_bcid_emulmet_nomu = new TH1F("h_bcid_emulmet_nomu", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
-  wk()->addOutput (h_bcid_l1_met);
-  wk()->addOutput (h_bcid_hlt_met);
-  wk()->addOutput (h_bcid_hlt_mht_met);
-  wk()->addOutput (h_bcid_hlt_topocl_met);
-  wk()->addOutput (h_bcid_hlt_topocl_ps_met);
-  wk()->addOutput (h_bcid_hlt_topocl_puc_met);
-  wk()->addOutput (h_bcid_met);
-  wk()->addOutput (h_bcid_emulmet_noelec);
-  wk()->addOutput (h_bcid_emulmet_nomu);
+  h_cleanBC_l1_met = new TH1F("h_cleanBC_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
+  h_cleanBC_hlt_met = new TH1F("h_cleanBC_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_cleanBC_hlt_mht_met = new TH1F("h_cleanBC_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_cleanBC_hlt_topocl_met = new TH1F("h_cleanBC_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_cleanBC_hlt_topocl_ps_met = new TH1F("h_cleanBC_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_cleanBC_hlt_topocl_puc_met = new TH1F("h_cleanBC_hlt_topocl_puc_met", "HLT (topocl_puc) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_cleanBC_met = new TH1F("h_cleanBC_met", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_emulmet_noelec = new TH1F("h_cleanBC_emulmet_noelec", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  h_cleanBC_emulmet_nomu = new TH1F("h_cleanBC_emulmet_nomu", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  wk()->addOutput (h_cleanBC_l1_met);
+  wk()->addOutput (h_cleanBC_hlt_met);
+  wk()->addOutput (h_cleanBC_hlt_mht_met);
+  wk()->addOutput (h_cleanBC_hlt_topocl_met);
+  wk()->addOutput (h_cleanBC_hlt_topocl_ps_met);
+  wk()->addOutput (h_cleanBC_hlt_topocl_puc_met);
+  wk()->addOutput (h_cleanBC_met);
+  wk()->addOutput (h_cleanBC_emulmet_noelec);
+  wk()->addOutput (h_cleanBC_emulmet_nomu);
 
 
   // Turn-on Curves
-  h_bcid_offline_met_pass_hlt_xe60 = new TH1F("h_bcid_offline_met_pass_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_hlt_xe100 = new TH1F("h_bcid_offline_met_pass_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe60 = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe100 = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe60);
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe100);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe60);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe100);
+  h_cleanBC_offline_met_pass_hlt_xe60 = new TH1F("h_cleanBC_offline_met_pass_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_hlt_xe100 = new TH1F("h_cleanBC_offline_met_pass_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe60 = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe100 = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe60);
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe100);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe100);
 
-  h_bcid_offline_met_pass_hlt_xe80_mht = new TH1F("h_bcid_offline_met_pass_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_hlt_xe120_mht = new TH1F("h_bcid_offline_met_pass_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe120_mht = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe80_mht);
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe120_mht);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe80_mht);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe120_mht);
+  h_cleanBC_offline_met_pass_hlt_xe80_mht = new TH1F("h_cleanBC_offline_met_pass_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_hlt_xe120_mht = new TH1F("h_cleanBC_offline_met_pass_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe80_mht);
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe120_mht);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht);
 
-  h_bcid_offline_met_pass_hlt_xe80_topocl = new TH1F("h_bcid_offline_met_pass_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_hlt_xe120_topocl = new TH1F("h_bcid_offline_met_pass_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe80_topocl);
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe120_topocl);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl);
+  h_cleanBC_offline_met_pass_hlt_xe80_topocl = new TH1F("h_cleanBC_offline_met_pass_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_hlt_xe120_topocl = new TH1F("h_cleanBC_offline_met_pass_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe120_topocl);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl);
 
-  h_bcid_offline_met_pass_hlt_xe80_topocl_ps = new TH1F("h_bcid_offline_met_pass_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_hlt_xe120_topocl_ps = new TH1F("h_bcid_offline_met_pass_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe80_topocl_ps);
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe120_topocl_ps);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps);
+  h_cleanBC_offline_met_pass_hlt_xe80_topocl_ps = new TH1F("h_cleanBC_offline_met_pass_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_hlt_xe120_topocl_ps = new TH1F("h_cleanBC_offline_met_pass_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe120_topocl_ps);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps);
 
-  h_bcid_offline_met_pass_hlt_xe80_topocl_puc = new TH1F("h_bcid_offline_met_pass_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_hlt_xe120_topocl_puc = new TH1F("h_bcid_offline_met_pass_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc = new TH1F("h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe80_topocl_puc);
-  wk()->addOutput (h_bcid_offline_met_pass_hlt_xe120_topocl_puc);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc);
-  wk()->addOutput (h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc);
+  h_cleanBC_offline_met_pass_hlt_xe80_topocl_puc = new TH1F("h_cleanBC_offline_met_pass_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_hlt_xe120_topocl_puc = new TH1F("h_cleanBC_offline_met_pass_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc = new TH1F("h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_cleanBC_offline_met_pass_hlt_xe120_topocl_puc);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc);
 
   // Correlation plots
   // L1 vs Offline MET
-  h_bcid_corr_met_l1_offline = new TH2F("h_bcid_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
-  wk()->addOutput (h_bcid_corr_met_l1_offline);
+  h_cleanBC_corr_met_l1_offline = new TH2F("h_cleanBC_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_cleanBC_corr_met_l1_offline);
   // HLT (CELL) vs Offline MET
-  h_bcid_corr_met_hlt_offline = new TH2F("h_bcid_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
-  wk()->addOutput (h_bcid_corr_met_hlt_offline);
+  h_cleanBC_corr_met_hlt_offline = new TH2F("h_cleanBC_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_cleanBC_corr_met_hlt_offline);
   // HLT (mht) vs Offline MET
-  h_bcid_corr_met_hlt_mht_offline = new TH2F("h_bcid_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
-  wk()->addOutput (h_bcid_corr_met_hlt_mht_offline);
+  h_cleanBC_corr_met_hlt_mht_offline = new TH2F("h_cleanBC_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_cleanBC_corr_met_hlt_mht_offline);
   // HLT (topocl) vs Offline MET
-  h_bcid_corr_met_hlt_topocl_offline = new TH2F("h_bcid_corr_met_hlt_topocl_offline", "HLT (topocl) vs Offline |Missing E_{T}|;HLT (topocl) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
-  wk()->addOutput (h_bcid_corr_met_hlt_topocl_offline);
+  h_cleanBC_corr_met_hlt_topocl_offline = new TH2F("h_cleanBC_corr_met_hlt_topocl_offline", "HLT (topocl) vs Offline |Missing E_{T}|;HLT (topocl) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_cleanBC_corr_met_hlt_topocl_offline);
   // HLT (topocl_ps) vs Offline MET
-  h_bcid_corr_met_hlt_topocl_ps_offline = new TH2F("h_bcid_corr_met_hlt_topocl_ps_offline", "HLT (topocl_ps) vs Offline |Missing E_{T}|;HLT (topocl_ps) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
-  wk()->addOutput (h_bcid_corr_met_hlt_topocl_ps_offline);
+  h_cleanBC_corr_met_hlt_topocl_ps_offline = new TH2F("h_cleanBC_corr_met_hlt_topocl_ps_offline", "HLT (topocl_ps) vs Offline |Missing E_{T}|;HLT (topocl_ps) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_cleanBC_corr_met_hlt_topocl_ps_offline);
   // HLT (topocl_puc) vs Offline MET
-  h_bcid_corr_met_hlt_topocl_puc_offline = new TH2F("h_bcid_corr_met_hlt_topocl_puc_offline", "HLT (topocl_puc) vs Offline |Missing E_{T}|;HLT (topocl_puc) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
-  wk()->addOutput (h_bcid_corr_met_hlt_topocl_puc_offline);
+  h_cleanBC_corr_met_hlt_topocl_puc_offline = new TH2F("h_cleanBC_corr_met_hlt_topocl_puc_offline", "HLT (topocl_puc) vs Offline |Missing E_{T}|;HLT (topocl_puc) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_cleanBC_corr_met_hlt_topocl_puc_offline);
+
+
+  // MET Resolution
+  // Offline MET vs HLT MET
+  h_cleanBC_hlt_met_vs_offline_met = new TH1F("h_cleanBC_hlt_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_cleanBC_hlt_mht_met_vs_offline_met = new TH1F("h_cleanBC_hlt_mht_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_cleanBC_hlt_topocl_met_vs_offline_met = new TH1F("h_cleanBC_hlt_topocl_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_cleanBC_hlt_topocl_ps_met_vs_offline_met = new TH1F("h_cleanBC_hlt_topocl_ps_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_cleanBC_hlt_topocl_puc_met_vs_offline_met = new TH1F("h_cleanBC_hlt_topocl_puc_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  wk()->addOutput (h_cleanBC_hlt_met_vs_offline_met);
+  wk()->addOutput (h_cleanBC_hlt_mht_met_vs_offline_met);
+  wk()->addOutput (h_cleanBC_hlt_topocl_met_vs_offline_met);
+  wk()->addOutput (h_cleanBC_hlt_topocl_ps_met_vs_offline_met);
+  wk()->addOutput (h_cleanBC_hlt_topocl_puc_met_vs_offline_met);
 
   // HLT MEx vs Offline SumET
-  h_bcid_hlt_ex_offline_sumet = new TH2F("h_bcid_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  h_bcid_hlt_mht_ex_offline_sumet = new TH2F("h_bcid_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  h_bcid_hlt_topocl_ex_offline_sumet = new TH2F("h_bcid_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  h_bcid_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_bcid_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  h_bcid_hlt_topocl_puc_ex_offline_sumet = new TH2F("h_bcid_hlt_topocl_puc_ex_offline_sumet", "HLT (Topocl_puc) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  wk()->addOutput (h_bcid_hlt_ex_offline_sumet);
-  wk()->addOutput (h_bcid_hlt_mht_ex_offline_sumet);
-  wk()->addOutput (h_bcid_hlt_topocl_ex_offline_sumet);
-  wk()->addOutput (h_bcid_hlt_topocl_ps_ex_offline_sumet);
-  wk()->addOutput (h_bcid_hlt_topocl_puc_ex_offline_sumet);
+  h_cleanBC_hlt_ex_offline_sumet = new TH2F("h_cleanBC_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_mht_ex_offline_sumet = new TH2F("h_cleanBC_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_topocl_ex_offline_sumet = new TH2F("h_cleanBC_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_cleanBC_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_topocl_puc_ex_offline_sumet = new TH2F("h_cleanBC_hlt_topocl_puc_ex_offline_sumet", "HLT (Topocl_puc) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_cleanBC_hlt_ex_offline_sumet);
+  wk()->addOutput (h_cleanBC_hlt_mht_ex_offline_sumet);
+  wk()->addOutput (h_cleanBC_hlt_topocl_ex_offline_sumet);
+  wk()->addOutput (h_cleanBC_hlt_topocl_ps_ex_offline_sumet);
+  wk()->addOutput (h_cleanBC_hlt_topocl_puc_ex_offline_sumet);
   // HLT MEx vs HLT SumET
-  h_bcid_hlt_ex_hlt_sumet = new TH2F("h_bcid_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  h_bcid_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_bcid_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  h_bcid_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_bcid_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  h_bcid_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_bcid_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  h_bcid_hlt_topocl_puc_ex_hlt_topocl_puc_sumet = new TH2F("h_bcid_hlt_topocl_puc_ex_hlt_topocl_puc_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl_puc) SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
-  wk()->addOutput (h_bcid_hlt_ex_hlt_sumet);
-  wk()->addOutput (h_bcid_hlt_mht_ex_hlt_mht_sumet);
-  wk()->addOutput (h_bcid_hlt_topocl_ex_hlt_topocl_sumet);
-  wk()->addOutput (h_bcid_hlt_topocl_ps_ex_hlt_topocl_ps_sumet);
-  wk()->addOutput (h_bcid_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
+  h_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_cleanBC_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_cleanBC_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_cleanBC_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet = new TH2F("h_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl_puc) SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_cleanBC_hlt_ex_hlt_sumet);
+  wk()->addOutput (h_cleanBC_hlt_mht_ex_hlt_mht_sumet);
+  wk()->addOutput (h_cleanBC_hlt_topocl_ex_hlt_topocl_sumet);
+  wk()->addOutput (h_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet);
+  wk()->addOutput (h_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
 
   // Linearity
-  h_bcid_hlt_lin = new TH2F("h_bcid_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
-  h_bcid_hlt_mht_lin = new TH2F("h_bcid_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
-  h_bcid_hlt_topocl_lin = new TH2F("h_bcid_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
-  h_bcid_hlt_topocl_ps_lin = new TH2F("h_bcid_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
-  h_bcid_hlt_topocl_puc_lin = new TH2F("h_bcid_hlt_topocl_puc_lin", "HLT (Topocl_puc) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_puc) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
-  wk()->addOutput (h_bcid_hlt_lin);
-  wk()->addOutput (h_bcid_hlt_mht_lin);
-  wk()->addOutput (h_bcid_hlt_topocl_lin);
-  wk()->addOutput (h_bcid_hlt_topocl_ps_lin);
-  wk()->addOutput (h_bcid_hlt_topocl_puc_lin);
+  h_cleanBC_hlt_lin = new TH2F("h_cleanBC_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_cleanBC_hlt_mht_lin = new TH2F("h_cleanBC_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_cleanBC_hlt_topocl_lin = new TH2F("h_cleanBC_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_cleanBC_hlt_topocl_ps_lin = new TH2F("h_cleanBC_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_cleanBC_hlt_topocl_puc_lin = new TH2F("h_cleanBC_hlt_topocl_puc_lin", "HLT (Topocl_puc) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_puc) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  wk()->addOutput (h_cleanBC_hlt_lin);
+  wk()->addOutput (h_cleanBC_hlt_mht_lin);
+  wk()->addOutput (h_cleanBC_hlt_topocl_lin);
+  wk()->addOutput (h_cleanBC_hlt_topocl_ps_lin);
+  wk()->addOutput (h_cleanBC_hlt_topocl_puc_lin);
+
+
+
+
+
+
+
+  ///////////////////
+  // Wmunu channel //
+  ///////////////////
+
+  // BCID study
+  h_wmunu_bcid_pass_hlt_xe60 = new TH1F("h_wmunu_bcid_pass_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_bcid_pass_l1_XE50_hlt_xe60 = new TH1F("h_wmunu_bcid_pass_l1_XE50_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_bcid_pass_hlt_xe80_mht = new TH1F("h_wmunu_bcid_pass_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_bcid_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_wmunu_bcid_pass_l1_XE50_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_bcid_pass_hlt_xe80_topocl = new TH1F("h_wmunu_bcid_pass_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_bcid_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_wmunu_bcid_pass_l1_XE50_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  wk()->addOutput (h_wmunu_bcid_pass_hlt_xe60);
+  wk()->addOutput (h_wmunu_bcid_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_wmunu_bcid_pass_hlt_xe80_mht);
+  wk()->addOutput (h_wmunu_bcid_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_wmunu_bcid_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_wmunu_bcid_pass_l1_XE50_hlt_xe80_topocl);
+
+  // Offline and HLT MET
+  h_wmunu_l1_met = new TH1F("h_wmunu_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
+  h_wmunu_hlt_met = new TH1F("h_wmunu_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_hlt_mht_met = new TH1F("h_wmunu_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_hlt_topocl_met = new TH1F("h_wmunu_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_hlt_topocl_ps_met = new TH1F("h_wmunu_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_hlt_topocl_puc_met = new TH1F("h_wmunu_hlt_topocl_puc_met", "HLT (topocl_puc) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_met = new TH1F("h_wmunu_met", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_emulmet_noelec = new TH1F("h_wmunu_emulmet_noelec", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  h_wmunu_emulmet_nomu = new TH1F("h_wmunu_emulmet_nomu", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  wk()->addOutput (h_wmunu_l1_met);
+  wk()->addOutput (h_wmunu_hlt_met);
+  wk()->addOutput (h_wmunu_hlt_mht_met);
+  wk()->addOutput (h_wmunu_hlt_topocl_met);
+  wk()->addOutput (h_wmunu_hlt_topocl_ps_met);
+  wk()->addOutput (h_wmunu_hlt_topocl_puc_met);
+  wk()->addOutput (h_wmunu_met);
+  wk()->addOutput (h_wmunu_emulmet_noelec);
+  wk()->addOutput (h_wmunu_emulmet_nomu);
+
+  // Turn-on Curves
+  h_wmunu_offline_met_pass_hlt_xe60 = new TH1F("h_wmunu_offline_met_pass_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_hlt_xe100 = new TH1F("h_wmunu_offline_met_pass_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe60 = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe100 = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe60);
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe100);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe100);
+
+  h_wmunu_offline_met_pass_hlt_xe80_mht = new TH1F("h_wmunu_offline_met_pass_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_hlt_xe120_mht = new TH1F("h_wmunu_offline_met_pass_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_mht = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe80_mht);
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe120_mht);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_mht);
+
+  h_wmunu_offline_met_pass_hlt_xe80_topocl = new TH1F("h_wmunu_offline_met_pass_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_hlt_xe120_topocl = new TH1F("h_wmunu_offline_met_pass_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe120_topocl);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl);
+
+  h_wmunu_offline_met_pass_hlt_xe80_topocl_ps = new TH1F("h_wmunu_offline_met_pass_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_hlt_xe120_topocl_ps = new TH1F("h_wmunu_offline_met_pass_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe120_topocl_ps);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps);
+
+  h_wmunu_offline_met_pass_hlt_xe80_topocl_puc = new TH1F("h_wmunu_offline_met_pass_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_hlt_xe120_topocl_puc = new TH1F("h_wmunu_offline_met_pass_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc = new TH1F("h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_wmunu_offline_met_pass_hlt_xe120_topocl_puc);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc);
+
+  // Correlation plots
+  // L1 vs Offline MET
+  h_wmunu_corr_met_l1_offline = new TH2F("h_wmunu_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_corr_met_l1_offline);
+  // HLT (CELL) vs Offline MET
+  h_wmunu_corr_met_hlt_offline = new TH2F("h_wmunu_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_corr_met_hlt_offline);
+  // HLT (mht) vs Offline MET
+  h_wmunu_corr_met_hlt_mht_offline = new TH2F("h_wmunu_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_corr_met_hlt_mht_offline);
+  // HLT (topocl) vs Offline MET
+  h_wmunu_corr_met_hlt_topocl_offline = new TH2F("h_wmunu_corr_met_hlt_topocl_offline", "HLT (topocl) vs Offline |Missing E_{T}|;HLT (topocl) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_corr_met_hlt_topocl_offline);
+  // HLT (topocl_ps) vs Offline MET
+  h_wmunu_corr_met_hlt_topocl_ps_offline = new TH2F("h_wmunu_corr_met_hlt_topocl_ps_offline", "HLT (topocl_ps) vs Offline |Missing E_{T}|;HLT (topocl_ps) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_corr_met_hlt_topocl_ps_offline);
+  // HLT (topocl_puc) vs Offline MET
+  h_wmunu_corr_met_hlt_topocl_puc_offline = new TH2F("h_wmunu_corr_met_hlt_topocl_puc_offline", "HLT (topocl_puc) vs Offline |Missing E_{T}|;HLT (topocl_puc) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_corr_met_hlt_topocl_puc_offline);
+
+  // MET Resolution
+  // Offline MET vs HLT MET
+  h_wmunu_hlt_met_vs_offline_met = new TH1F("h_wmunu_hlt_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wmunu_hlt_mht_met_vs_offline_met = new TH1F("h_wmunu_hlt_mht_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wmunu_hlt_topocl_met_vs_offline_met = new TH1F("h_wmunu_hlt_topocl_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wmunu_hlt_topocl_ps_met_vs_offline_met = new TH1F("h_wmunu_hlt_topocl_ps_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wmunu_hlt_topocl_puc_met_vs_offline_met = new TH1F("h_wmunu_hlt_topocl_puc_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  wk()->addOutput (h_wmunu_hlt_met_vs_offline_met);
+  wk()->addOutput (h_wmunu_hlt_mht_met_vs_offline_met);
+  wk()->addOutput (h_wmunu_hlt_topocl_met_vs_offline_met);
+  wk()->addOutput (h_wmunu_hlt_topocl_ps_met_vs_offline_met);
+  wk()->addOutput (h_wmunu_hlt_topocl_puc_met_vs_offline_met);
+
+  // HLT MEx vs Offline SumET
+  h_wmunu_hlt_ex_offline_sumet = new TH2F("h_wmunu_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_mht_ex_offline_sumet = new TH2F("h_wmunu_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_topocl_ex_offline_sumet = new TH2F("h_wmunu_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_wmunu_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_topocl_puc_ex_offline_sumet = new TH2F("h_wmunu_hlt_topocl_puc_ex_offline_sumet", "HLT (Topocl_puc) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_wmunu_hlt_ex_offline_sumet);
+  wk()->addOutput (h_wmunu_hlt_mht_ex_offline_sumet);
+  wk()->addOutput (h_wmunu_hlt_topocl_ex_offline_sumet);
+  wk()->addOutput (h_wmunu_hlt_topocl_ps_ex_offline_sumet);
+  wk()->addOutput (h_wmunu_hlt_topocl_puc_ex_offline_sumet);
+  // HLT MEx vs HLT SumET
+  h_wmunu_hlt_ex_hlt_sumet = new TH2F("h_wmunu_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_wmunu_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_wmunu_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_wmunu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet = new TH2F("h_wmunu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl_puc) SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_wmunu_hlt_ex_hlt_sumet);
+  wk()->addOutput (h_wmunu_hlt_mht_ex_hlt_mht_sumet);
+  wk()->addOutput (h_wmunu_hlt_topocl_ex_hlt_topocl_sumet);
+  wk()->addOutput (h_wmunu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet);
+  wk()->addOutput (h_wmunu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
+
+  // Linearity
+  h_wmunu_hlt_lin = new TH2F("h_wmunu_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_hlt_mht_lin = new TH2F("h_wmunu_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_hlt_topocl_lin = new TH2F("h_wmunu_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_hlt_topocl_ps_lin = new TH2F("h_wmunu_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_hlt_topocl_puc_lin = new TH2F("h_wmunu_hlt_topocl_puc_lin", "HLT (Topocl_puc) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_puc) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  wk()->addOutput (h_wmunu_hlt_lin);
+  wk()->addOutput (h_wmunu_hlt_mht_lin);
+  wk()->addOutput (h_wmunu_hlt_topocl_lin);
+  wk()->addOutput (h_wmunu_hlt_topocl_ps_lin);
+  wk()->addOutput (h_wmunu_hlt_topocl_puc_lin);
+
+
+
+
+  // pass cleanBC
+
+  // BCID study
+  h_wmunu_cleanBC_bcid_pass_hlt_xe60 = new TH1F("h_wmunu_cleanBC_bcid_pass_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe60 = new TH1F("h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_cleanBC_bcid_pass_hlt_xe80_mht = new TH1F("h_wmunu_cleanBC_bcid_pass_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_cleanBC_bcid_pass_hlt_xe80_topocl = new TH1F("h_wmunu_cleanBC_bcid_pass_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  wk()->addOutput (h_wmunu_cleanBC_bcid_pass_hlt_xe60);
+  wk()->addOutput (h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_wmunu_cleanBC_bcid_pass_hlt_xe80_mht);
+  wk()->addOutput (h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_wmunu_cleanBC_bcid_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl);
+
+  // Offline and HLT MET
+  h_wmunu_cleanBC_l1_met = new TH1F("h_wmunu_cleanBC_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
+  h_wmunu_cleanBC_hlt_met = new TH1F("h_wmunu_cleanBC_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_cleanBC_hlt_mht_met = new TH1F("h_wmunu_cleanBC_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_cleanBC_hlt_topocl_met = new TH1F("h_wmunu_cleanBC_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_cleanBC_hlt_topocl_ps_met = new TH1F("h_wmunu_cleanBC_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_cleanBC_hlt_topocl_puc_met = new TH1F("h_wmunu_cleanBC_hlt_topocl_puc_met", "HLT (topocl_puc) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_cleanBC_met = new TH1F("h_wmunu_cleanBC_met", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_emulmet_noelec = new TH1F("h_wmunu_cleanBC_emulmet_noelec", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  h_wmunu_cleanBC_emulmet_nomu = new TH1F("h_wmunu_cleanBC_emulmet_nomu", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  wk()->addOutput (h_wmunu_cleanBC_l1_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_mht_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_ps_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_puc_met);
+  wk()->addOutput (h_wmunu_cleanBC_met);
+  wk()->addOutput (h_wmunu_cleanBC_emulmet_noelec);
+  wk()->addOutput (h_wmunu_cleanBC_emulmet_nomu);
+
+
+  // Turn-on Curves
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe60 = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe100 = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60 = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100 = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe60);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe100);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100);
+
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe80_mht = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe120_mht = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe80_mht);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe120_mht);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht);
+
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl);
+
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps);
+
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc = new TH1F("h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc = new TH1F("h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc);
+
+  // Correlation plots
+  // L1 vs Offline MET
+  h_wmunu_cleanBC_corr_met_l1_offline = new TH2F("h_wmunu_cleanBC_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_cleanBC_corr_met_l1_offline);
+  // HLT (CELL) vs Offline MET
+  h_wmunu_cleanBC_corr_met_hlt_offline = new TH2F("h_wmunu_cleanBC_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_cleanBC_corr_met_hlt_offline);
+  // HLT (mht) vs Offline MET
+  h_wmunu_cleanBC_corr_met_hlt_mht_offline = new TH2F("h_wmunu_cleanBC_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_cleanBC_corr_met_hlt_mht_offline);
+  // HLT (topocl) vs Offline MET
+  h_wmunu_cleanBC_corr_met_hlt_topocl_offline = new TH2F("h_wmunu_cleanBC_corr_met_hlt_topocl_offline", "HLT (topocl) vs Offline |Missing E_{T}|;HLT (topocl) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_cleanBC_corr_met_hlt_topocl_offline);
+  // HLT (topocl_ps) vs Offline MET
+  h_wmunu_cleanBC_corr_met_hlt_topocl_ps_offline = new TH2F("h_wmunu_cleanBC_corr_met_hlt_topocl_ps_offline", "HLT (topocl_ps) vs Offline |Missing E_{T}|;HLT (topocl_ps) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_cleanBC_corr_met_hlt_topocl_ps_offline);
+  // HLT (topocl_puc) vs Offline MET
+  h_wmunu_cleanBC_corr_met_hlt_topocl_puc_offline = new TH2F("h_wmunu_cleanBC_corr_met_hlt_topocl_puc_offline", "HLT (topocl_puc) vs Offline |Missing E_{T}|;HLT (topocl_puc) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wmunu_cleanBC_corr_met_hlt_topocl_puc_offline);
+
+
+  // MET Resolution
+  // Offline MET vs HLT MET
+  h_wmunu_cleanBC_hlt_met_vs_offline_met = new TH1F("h_wmunu_cleanBC_hlt_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wmunu_cleanBC_hlt_mht_met_vs_offline_met = new TH1F("h_wmunu_cleanBC_hlt_mht_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wmunu_cleanBC_hlt_topocl_met_vs_offline_met = new TH1F("h_wmunu_cleanBC_hlt_topocl_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wmunu_cleanBC_hlt_topocl_ps_met_vs_offline_met = new TH1F("h_wmunu_cleanBC_hlt_topocl_ps_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wmunu_cleanBC_hlt_topocl_puc_met_vs_offline_met = new TH1F("h_wmunu_cleanBC_hlt_topocl_puc_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_met_vs_offline_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_mht_met_vs_offline_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_met_vs_offline_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_ps_met_vs_offline_met);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_puc_met_vs_offline_met);
+
+  // HLT MEx vs Offline SumET
+  h_wmunu_cleanBC_hlt_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_mht_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_topocl_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_topocl_puc_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_puc_ex_offline_sumet", "HLT (Topocl_puc) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_ex_offline_sumet);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_mht_ex_offline_sumet);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_ex_offline_sumet);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_ps_ex_offline_sumet);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_puc_ex_offline_sumet);
+  // HLT MEx vs HLT SumET
+  h_wmunu_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_wmunu_cleanBC_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_wmunu_cleanBC_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl_puc) SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_ex_hlt_sumet);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_mht_ex_hlt_mht_sumet);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
+
+  // Linearity
+  h_wmunu_cleanBC_hlt_lin = new TH2F("h_wmunu_cleanBC_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_cleanBC_hlt_mht_lin = new TH2F("h_wmunu_cleanBC_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_cleanBC_hlt_topocl_lin = new TH2F("h_wmunu_cleanBC_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_cleanBC_hlt_topocl_ps_lin = new TH2F("h_wmunu_cleanBC_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_cleanBC_hlt_topocl_puc_lin = new TH2F("h_wmunu_cleanBC_hlt_topocl_puc_lin", "HLT (Topocl_puc) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_puc) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_lin);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_mht_lin);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_lin);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_ps_lin);
+  wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_puc_lin);
+
+
+
+
+
+
+  //////////////////
+  // Wenu channel //
+  //////////////////
+
+  // BCID study
+  h_wenu_bcid_pass_hlt_xe60 = new TH1F("h_wenu_bcid_pass_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_bcid_pass_l1_XE50_hlt_xe60 = new TH1F("h_wenu_bcid_pass_l1_XE50_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_bcid_pass_hlt_xe80_mht = new TH1F("h_wenu_bcid_pass_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_bcid_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_wenu_bcid_pass_l1_XE50_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_bcid_pass_hlt_xe80_topocl = new TH1F("h_wenu_bcid_pass_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_bcid_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_wenu_bcid_pass_l1_XE50_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  wk()->addOutput (h_wenu_bcid_pass_hlt_xe60);
+  wk()->addOutput (h_wenu_bcid_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_wenu_bcid_pass_hlt_xe80_mht);
+  wk()->addOutput (h_wenu_bcid_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_wenu_bcid_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_wenu_bcid_pass_l1_XE50_hlt_xe80_topocl);
+
+  // Offline and HLT MET
+  h_wenu_l1_met = new TH1F("h_wenu_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
+  h_wenu_hlt_met = new TH1F("h_wenu_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_hlt_mht_met = new TH1F("h_wenu_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_hlt_topocl_met = new TH1F("h_wenu_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_hlt_topocl_ps_met = new TH1F("h_wenu_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_hlt_topocl_puc_met = new TH1F("h_wenu_hlt_topocl_puc_met", "HLT (topocl_puc) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_met = new TH1F("h_wenu_met", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_emulmet_noelec = new TH1F("h_wenu_emulmet_noelec", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  h_wenu_emulmet_nomu = new TH1F("h_wenu_emulmet_nomu", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  wk()->addOutput (h_wenu_l1_met);
+  wk()->addOutput (h_wenu_hlt_met);
+  wk()->addOutput (h_wenu_hlt_mht_met);
+  wk()->addOutput (h_wenu_hlt_topocl_met);
+  wk()->addOutput (h_wenu_hlt_topocl_ps_met);
+  wk()->addOutput (h_wenu_hlt_topocl_puc_met);
+  wk()->addOutput (h_wenu_met);
+  wk()->addOutput (h_wenu_emulmet_noelec);
+  wk()->addOutput (h_wenu_emulmet_nomu);
+
+  // Turn-on Curves
+  h_wenu_offline_met_pass_hlt_xe60 = new TH1F("h_wenu_offline_met_pass_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_hlt_xe100 = new TH1F("h_wenu_offline_met_pass_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe60 = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe100 = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe60);
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe100);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe100);
+
+  h_wenu_offline_met_pass_hlt_xe80_mht = new TH1F("h_wenu_offline_met_pass_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_hlt_xe120_mht = new TH1F("h_wenu_offline_met_pass_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe120_mht = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe80_mht);
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe120_mht);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe120_mht);
+
+  h_wenu_offline_met_pass_hlt_xe80_topocl = new TH1F("h_wenu_offline_met_pass_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_hlt_xe120_topocl = new TH1F("h_wenu_offline_met_pass_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe120_topocl);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl);
+
+  h_wenu_offline_met_pass_hlt_xe80_topocl_ps = new TH1F("h_wenu_offline_met_pass_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_hlt_xe120_topocl_ps = new TH1F("h_wenu_offline_met_pass_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe120_topocl_ps);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps);
+
+  h_wenu_offline_met_pass_hlt_xe80_topocl_puc = new TH1F("h_wenu_offline_met_pass_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_hlt_xe120_topocl_puc = new TH1F("h_wenu_offline_met_pass_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc = new TH1F("h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_wenu_offline_met_pass_hlt_xe120_topocl_puc);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc);
+
+  // Correlation plots
+  // L1 vs Offline MET
+  h_wenu_corr_met_l1_offline = new TH2F("h_wenu_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_corr_met_l1_offline);
+  // HLT (CELL) vs Offline MET
+  h_wenu_corr_met_hlt_offline = new TH2F("h_wenu_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_corr_met_hlt_offline);
+  // HLT (mht) vs Offline MET
+  h_wenu_corr_met_hlt_mht_offline = new TH2F("h_wenu_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_corr_met_hlt_mht_offline);
+  // HLT (topocl) vs Offline MET
+  h_wenu_corr_met_hlt_topocl_offline = new TH2F("h_wenu_corr_met_hlt_topocl_offline", "HLT (topocl) vs Offline |Missing E_{T}|;HLT (topocl) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_corr_met_hlt_topocl_offline);
+  // HLT (topocl_ps) vs Offline MET
+  h_wenu_corr_met_hlt_topocl_ps_offline = new TH2F("h_wenu_corr_met_hlt_topocl_ps_offline", "HLT (topocl_ps) vs Offline |Missing E_{T}|;HLT (topocl_ps) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_corr_met_hlt_topocl_ps_offline);
+  // HLT (topocl_puc) vs Offline MET
+  h_wenu_corr_met_hlt_topocl_puc_offline = new TH2F("h_wenu_corr_met_hlt_topocl_puc_offline", "HLT (topocl_puc) vs Offline |Missing E_{T}|;HLT (topocl_puc) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_corr_met_hlt_topocl_puc_offline);
+
+  // MET Resolution
+  // Offline MET vs HLT MET
+  h_wenu_hlt_met_vs_offline_met = new TH1F("h_wenu_hlt_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wenu_hlt_mht_met_vs_offline_met = new TH1F("h_wenu_hlt_mht_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wenu_hlt_topocl_met_vs_offline_met = new TH1F("h_wenu_hlt_topocl_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wenu_hlt_topocl_ps_met_vs_offline_met = new TH1F("h_wenu_hlt_topocl_ps_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wenu_hlt_topocl_puc_met_vs_offline_met = new TH1F("h_wenu_hlt_topocl_puc_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  wk()->addOutput (h_wenu_hlt_met_vs_offline_met);
+  wk()->addOutput (h_wenu_hlt_mht_met_vs_offline_met);
+  wk()->addOutput (h_wenu_hlt_topocl_met_vs_offline_met);
+  wk()->addOutput (h_wenu_hlt_topocl_ps_met_vs_offline_met);
+  wk()->addOutput (h_wenu_hlt_topocl_puc_met_vs_offline_met);
+
+  // HLT MEx vs Offline SumET
+  h_wenu_hlt_ex_offline_sumet = new TH2F("h_wenu_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_mht_ex_offline_sumet = new TH2F("h_wenu_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_topocl_ex_offline_sumet = new TH2F("h_wenu_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_wenu_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_topocl_puc_ex_offline_sumet = new TH2F("h_wenu_hlt_topocl_puc_ex_offline_sumet", "HLT (Topocl_puc) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_wenu_hlt_ex_offline_sumet);
+  wk()->addOutput (h_wenu_hlt_mht_ex_offline_sumet);
+  wk()->addOutput (h_wenu_hlt_topocl_ex_offline_sumet);
+  wk()->addOutput (h_wenu_hlt_topocl_ps_ex_offline_sumet);
+  wk()->addOutput (h_wenu_hlt_topocl_puc_ex_offline_sumet);
+  // HLT MEx vs HLT SumET
+  h_wenu_hlt_ex_hlt_sumet = new TH2F("h_wenu_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_wenu_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_wenu_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_wenu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet = new TH2F("h_wenu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl_puc) SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_wenu_hlt_ex_hlt_sumet);
+  wk()->addOutput (h_wenu_hlt_mht_ex_hlt_mht_sumet);
+  wk()->addOutput (h_wenu_hlt_topocl_ex_hlt_topocl_sumet);
+  wk()->addOutput (h_wenu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet);
+  wk()->addOutput (h_wenu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
+
+  // Linearity
+  h_wenu_hlt_lin = new TH2F("h_wenu_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_hlt_mht_lin = new TH2F("h_wenu_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_hlt_topocl_lin = new TH2F("h_wenu_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_hlt_topocl_ps_lin = new TH2F("h_wenu_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_hlt_topocl_puc_lin = new TH2F("h_wenu_hlt_topocl_puc_lin", "HLT (Topocl_puc) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_puc) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  wk()->addOutput (h_wenu_hlt_lin);
+  wk()->addOutput (h_wenu_hlt_mht_lin);
+  wk()->addOutput (h_wenu_hlt_topocl_lin);
+  wk()->addOutput (h_wenu_hlt_topocl_ps_lin);
+  wk()->addOutput (h_wenu_hlt_topocl_puc_lin);
+
+
+
+
+  // pass cleanBC
+
+  // BCID study
+  h_wenu_cleanBC_bcid_pass_hlt_xe60 = new TH1F("h_wenu_cleanBC_bcid_pass_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe60 = new TH1F("h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe60", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_cleanBC_bcid_pass_hlt_xe80_mht = new TH1F("h_wenu_cleanBC_bcid_pass_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_cleanBC_bcid_pass_hlt_xe80_topocl = new TH1F("h_wenu_cleanBC_bcid_pass_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl", "Bunch Crossing ID;BCID", 3600, 0, 3600);
+  wk()->addOutput (h_wenu_cleanBC_bcid_pass_hlt_xe60);
+  wk()->addOutput (h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_wenu_cleanBC_bcid_pass_hlt_xe80_mht);
+  wk()->addOutput (h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_wenu_cleanBC_bcid_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl);
+
+  // Offline and HLT MET
+  h_wenu_cleanBC_l1_met = new TH1F("h_wenu_cleanBC_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
+  h_wenu_cleanBC_hlt_met = new TH1F("h_wenu_cleanBC_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_cleanBC_hlt_mht_met = new TH1F("h_wenu_cleanBC_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_cleanBC_hlt_topocl_met = new TH1F("h_wenu_cleanBC_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_cleanBC_hlt_topocl_ps_met = new TH1F("h_wenu_cleanBC_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_cleanBC_hlt_topocl_puc_met = new TH1F("h_wenu_cleanBC_hlt_topocl_puc_met", "HLT (topocl_puc) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_cleanBC_met = new TH1F("h_wenu_cleanBC_met", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_emulmet_noelec = new TH1F("h_wenu_cleanBC_emulmet_noelec", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  h_wenu_cleanBC_emulmet_nomu = new TH1F("h_wenu_cleanBC_emulmet_nomu", "Emulated |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline (inv.) MET [GeV]
+  wk()->addOutput (h_wenu_cleanBC_l1_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_mht_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_ps_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_puc_met);
+  wk()->addOutput (h_wenu_cleanBC_met);
+  wk()->addOutput (h_wenu_cleanBC_emulmet_noelec);
+  wk()->addOutput (h_wenu_cleanBC_emulmet_nomu);
+
+  // Turn-on Curves
+  h_wenu_cleanBC_offline_met_pass_hlt_xe60 = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_hlt_xe100 = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60 = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100 = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe60);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe100);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100);
+
+  h_wenu_cleanBC_offline_met_pass_hlt_xe80_mht = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_hlt_xe120_mht = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe80_mht);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe120_mht);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht);
+
+  h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl);
+
+  h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps);
+
+  h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc = new TH1F("h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc = new TH1F("h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc);
+  wk()->addOutput (h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc);
+
+  // Correlation plots
+  // L1 vs Offline MET
+  h_wenu_cleanBC_corr_met_l1_offline = new TH2F("h_wenu_cleanBC_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_cleanBC_corr_met_l1_offline);
+  // HLT (CELL) vs Offline MET
+  h_wenu_cleanBC_corr_met_hlt_offline = new TH2F("h_wenu_cleanBC_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_cleanBC_corr_met_hlt_offline);
+  // HLT (mht) vs Offline MET
+  h_wenu_cleanBC_corr_met_hlt_mht_offline = new TH2F("h_wenu_cleanBC_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_cleanBC_corr_met_hlt_mht_offline);
+  // HLT (topocl) vs Offline MET
+  h_wenu_cleanBC_corr_met_hlt_topocl_offline = new TH2F("h_wenu_cleanBC_corr_met_hlt_topocl_offline", "HLT (topocl) vs Offline |Missing E_{T}|;HLT (topocl) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_cleanBC_corr_met_hlt_topocl_offline);
+  // HLT (topocl_ps) vs Offline MET
+  h_wenu_cleanBC_corr_met_hlt_topocl_ps_offline = new TH2F("h_wenu_cleanBC_corr_met_hlt_topocl_ps_offline", "HLT (topocl_ps) vs Offline |Missing E_{T}|;HLT (topocl_ps) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_cleanBC_corr_met_hlt_topocl_ps_offline);
+  // HLT (topocl_puc) vs Offline MET
+  h_wenu_cleanBC_corr_met_hlt_topocl_puc_offline = new TH2F("h_wenu_cleanBC_corr_met_hlt_topocl_puc_offline", "HLT (topocl_puc) vs Offline |Missing E_{T}|;HLT (topocl_puc) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_wenu_cleanBC_corr_met_hlt_topocl_puc_offline);
+
+
+  // MET Resolution
+  // Offline MET vs HLT MET
+  h_wenu_cleanBC_hlt_met_vs_offline_met = new TH1F("h_wenu_cleanBC_hlt_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wenu_cleanBC_hlt_mht_met_vs_offline_met = new TH1F("h_wenu_cleanBC_hlt_mht_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wenu_cleanBC_hlt_topocl_met_vs_offline_met = new TH1F("h_wenu_cleanBC_hlt_topocl_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wenu_cleanBC_hlt_topocl_ps_met_vs_offline_met = new TH1F("h_wenu_cleanBC_hlt_topocl_ps_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  h_wenu_cleanBC_hlt_topocl_puc_met_vs_offline_met = new TH1F("h_wenu_cleanBC_hlt_topocl_puc_met_vs_offline_met", "MET Resolution for online(HLT) vs offline;(E_{T}(Offline) - E_{T}(HLT))/E_{T}(Offline)", 400, -10, 10);
+  wk()->addOutput (h_wenu_cleanBC_hlt_met_vs_offline_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_mht_met_vs_offline_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_met_vs_offline_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_ps_met_vs_offline_met);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_puc_met_vs_offline_met);
+
+  // HLT MEx vs Offline SumET
+  h_wenu_cleanBC_hlt_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_mht_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_topocl_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_topocl_puc_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_puc_ex_offline_sumet", "HLT (Topocl_puc) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_wenu_cleanBC_hlt_ex_offline_sumet);
+  wk()->addOutput (h_wenu_cleanBC_hlt_mht_ex_offline_sumet);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_ex_offline_sumet);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_ps_ex_offline_sumet);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_puc_ex_offline_sumet);
+  // HLT MEx vs HLT SumET
+  h_wenu_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_wenu_cleanBC_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_wenu_cleanBC_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl_puc) SumE_{T} [GeV];HLT (Topocl_puc) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  wk()->addOutput (h_wenu_cleanBC_hlt_ex_hlt_sumet);
+  wk()->addOutput (h_wenu_cleanBC_hlt_mht_ex_hlt_mht_sumet);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
+
+  // Linearity
+  h_wenu_cleanBC_hlt_lin = new TH2F("h_wenu_cleanBC_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_cleanBC_hlt_mht_lin = new TH2F("h_wenu_cleanBC_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_cleanBC_hlt_topocl_lin = new TH2F("h_wenu_cleanBC_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_cleanBC_hlt_topocl_ps_lin = new TH2F("h_wenu_cleanBC_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_cleanBC_hlt_topocl_puc_lin = new TH2F("h_wenu_cleanBC_hlt_topocl_puc_lin", "HLT (Topocl_puc) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_puc) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  wk()->addOutput (h_wenu_cleanBC_hlt_lin);
+  wk()->addOutput (h_wenu_cleanBC_hlt_mht_lin);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_lin);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_ps_lin);
+  wk()->addOutput (h_wenu_cleanBC_hlt_topocl_puc_lin);
+
 
 
 
@@ -1014,24 +1718,42 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
 
   // BCID Information
   int m_Bcid = 0;
-  bool m_passBcid = true;
+  bool m_passCleanBC = true;
   if (m_isData){
     m_Bcid = eventInfo->bcid();
     h_bcid->Fill(m_Bcid);
     if ( (m_Bcid == 1) ||
         (m_Bcid >= 170 && m_Bcid <= 170+11) || (m_Bcid >= 219 && m_Bcid <= 219+11) ||
         (m_Bcid >= 328 && m_Bcid <= 328+11) || (m_Bcid >= 437 && m_Bcid <= 437+11) ||
-        (m_Bcid >= 1113 && m_Bcid <= 1113+11) || (m_Bcid >= 1222 && m_Bcid <= 1222+11) ||
-        (m_Bcid >= 1331 && m_Bcid <= 1331+11) || (m_Bcid >= 2007 && m_Bcid <= 2007+11) ||
+        (m_Bcid >= 546 && m_Bcid <= 546+11) || (m_Bcid >= 1113 && m_Bcid <= 1113+11) ||
+        (m_Bcid >= 1222 && m_Bcid <= 1222+11) || (m_Bcid >= 1331 && m_Bcid <= 1331+11) ||
+        (m_Bcid >= 1440 && m_Bcid <= 1440+11) || (m_Bcid >= 2007 && m_Bcid <= 2007+11) ||
         (m_Bcid >= 2116 && m_Bcid <= 2116+11) || (m_Bcid >= 2225 && m_Bcid <= 2225+11) ||
-        (m_Bcid >= 2901 && m_Bcid <= 2901+11) || (m_Bcid >= 3010 && m_Bcid <= 3010+11) ||
-        (m_Bcid >= 3119 && m_Bcid <= 3119+11) ){
-      m_passBcid = false;
+        (m_Bcid >= 2334 && m_Bcid <= 2334+11) || (m_Bcid >= 2789 && m_Bcid <= 2789+11) ||
+        (m_Bcid >= 2898 && m_Bcid <= 2898+11) || (m_Bcid >= 3007 && m_Bcid <= 3007+11) ||
+        (m_Bcid >= 3116 && m_Bcid <= 3116+11) ){
+      m_passCleanBC = false;
     }
     else {
-      h_pass_bcid->Fill(m_Bcid);
+      h_cleanBC_bcid->Fill(m_Bcid);
     }
   }
+
+
+  //-------------------------
+  // 2016 MET Trigger study
+  //-------------------------
+
+  h_eventcount->Fill(0.5);
+
+  if ( m_trigDecisionTool->isPassed("L1_XE50") ) {
+    h_eventcount_pass_L1_XE50->Fill(0.5);
+  }
+  if ( m_trigDecisionTool->isPassed("HLT_xe80_tc_lcw_L1XE50") ) {
+    h_eventcount_pass_HLT_xe80_tc_lcw_L1XE50->Fill(0.5);
+  }
+
+
 
 
   /*
@@ -1310,6 +2032,30 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   h_hlt_topocl_puc_sumet->Fill( hlt_topocl_puc_sumet ); // GeV
   h_hlt_topocl_puc_phi->Fill( hlt_topocl_puc_phi ); // GeV
 
+
+  //--------------------------------
+  // Get the calorimeter clusters
+  //--------------------------------
+
+  const xAOD::CaloClusterContainer* m_caloClusters(nullptr);
+  if ( !m_event->retrieve( m_caloClusters, "CaloCalTopoClusters" ).isSuccess() ){
+    Error("execute()", "Failed to retrieve CaloCluster container. Exiting." );
+    return EL::StatusCode::FAILURE;
+  }
+
+  int caloclusterN = m_caloClusters->size();
+  h_calocluster_n->Fill(caloclusterN);
+
+  xAOD::CaloClusterContainer::const_iterator calocluster_itr = m_caloClusters->begin();
+  xAOD::CaloClusterContainer::const_iterator calocluster_end = m_caloClusters->end();
+  for( ; calocluster_itr != calocluster_end; ++calocluster_itr ) {
+      float caloclusterE   = (*calocluster_itr)->e()/1e3;
+      float caloclusterEta = (*calocluster_itr)->eta();
+      float caloclusterPhi = (*calocluster_itr)->phi();
+      h_calocluster_e->Fill(caloclusterE);
+      h_calocluster_eta->Fill(caloclusterEta);
+      h_calocluster_phi->Fill(caloclusterPhi);
+  }
 
   //------------
   // MUONS
@@ -2086,6 +2832,26 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
 
 
 
+  // BCID study
+  if (hlt_met > hlt_xe60) {
+    h_bcid_pass_hlt_xe60->Fill( m_Bcid );
+  }
+  if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+    h_bcid_pass_l1_XE50_hlt_xe60->Fill( m_Bcid );
+  }
+  if (hlt_mht_met > hlt_xe80_mht) {
+    h_bcid_pass_hlt_xe80_mht->Fill( m_Bcid );
+  }
+  if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+    h_bcid_pass_l1_XE50_hlt_xe80_mht->Fill( m_Bcid );
+  }
+  if (hlt_topocl_met > hlt_xe80_topocl) {
+    h_bcid_pass_hlt_xe80_topocl->Fill( m_Bcid );
+  }
+  if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+    h_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
+  }
+
   // Turn-on Curves
   // Offline MET passing HLT (CELL) thresholds
   if (hlt_met > hlt_xe60) {
@@ -2173,7 +2939,14 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   h_corr_met_hlt_topocl_puc_offline->Fill( hlt_topocl_puc_met, MET ); // GeV
 
 
-  // Resolution
+  // MET Resolution
+  // Offline MET vs HLT MET
+  h_hlt_met_vs_offline_met->Fill( (MET - hlt_met) / MET );
+  h_hlt_mht_met_vs_offline_met->Fill( (MET - hlt_mht_met) / MET );
+  h_hlt_topocl_met_vs_offline_met->Fill( (MET - hlt_topocl_met) / MET );
+  h_hlt_topocl_ps_met_vs_offline_met->Fill( (MET - hlt_topocl_ps_met) / MET );
+  h_hlt_topocl_puc_met_vs_offline_met->Fill( (MET - hlt_topocl_puc_met) / MET );
+
   // HLT MEx vs Offline SumET
   h_hlt_ex_offline_sumet->Fill( SumET, hlt_ex );
   h_hlt_mht_ex_offline_sumet->Fill( SumET, hlt_mht_ex );
@@ -2198,126 +2971,153 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   // BCID Cut ///////////
   ///////////////////////
 
-  if (m_passBcid){
+  if (m_passCleanBC){
+
+    // BCID study
+    if (hlt_met > hlt_xe60) {
+      h_cleanBC_bcid_pass_hlt_xe60->Fill( m_Bcid );
+    }
+    if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+      h_cleanBC_bcid_pass_l1_XE50_hlt_xe60->Fill( m_Bcid );
+    }
+    if (hlt_mht_met > hlt_xe80_mht) {
+      h_cleanBC_bcid_pass_hlt_xe80_mht->Fill( m_Bcid );
+    }
+    if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+      h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht->Fill( m_Bcid );
+    }
+    if (hlt_topocl_met > hlt_xe80_topocl) {
+      h_cleanBC_bcid_pass_hlt_xe80_topocl->Fill( m_Bcid );
+    }
+    if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+      h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
+    }
 
     // Offline and HLT MET objects
-    h_bcid_l1_met->Fill( l1_met ); // GeV
-    h_bcid_hlt_met->Fill( hlt_met ); // GeV
-    h_bcid_hlt_mht_met->Fill( hlt_mht_met ); // GeV
-    h_bcid_hlt_topocl_met->Fill( hlt_topocl_met ); // GeV
-    h_bcid_hlt_topocl_ps_met->Fill( hlt_topocl_ps_met ); // GeV
-    h_bcid_hlt_topocl_puc_met->Fill( hlt_topocl_puc_met ); // GeV
-    h_bcid_met->Fill( MET ); // GeV
-    h_bcid_emulmet_nomu->Fill( emulMET_nomu ); // GeV
-    h_bcid_emulmet_noelec->Fill( emulMET_noelec ); // GeV
+    h_cleanBC_l1_met->Fill( l1_met ); // GeV
+    h_cleanBC_hlt_met->Fill( hlt_met ); // GeV
+    h_cleanBC_hlt_mht_met->Fill( hlt_mht_met ); // GeV
+    h_cleanBC_hlt_topocl_met->Fill( hlt_topocl_met ); // GeV
+    h_cleanBC_hlt_topocl_ps_met->Fill( hlt_topocl_ps_met ); // GeV
+    h_cleanBC_hlt_topocl_puc_met->Fill( hlt_topocl_puc_met ); // GeV
+    h_cleanBC_met->Fill( MET ); // GeV
+    h_cleanBC_emulmet_nomu->Fill( emulMET_nomu ); // GeV
+    h_cleanBC_emulmet_noelec->Fill( emulMET_noelec ); // GeV
 
     // Turn-on Curves
     // Offline MET passing HLT (CELL) thresholds
     if (hlt_met > hlt_xe60) {
-      h_bcid_offline_met_pass_hlt_xe60->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe60->Fill( MET ); // GeV
     }
     if (hlt_met > hlt_xe100) {
-      h_bcid_offline_met_pass_hlt_xe100->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe100->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe60->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe60->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_met > hlt_xe100) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe100->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe100->Fill( MET ); // GeV
     }
 
     // Offline MET passing HLT (MHT) thresholds
     if (hlt_mht_met > hlt_xe80_mht) {
-      h_bcid_offline_met_pass_hlt_xe80_mht->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe80_mht->Fill( MET ); // GeV
     }
     if (hlt_mht_met > hlt_xe120_mht) {
-      h_bcid_offline_met_pass_hlt_xe120_mht->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe120_mht->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe80_mht->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe120_mht) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe120_mht->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht->Fill( MET ); // GeV
     }
 
     // Offline MET passing HLT (topocl) thresholds
     if (hlt_topocl_met > hlt_xe80_topocl) {
-      h_bcid_offline_met_pass_hlt_xe80_topocl->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe80_topocl->Fill( MET ); // GeV
     }
     if (hlt_topocl_met > hlt_xe120_topocl) {
-      h_bcid_offline_met_pass_hlt_xe120_topocl->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe120_topocl->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe120_topocl) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl->Fill( MET ); // GeV
     }
 
     // Offline MET passing HLT (topocl_ps) thresholds
     if (hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
-      h_bcid_offline_met_pass_hlt_xe80_topocl_ps->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe80_topocl_ps->Fill( MET ); // GeV
     }
     if (hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
-      h_bcid_offline_met_pass_hlt_xe120_topocl_ps->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe120_topocl_ps->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps->Fill( MET ); // GeV
     }
 
     // Offline MET passing HLT (topocl_puc) thresholds
     if (hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
-      h_bcid_offline_met_pass_hlt_xe80_topocl_puc->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe80_topocl_puc->Fill( MET ); // GeV
     }
     if (hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
-      h_bcid_offline_met_pass_hlt_xe120_topocl_puc->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_hlt_xe120_topocl_puc->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc->Fill( MET ); // GeV
     }
     if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
-      h_bcid_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc->Fill( MET ); // GeV
+      h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc->Fill( MET ); // GeV
     }
 
 
     // Correlation plots
     // L1 vs Offline MET
-    h_bcid_corr_met_l1_offline->Fill( l1_met, MET ); // GeV
+    h_cleanBC_corr_met_l1_offline->Fill( l1_met, MET ); // GeV
     // HLT (CELL) vs Offline MET
-    h_bcid_corr_met_hlt_offline->Fill( hlt_met, MET ); // GeV
+    h_cleanBC_corr_met_hlt_offline->Fill( hlt_met, MET ); // GeV
     // HLT (mht) vs Offline MET
-    h_bcid_corr_met_hlt_mht_offline->Fill( hlt_mht_met, MET ); // GeV
+    h_cleanBC_corr_met_hlt_mht_offline->Fill( hlt_mht_met, MET ); // GeV
     // HLT (topocl) vs Offline MET
-    h_bcid_corr_met_hlt_topocl_offline->Fill( hlt_topocl_met, MET ); // GeV
+    h_cleanBC_corr_met_hlt_topocl_offline->Fill( hlt_topocl_met, MET ); // GeV
     // HLT (topocl) vs Offline MET
-    h_bcid_corr_met_hlt_topocl_ps_offline->Fill( hlt_topocl_ps_met, MET ); // GeV
+    h_cleanBC_corr_met_hlt_topocl_ps_offline->Fill( hlt_topocl_ps_met, MET ); // GeV
     // HLT (topocl) vs Offline MET
-    h_bcid_corr_met_hlt_topocl_puc_offline->Fill( hlt_topocl_puc_met, MET ); // GeV
+    h_cleanBC_corr_met_hlt_topocl_puc_offline->Fill( hlt_topocl_puc_met, MET ); // GeV
 
 
     // Resolution
+    // Offline MET vs HLT MET
+    h_cleanBC_hlt_met_vs_offline_met->Fill( (MET - hlt_met) / MET );
+    h_cleanBC_hlt_mht_met_vs_offline_met->Fill( (MET - hlt_mht_met) / MET );
+    h_cleanBC_hlt_topocl_met_vs_offline_met->Fill( (MET - hlt_topocl_met) / MET );
+    h_cleanBC_hlt_topocl_ps_met_vs_offline_met->Fill( (MET - hlt_topocl_ps_met) / MET );
+    h_cleanBC_hlt_topocl_puc_met_vs_offline_met->Fill( (MET - hlt_topocl_puc_met) / MET );
+
     // HLT MEx vs Offline SumET
-    h_bcid_hlt_ex_offline_sumet->Fill( SumET, hlt_ex );
-    h_bcid_hlt_mht_ex_offline_sumet->Fill( SumET, hlt_mht_ex );
-    h_bcid_hlt_topocl_ex_offline_sumet->Fill( SumET, hlt_topocl_ex );
-    h_bcid_hlt_topocl_ps_ex_offline_sumet->Fill( SumET, hlt_topocl_ps_ex );
-    h_bcid_hlt_topocl_puc_ex_offline_sumet->Fill( SumET, hlt_topocl_puc_ex );
+    h_cleanBC_hlt_ex_offline_sumet->Fill( SumET, hlt_ex );
+    h_cleanBC_hlt_mht_ex_offline_sumet->Fill( SumET, hlt_mht_ex );
+    h_cleanBC_hlt_topocl_ex_offline_sumet->Fill( SumET, hlt_topocl_ex );
+    h_cleanBC_hlt_topocl_ps_ex_offline_sumet->Fill( SumET, hlt_topocl_ps_ex );
+    h_cleanBC_hlt_topocl_puc_ex_offline_sumet->Fill( SumET, hlt_topocl_puc_ex );
     // HLT MEx vs HLT SumET
-    h_bcid_hlt_ex_hlt_sumet->Fill( hlt_sumet, hlt_ex );
-    h_bcid_hlt_mht_ex_hlt_mht_sumet->Fill( hlt_mht_sumet, hlt_mht_ex );
-    h_bcid_hlt_topocl_ex_hlt_topocl_sumet->Fill( hlt_topocl_sumet, hlt_topocl_ex );
-    h_bcid_hlt_topocl_ps_ex_hlt_topocl_ps_sumet->Fill( hlt_topocl_ps_sumet, hlt_topocl_ps_ex );
-    h_bcid_hlt_topocl_puc_ex_hlt_topocl_puc_sumet->Fill( hlt_topocl_puc_sumet, hlt_topocl_puc_ex );
+    h_cleanBC_hlt_ex_hlt_sumet->Fill( hlt_sumet, hlt_ex );
+    h_cleanBC_hlt_mht_ex_hlt_mht_sumet->Fill( hlt_mht_sumet, hlt_mht_ex );
+    h_cleanBC_hlt_topocl_ex_hlt_topocl_sumet->Fill( hlt_topocl_sumet, hlt_topocl_ex );
+    h_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet->Fill( hlt_topocl_ps_sumet, hlt_topocl_ps_ex );
+    h_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet->Fill( hlt_topocl_puc_sumet, hlt_topocl_puc_ex );
 
     // Linearity
-    h_bcid_hlt_lin->Fill( MET, hlt_met/MET ); 
-    h_bcid_hlt_mht_lin->Fill( MET, hlt_mht_met/MET ); 
-    h_bcid_hlt_topocl_lin->Fill( MET, hlt_topocl_met/MET ); 
-    h_bcid_hlt_topocl_ps_lin->Fill( MET, hlt_topocl_ps_met/MET ); 
-    h_bcid_hlt_topocl_puc_lin->Fill( MET, hlt_topocl_puc_met/MET ); 
+    h_cleanBC_hlt_lin->Fill( MET, hlt_met/MET ); 
+    h_cleanBC_hlt_mht_lin->Fill( MET, hlt_mht_met/MET ); 
+    h_cleanBC_hlt_topocl_lin->Fill( MET, hlt_topocl_met/MET ); 
+    h_cleanBC_hlt_topocl_ps_lin->Fill( MET, hlt_topocl_ps_met/MET ); 
+    h_cleanBC_hlt_topocl_puc_lin->Fill( MET, hlt_topocl_puc_met/MET ); 
 
   } // BCID cut
 
@@ -2725,7 +3525,6 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
 */
 
 
-
   //-----------
   // VBF study 
   //-----------
@@ -2984,6 +3783,308 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
             m_eventCutflow[43]+=1;
             if ( m_goodMuon->size() == 1 && pass_Wmunu && mT_muon > 50. ){
               m_eventCutflow[44]+=1;
+
+
+              // BCID study
+              if (hlt_met > hlt_xe60) {
+                h_wmunu_bcid_pass_hlt_xe60->Fill( m_Bcid );
+              }
+              if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+                h_wmunu_bcid_pass_l1_XE50_hlt_xe60->Fill( m_Bcid );
+              }
+              if (hlt_mht_met > hlt_xe80_mht) {
+                h_wmunu_bcid_pass_hlt_xe80_mht->Fill( m_Bcid );
+              }
+              if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+                h_wmunu_bcid_pass_l1_XE50_hlt_xe80_mht->Fill( m_Bcid );
+              }
+              if (hlt_topocl_met > hlt_xe80_topocl) {
+                h_wmunu_bcid_pass_hlt_xe80_topocl->Fill( m_Bcid );
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+                h_wmunu_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
+              }
+
+              // Offline and HLT MET objects
+              h_wmunu_l1_met->Fill( l1_met ); // GeV
+              h_wmunu_hlt_met->Fill( hlt_met ); // GeV
+              h_wmunu_hlt_mht_met->Fill( hlt_mht_met ); // GeV
+              h_wmunu_hlt_topocl_met->Fill( hlt_topocl_met ); // GeV
+              h_wmunu_hlt_topocl_ps_met->Fill( hlt_topocl_ps_met ); // GeV
+              h_wmunu_hlt_topocl_puc_met->Fill( hlt_topocl_puc_met ); // GeV
+              h_wmunu_met->Fill( MET ); // GeV
+              h_wmunu_emulmet_nomu->Fill( emulMET_nomu ); // GeV
+              h_wmunu_emulmet_noelec->Fill( emulMET_noelec ); // GeV
+
+              // Turn-on Curves
+              // Offline MET passing HLT (CELL) thresholds
+              if (hlt_met > hlt_xe60) {
+                h_wmunu_offline_met_pass_hlt_xe60->Fill( emulMET_nomu ); // GeV
+              }
+              if (hlt_met > hlt_xe100) {
+                h_wmunu_offline_met_pass_hlt_xe100->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe60->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_met > hlt_xe100) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe100->Fill( emulMET_nomu ); // GeV
+              }
+
+              // Offline MET passing HLT (MHT) thresholds
+              if (hlt_mht_met > hlt_xe80_mht) {
+                h_wmunu_offline_met_pass_hlt_xe80_mht->Fill( emulMET_nomu ); // GeV
+              }
+              if (hlt_mht_met > hlt_xe120_mht) {
+                h_wmunu_offline_met_pass_hlt_xe120_mht->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_mht->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe120_mht) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_mht->Fill( emulMET_nomu ); // GeV
+              }
+
+              // Offline MET passing HLT (topocl) thresholds
+              if (hlt_topocl_met > hlt_xe80_topocl) {
+                h_wmunu_offline_met_pass_hlt_xe80_topocl->Fill( emulMET_nomu ); // GeV
+              }
+              if (hlt_topocl_met > hlt_xe120_topocl) {
+                h_wmunu_offline_met_pass_hlt_xe120_topocl->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe120_topocl) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl->Fill( emulMET_nomu ); // GeV
+              }
+
+              // Offline MET passing HLT (topocl_ps) thresholds
+              if (hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
+                h_wmunu_offline_met_pass_hlt_xe80_topocl_ps->Fill( emulMET_nomu ); // GeV
+              }
+              if (hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
+                h_wmunu_offline_met_pass_hlt_xe120_topocl_ps->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps->Fill( emulMET_nomu ); // GeV
+              }
+
+              // Offline MET passing HLT (topocl_puc) thresholds
+              if (hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
+                h_wmunu_offline_met_pass_hlt_xe80_topocl_puc->Fill( emulMET_nomu ); // GeV
+              }
+              if (hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
+                h_wmunu_offline_met_pass_hlt_xe120_topocl_puc->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc->Fill( emulMET_nomu ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
+                h_wmunu_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc->Fill( emulMET_nomu ); // GeV
+              }
+
+
+              // Correlation plots
+              // L1 vs Offline MET
+              h_wmunu_corr_met_l1_offline->Fill( l1_met, emulMET_nomu ); // GeV
+              // HLT (CELL) vs Offline MET
+              h_wmunu_corr_met_hlt_offline->Fill( hlt_met, emulMET_nomu ); // GeV
+              // HLT (mht) vs Offline MET
+              h_wmunu_corr_met_hlt_mht_offline->Fill( hlt_mht_met, emulMET_nomu ); // GeV
+              // HLT (topocl) vs Offline MET
+              h_wmunu_corr_met_hlt_topocl_offline->Fill( hlt_topocl_met, emulMET_nomu ); // GeV
+              // HLT (topocl) vs Offline MET
+              h_wmunu_corr_met_hlt_topocl_ps_offline->Fill( hlt_topocl_ps_met, emulMET_nomu ); // GeV
+              // HLT (topocl) vs Offline MET
+              h_wmunu_corr_met_hlt_topocl_puc_offline->Fill( hlt_topocl_puc_met, emulMET_nomu ); // GeV
+
+
+              // MET Resolution
+              // Offline MET vs HLT MET
+              h_wmunu_hlt_met_vs_offline_met->Fill( (emulMET_nomu - hlt_met) / emulMET_nomu );
+              h_wmunu_hlt_mht_met_vs_offline_met->Fill( (emulMET_nomu - hlt_mht_met) / emulMET_nomu );
+              h_wmunu_hlt_topocl_met_vs_offline_met->Fill( (emulMET_nomu - hlt_topocl_met) / emulMET_nomu );
+              h_wmunu_hlt_topocl_ps_met_vs_offline_met->Fill( (emulMET_nomu - hlt_topocl_ps_met) / emulMET_nomu );
+              h_wmunu_hlt_topocl_puc_met_vs_offline_met->Fill( (emulMET_nomu - hlt_topocl_puc_met) / emulMET_nomu );
+
+              // HLT MEx vs Offline SumET
+              h_wmunu_hlt_ex_offline_sumet->Fill( emulSumET_nomu, hlt_ex );
+              h_wmunu_hlt_mht_ex_offline_sumet->Fill( emulSumET_nomu, hlt_mht_ex );
+              h_wmunu_hlt_topocl_ex_offline_sumet->Fill( emulSumET_nomu, hlt_topocl_ex );
+              h_wmunu_hlt_topocl_ps_ex_offline_sumet->Fill( emulSumET_nomu, hlt_topocl_ps_ex );
+              h_wmunu_hlt_topocl_puc_ex_offline_sumet->Fill( emulSumET_nomu, hlt_topocl_puc_ex );
+              // HLT MEx vs HLT SumET
+              h_wmunu_hlt_ex_hlt_sumet->Fill( hlt_sumet, hlt_ex );
+              h_wmunu_hlt_mht_ex_hlt_mht_sumet->Fill( hlt_mht_sumet, hlt_mht_ex );
+              h_wmunu_hlt_topocl_ex_hlt_topocl_sumet->Fill( hlt_topocl_sumet, hlt_topocl_ex );
+              h_wmunu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet->Fill( hlt_topocl_ps_sumet, hlt_topocl_ps_ex );
+              h_wmunu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet->Fill( hlt_topocl_puc_sumet, hlt_topocl_puc_ex );
+
+              // Linearity
+              h_wmunu_hlt_lin->Fill( emulMET_nomu, hlt_met/emulMET_nomu ); 
+              h_wmunu_hlt_mht_lin->Fill( emulMET_nomu, hlt_mht_met/emulMET_nomu ); 
+              h_wmunu_hlt_topocl_lin->Fill( emulMET_nomu, hlt_topocl_met/emulMET_nomu ); 
+              h_wmunu_hlt_topocl_ps_lin->Fill( emulMET_nomu, hlt_topocl_ps_met/emulMET_nomu ); 
+              h_wmunu_hlt_topocl_puc_lin->Fill( emulMET_nomu, hlt_topocl_puc_met/emulMET_nomu ); 
+
+              ///////////////////////
+              // BCID Cut ///////////
+              ///////////////////////
+
+              if (m_passCleanBC){
+
+                // BCID study
+                if (hlt_met > hlt_xe60) {
+                  h_wmunu_cleanBC_bcid_pass_hlt_xe60->Fill( m_Bcid );
+                }
+                if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+                  h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe60->Fill( m_Bcid );
+                }
+                if (hlt_mht_met > hlt_xe80_mht) {
+                  h_wmunu_cleanBC_bcid_pass_hlt_xe80_mht->Fill( m_Bcid );
+                }
+                if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+                  h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht->Fill( m_Bcid );
+                }
+                if (hlt_topocl_met > hlt_xe80_topocl) {
+                  h_wmunu_cleanBC_bcid_pass_hlt_xe80_topocl->Fill( m_Bcid );
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+                  h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
+                }
+
+                // Offline and HLT MET objects
+                h_wmunu_cleanBC_l1_met->Fill( l1_met ); // GeV
+                h_wmunu_cleanBC_hlt_met->Fill( hlt_met ); // GeV
+                h_wmunu_cleanBC_hlt_mht_met->Fill( hlt_mht_met ); // GeV
+                h_wmunu_cleanBC_hlt_topocl_met->Fill( hlt_topocl_met ); // GeV
+                h_wmunu_cleanBC_hlt_topocl_ps_met->Fill( hlt_topocl_ps_met ); // GeV
+                h_wmunu_cleanBC_hlt_topocl_puc_met->Fill( hlt_topocl_puc_met ); // GeV
+                h_wmunu_cleanBC_met->Fill( MET ); // GeV
+                h_wmunu_cleanBC_emulmet_nomu->Fill( emulMET_nomu ); // GeV
+                h_wmunu_cleanBC_emulmet_noelec->Fill( emulMET_noelec ); // GeV
+
+                // Turn-on Curves
+                // Offline MET passing HLT (CELL) thresholds
+                if (hlt_met > hlt_xe60) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe60->Fill( emulMET_nomu ); // GeV
+                }
+                if (hlt_met > hlt_xe100) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe100->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_met > hlt_xe100) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100->Fill( emulMET_nomu ); // GeV
+                }
+
+                // Offline MET passing HLT (MHT) thresholds
+                if (hlt_mht_met > hlt_xe80_mht) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe80_mht->Fill( emulMET_nomu ); // GeV
+                }
+                if (hlt_mht_met > hlt_xe120_mht) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe120_mht->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe120_mht) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht->Fill( emulMET_nomu ); // GeV
+                }
+
+                // Offline MET passing HLT (topocl) thresholds
+                if (hlt_topocl_met > hlt_xe80_topocl) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl->Fill( emulMET_nomu ); // GeV
+                }
+                if (hlt_topocl_met > hlt_xe120_topocl) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe120_topocl) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl->Fill( emulMET_nomu ); // GeV
+                }
+
+                // Offline MET passing HLT (topocl_ps) thresholds
+                if (hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps->Fill( emulMET_nomu ); // GeV
+                }
+                if (hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps->Fill( emulMET_nomu ); // GeV
+                }
+
+                // Offline MET passing HLT (topocl_puc) thresholds
+                if (hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc->Fill( emulMET_nomu ); // GeV
+                }
+                if (hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
+                  h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc->Fill( emulMET_nomu ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
+                  h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc->Fill( emulMET_nomu ); // GeV
+                }
+
+
+                // Correlation plots
+                // L1 vs Offline MET
+                h_wmunu_cleanBC_corr_met_l1_offline->Fill( l1_met, emulMET_nomu ); // GeV
+                // HLT (CELL) vs Offline MET
+                h_wmunu_cleanBC_corr_met_hlt_offline->Fill( hlt_met, emulMET_nomu ); // GeV
+                // HLT (mht) vs Offline MET
+                h_wmunu_cleanBC_corr_met_hlt_mht_offline->Fill( hlt_mht_met, emulMET_nomu ); // GeV
+                // HLT (topocl) vs Offline MET
+                h_wmunu_cleanBC_corr_met_hlt_topocl_offline->Fill( hlt_topocl_met, emulMET_nomu ); // GeV
+                // HLT (topocl) vs Offline MET
+                h_wmunu_cleanBC_corr_met_hlt_topocl_ps_offline->Fill( hlt_topocl_ps_met, emulMET_nomu ); // GeV
+                // HLT (topocl) vs Offline MET
+                h_wmunu_cleanBC_corr_met_hlt_topocl_puc_offline->Fill( hlt_topocl_puc_met, emulMET_nomu ); // GeV
+
+
+                // Resolution
+                // Offline MET vs HLT emulMET_nomu
+                h_wmunu_cleanBC_hlt_met_vs_offline_met->Fill( (emulMET_nomu - hlt_met) / emulMET_nomu );
+                h_wmunu_cleanBC_hlt_mht_met_vs_offline_met->Fill( (emulMET_nomu - hlt_mht_met) / emulMET_nomu );
+                h_wmunu_cleanBC_hlt_topocl_met_vs_offline_met->Fill( (emulMET_nomu - hlt_topocl_met) / emulMET_nomu );
+                h_wmunu_cleanBC_hlt_topocl_ps_met_vs_offline_met->Fill( (emulMET_nomu - hlt_topocl_ps_met) / emulMET_nomu );
+                h_wmunu_cleanBC_hlt_topocl_puc_met_vs_offline_met->Fill( (emulMET_nomu - hlt_topocl_puc_met) / emulMET_nomu );
+
+                // HLT MEx vs Offline SumET
+                h_wmunu_cleanBC_hlt_ex_offline_sumet->Fill( emulSumET_nomu, hlt_ex );
+                h_wmunu_cleanBC_hlt_mht_ex_offline_sumet->Fill( emulSumET_nomu, hlt_mht_ex );
+                h_wmunu_cleanBC_hlt_topocl_ex_offline_sumet->Fill( emulSumET_nomu, hlt_topocl_ex );
+                h_wmunu_cleanBC_hlt_topocl_ps_ex_offline_sumet->Fill( emulSumET_nomu, hlt_topocl_ps_ex );
+                h_wmunu_cleanBC_hlt_topocl_puc_ex_offline_sumet->Fill( emulSumET_nomu, hlt_topocl_puc_ex );
+                // HLT MEx vs HLT SumET
+                h_wmunu_cleanBC_hlt_ex_hlt_sumet->Fill( hlt_sumet, hlt_ex );
+                h_wmunu_cleanBC_hlt_mht_ex_hlt_mht_sumet->Fill( hlt_mht_sumet, hlt_mht_ex );
+                h_wmunu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet->Fill( hlt_topocl_sumet, hlt_topocl_ex );
+                h_wmunu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet->Fill( hlt_topocl_ps_sumet, hlt_topocl_ps_ex );
+                h_wmunu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet->Fill( hlt_topocl_puc_sumet, hlt_topocl_puc_ex );
+
+                // Linearity
+                h_wmunu_cleanBC_hlt_lin->Fill( emulMET_nomu, hlt_met/emulMET_nomu ); 
+                h_wmunu_cleanBC_hlt_mht_lin->Fill( emulMET_nomu, hlt_mht_met/emulMET_nomu ); 
+                h_wmunu_cleanBC_hlt_topocl_lin->Fill( emulMET_nomu, hlt_topocl_met/emulMET_nomu ); 
+                h_wmunu_cleanBC_hlt_topocl_ps_lin->Fill( emulMET_nomu, hlt_topocl_ps_met/emulMET_nomu ); 
+                h_wmunu_cleanBC_hlt_topocl_puc_lin->Fill( emulMET_nomu, hlt_topocl_puc_met/emulMET_nomu ); 
+
+              } // BCID cut
+
               if ( m_signalJet->size() > 0 ) {
                 m_eventCutflow[45]+=1;
               }
@@ -3013,6 +4114,307 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
             m_eventCutflow[49]+=1;
             if ( m_goodElectron->size() == 1 && pass_Wenu && mT_electron > 50. ){
               m_eventCutflow[50]+=1;
+
+              // BCID study
+              if (hlt_met > hlt_xe60) {
+                h_wenu_bcid_pass_hlt_xe60->Fill( m_Bcid );
+              }
+              if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+                h_wenu_bcid_pass_l1_XE50_hlt_xe60->Fill( m_Bcid );
+              }
+              if (hlt_mht_met > hlt_xe80_mht) {
+                h_wenu_bcid_pass_hlt_xe80_mht->Fill( m_Bcid );
+              }
+              if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+                h_wenu_bcid_pass_l1_XE50_hlt_xe80_mht->Fill( m_Bcid );
+              }
+              if (hlt_topocl_met > hlt_xe80_topocl) {
+                h_wenu_bcid_pass_hlt_xe80_topocl->Fill( m_Bcid );
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+                h_wenu_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
+              }
+
+              // Offline and HLT MET objects
+              h_wenu_l1_met->Fill( l1_met ); // GeV
+              h_wenu_hlt_met->Fill( hlt_met ); // GeV
+              h_wenu_hlt_mht_met->Fill( hlt_mht_met ); // GeV
+              h_wenu_hlt_topocl_met->Fill( hlt_topocl_met ); // GeV
+              h_wenu_hlt_topocl_ps_met->Fill( hlt_topocl_ps_met ); // GeV
+              h_wenu_hlt_topocl_puc_met->Fill( hlt_topocl_puc_met ); // GeV
+              h_wenu_met->Fill( MET ); // GeV
+              h_wenu_emulmet_nomu->Fill( emulMET_nomu ); // GeV
+              h_wenu_emulmet_noelec->Fill( emulMET_noelec ); // GeV
+
+              // Turn-on Curves
+              // Offline MET passing HLT (CELL) thresholds
+              if (hlt_met > hlt_xe60) {
+                h_wenu_offline_met_pass_hlt_xe60->Fill( MET ); // GeV
+              }
+              if (hlt_met > hlt_xe100) {
+                h_wenu_offline_met_pass_hlt_xe100->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe60->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_met > hlt_xe100) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe100->Fill( MET ); // GeV
+              }
+
+              // Offline MET passing HLT (MHT) thresholds
+              if (hlt_mht_met > hlt_xe80_mht) {
+                h_wenu_offline_met_pass_hlt_xe80_mht->Fill( MET ); // GeV
+              }
+              if (hlt_mht_met > hlt_xe120_mht) {
+                h_wenu_offline_met_pass_hlt_xe120_mht->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe80_mht->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe120_mht) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe120_mht->Fill( MET ); // GeV
+              }
+
+              // Offline MET passing HLT (topocl) thresholds
+              if (hlt_topocl_met > hlt_xe80_topocl) {
+                h_wenu_offline_met_pass_hlt_xe80_topocl->Fill( MET ); // GeV
+              }
+              if (hlt_topocl_met > hlt_xe120_topocl) {
+                h_wenu_offline_met_pass_hlt_xe120_topocl->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe120_topocl) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl->Fill( MET ); // GeV
+              }
+
+              // Offline MET passing HLT (topocl_ps) thresholds
+              if (hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
+                h_wenu_offline_met_pass_hlt_xe80_topocl_ps->Fill( MET ); // GeV
+              }
+              if (hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
+                h_wenu_offline_met_pass_hlt_xe120_topocl_ps->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps->Fill( MET ); // GeV
+              }
+
+              // Offline MET passing HLT (topocl_puc) thresholds
+              if (hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
+                h_wenu_offline_met_pass_hlt_xe80_topocl_puc->Fill( MET ); // GeV
+              }
+              if (hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
+                h_wenu_offline_met_pass_hlt_xe120_topocl_puc->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc->Fill( MET ); // GeV
+              }
+              if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
+                h_wenu_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc->Fill( MET ); // GeV
+              }
+
+
+              // Correlation plots
+              // L1 vs Offline MET
+              h_wenu_corr_met_l1_offline->Fill( l1_met, MET ); // GeV
+              // HLT (CELL) vs Offline MET
+              h_wenu_corr_met_hlt_offline->Fill( hlt_met, MET ); // GeV
+              // HLT (mht) vs Offline MET
+              h_wenu_corr_met_hlt_mht_offline->Fill( hlt_mht_met, MET ); // GeV
+              // HLT (topocl) vs Offline MET
+              h_wenu_corr_met_hlt_topocl_offline->Fill( hlt_topocl_met, MET ); // GeV
+              // HLT (topocl) vs Offline MET
+              h_wenu_corr_met_hlt_topocl_ps_offline->Fill( hlt_topocl_ps_met, MET ); // GeV
+              // HLT (topocl) vs Offline MET
+              h_wenu_corr_met_hlt_topocl_puc_offline->Fill( hlt_topocl_puc_met, MET ); // GeV
+
+
+              // MET Resolution
+              // Offline MET vs HLT MET
+              h_wenu_hlt_met_vs_offline_met->Fill( (MET - hlt_met) / MET );
+              h_wenu_hlt_mht_met_vs_offline_met->Fill( (MET - hlt_mht_met) / MET );
+              h_wenu_hlt_topocl_met_vs_offline_met->Fill( (MET - hlt_topocl_met) / MET );
+              h_wenu_hlt_topocl_ps_met_vs_offline_met->Fill( (MET - hlt_topocl_ps_met) / MET );
+              h_wenu_hlt_topocl_puc_met_vs_offline_met->Fill( (MET - hlt_topocl_puc_met) / MET );
+
+              // HLT MEx vs Offline SumET
+              h_wenu_hlt_ex_offline_sumet->Fill( SumET, hlt_ex );
+              h_wenu_hlt_mht_ex_offline_sumet->Fill( SumET, hlt_mht_ex );
+              h_wenu_hlt_topocl_ex_offline_sumet->Fill( SumET, hlt_topocl_ex );
+              h_wenu_hlt_topocl_ps_ex_offline_sumet->Fill( SumET, hlt_topocl_ps_ex );
+              h_wenu_hlt_topocl_puc_ex_offline_sumet->Fill( SumET, hlt_topocl_puc_ex );
+              // HLT MEx vs HLT SumET
+              h_wenu_hlt_ex_hlt_sumet->Fill( hlt_sumet, hlt_ex );
+              h_wenu_hlt_mht_ex_hlt_mht_sumet->Fill( hlt_mht_sumet, hlt_mht_ex );
+              h_wenu_hlt_topocl_ex_hlt_topocl_sumet->Fill( hlt_topocl_sumet, hlt_topocl_ex );
+              h_wenu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet->Fill( hlt_topocl_ps_sumet, hlt_topocl_ps_ex );
+              h_wenu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet->Fill( hlt_topocl_puc_sumet, hlt_topocl_puc_ex );
+
+              // Linearity
+              h_wenu_hlt_lin->Fill( MET, hlt_met/MET ); 
+              h_wenu_hlt_mht_lin->Fill( MET, hlt_mht_met/MET ); 
+              h_wenu_hlt_topocl_lin->Fill( MET, hlt_topocl_met/MET ); 
+              h_wenu_hlt_topocl_ps_lin->Fill( MET, hlt_topocl_ps_met/MET ); 
+              h_wenu_hlt_topocl_puc_lin->Fill( MET, hlt_topocl_puc_met/MET ); 
+
+              ///////////////////////
+              // BCID Cut ///////////
+              ///////////////////////
+
+              if (m_passCleanBC){
+
+                // BCID study
+                if (hlt_met > hlt_xe60) {
+                  h_wenu_cleanBC_bcid_pass_hlt_xe60->Fill( m_Bcid );
+                }
+                if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+                  h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe60->Fill( m_Bcid );
+                }
+                if (hlt_mht_met > hlt_xe80_mht) {
+                  h_wenu_cleanBC_bcid_pass_hlt_xe80_mht->Fill( m_Bcid );
+                }
+                if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+                  h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht->Fill( m_Bcid );
+                }
+                if (hlt_topocl_met > hlt_xe80_topocl) {
+                  h_wenu_cleanBC_bcid_pass_hlt_xe80_topocl->Fill( m_Bcid );
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+                  h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
+                }
+
+                // Offline and HLT MET objects
+                h_wenu_cleanBC_l1_met->Fill( l1_met ); // GeV
+                h_wenu_cleanBC_hlt_met->Fill( hlt_met ); // GeV
+                h_wenu_cleanBC_hlt_mht_met->Fill( hlt_mht_met ); // GeV
+                h_wenu_cleanBC_hlt_topocl_met->Fill( hlt_topocl_met ); // GeV
+                h_wenu_cleanBC_hlt_topocl_ps_met->Fill( hlt_topocl_ps_met ); // GeV
+                h_wenu_cleanBC_hlt_topocl_puc_met->Fill( hlt_topocl_puc_met ); // GeV
+                h_wenu_cleanBC_met->Fill( MET ); // GeV
+                h_wenu_cleanBC_emulmet_nomu->Fill( emulMET_nomu ); // GeV
+                h_wenu_cleanBC_emulmet_noelec->Fill( emulMET_noelec ); // GeV
+
+                // Turn-on Curves
+                // Offline MET passing HLT (CELL) thresholds
+                if (hlt_met > hlt_xe60) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe60->Fill( MET ); // GeV
+                }
+                if (hlt_met > hlt_xe100) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe100->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_met > hlt_xe60) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_met > hlt_xe100) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100->Fill( MET ); // GeV
+                }
+
+                // Offline MET passing HLT (MHT) thresholds
+                if (hlt_mht_met > hlt_xe80_mht) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe80_mht->Fill( MET ); // GeV
+                }
+                if (hlt_mht_met > hlt_xe120_mht) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe120_mht->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe80_mht) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_mht_met > hlt_xe120_mht) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht->Fill( MET ); // GeV
+                }
+
+                // Offline MET passing HLT (topocl) thresholds
+                if (hlt_topocl_met > hlt_xe80_topocl) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl->Fill( MET ); // GeV
+                }
+                if (hlt_topocl_met > hlt_xe120_topocl) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe80_topocl) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_met > hlt_xe120_topocl) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl->Fill( MET ); // GeV
+                }
+
+                // Offline MET passing HLT (topocl_ps) thresholds
+                if (hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps->Fill( MET ); // GeV
+                }
+                if (hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe80_topocl_ps) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_ps_met > hlt_xe120_topocl_ps) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps->Fill( MET ); // GeV
+                }
+
+                // Offline MET passing HLT (topocl_puc) thresholds
+                if (hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc->Fill( MET ); // GeV
+                }
+                if (hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
+                  h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe80_topocl_puc) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc->Fill( MET ); // GeV
+                }
+                if (l1_met > l1_XE50 && hlt_topocl_puc_met > hlt_xe120_topocl_puc) {
+                  h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc->Fill( MET ); // GeV
+                }
+
+
+                // Correlation plots
+                // L1 vs Offline MET
+                h_wenu_cleanBC_corr_met_l1_offline->Fill( l1_met, MET ); // GeV
+                // HLT (CELL) vs Offline MET
+                h_wenu_cleanBC_corr_met_hlt_offline->Fill( hlt_met, MET ); // GeV
+                // HLT (mht) vs Offline MET
+                h_wenu_cleanBC_corr_met_hlt_mht_offline->Fill( hlt_mht_met, MET ); // GeV
+                // HLT (topocl) vs Offline MET
+                h_wenu_cleanBC_corr_met_hlt_topocl_offline->Fill( hlt_topocl_met, MET ); // GeV
+                // HLT (topocl) vs Offline MET
+                h_wenu_cleanBC_corr_met_hlt_topocl_ps_offline->Fill( hlt_topocl_ps_met, MET ); // GeV
+                // HLT (topocl) vs Offline MET
+                h_wenu_cleanBC_corr_met_hlt_topocl_puc_offline->Fill( hlt_topocl_puc_met, MET ); // GeV
+
+
+                // Resolution
+                // Offline MET vs HLT MET
+                h_wenu_cleanBC_hlt_met_vs_offline_met->Fill( (MET - hlt_met) / MET );
+                h_wenu_cleanBC_hlt_mht_met_vs_offline_met->Fill( (MET - hlt_mht_met) / MET );
+                h_wenu_cleanBC_hlt_topocl_met_vs_offline_met->Fill( (MET - hlt_topocl_met) / MET );
+                h_wenu_cleanBC_hlt_topocl_ps_met_vs_offline_met->Fill( (MET - hlt_topocl_ps_met) / MET );
+                h_wenu_cleanBC_hlt_topocl_puc_met_vs_offline_met->Fill( (MET - hlt_topocl_puc_met) / MET );
+
+                // HLT MEx vs Offline SumET
+                h_wenu_cleanBC_hlt_ex_offline_sumet->Fill( SumET, hlt_ex );
+                h_wenu_cleanBC_hlt_mht_ex_offline_sumet->Fill( SumET, hlt_mht_ex );
+                h_wenu_cleanBC_hlt_topocl_ex_offline_sumet->Fill( SumET, hlt_topocl_ex );
+                h_wenu_cleanBC_hlt_topocl_ps_ex_offline_sumet->Fill( SumET, hlt_topocl_ps_ex );
+                h_wenu_cleanBC_hlt_topocl_puc_ex_offline_sumet->Fill( SumET, hlt_topocl_puc_ex );
+                // HLT MEx vs HLT SumET
+                h_wenu_cleanBC_hlt_ex_hlt_sumet->Fill( hlt_sumet, hlt_ex );
+                h_wenu_cleanBC_hlt_mht_ex_hlt_mht_sumet->Fill( hlt_mht_sumet, hlt_mht_ex );
+                h_wenu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet->Fill( hlt_topocl_sumet, hlt_topocl_ex );
+                h_wenu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet->Fill( hlt_topocl_ps_sumet, hlt_topocl_ps_ex );
+                h_wenu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet->Fill( hlt_topocl_puc_sumet, hlt_topocl_puc_ex );
+
+                // Linearity
+                h_wenu_cleanBC_hlt_lin->Fill( MET, hlt_met/MET ); 
+                h_wenu_cleanBC_hlt_mht_lin->Fill( MET, hlt_mht_met/MET ); 
+                h_wenu_cleanBC_hlt_topocl_lin->Fill( MET, hlt_topocl_met/MET ); 
+                h_wenu_cleanBC_hlt_topocl_ps_lin->Fill( MET, hlt_topocl_ps_met/MET ); 
+                h_wenu_cleanBC_hlt_topocl_puc_lin->Fill( MET, hlt_topocl_puc_met/MET ); 
+
+              } // BCID cut
+
               if ( m_signalJet->size() > 0 ) {
                 m_eventCutflow[51]+=1;
               }
@@ -3420,7 +4822,6 @@ EL::StatusCode MetTrigxAODAnalysis :: finalize ()
       Info("finalize()", "Wenu Event cutflow (%i) = %i", j, m_eventCutflow[i]);
     }
   }
-
 
   return EL::StatusCode::SUCCESS;
 }
