@@ -147,11 +147,11 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_l1_phi);
 
   // HLT Cell MET
-  h_hlt_ex = new TH1F("h_hlt_ex", "HLT (CELL) Missing E_{x};E_{x} (GeV)", 150, -150,  150); // HLT MEx [GeV]
-  h_hlt_ey = new TH1F("h_hlt_ey", "HLT (CELL) Missing E_{y};E_{y} (GeV)", 150, -150,  150); // HLT MEy [GeV]
-  h_hlt_met = new TH1F("h_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
-  h_hlt_sumet = new TH1F("h_hlt_sumet", "HLT (CELL) Sum |E_{T}|;SumE_{T} (GeV)", 200, 0, 2000); // HLT SumET [GeV]
-  h_hlt_phi = new TH1F("h_hlt_phi", "HLT (CELL) MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // HLT phi [GeV]
+  h_hlt_ex = new TH1F("h_hlt_ex", "HLT (cell) Missing E_{x};E_{x} (GeV)", 150, -150,  150); // HLT MEx [GeV]
+  h_hlt_ey = new TH1F("h_hlt_ey", "HLT (cell) Missing E_{y};E_{y} (GeV)", 150, -150,  150); // HLT MEy [GeV]
+  h_hlt_met = new TH1F("h_hlt_met", "HLT (cell) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_hlt_sumet = new TH1F("h_hlt_sumet", "HLT (cell) Sum |E_{T}|;SumE_{T} (GeV)", 200, 0, 2000); // HLT SumET [GeV]
+  h_hlt_phi = new TH1F("h_hlt_phi", "HLT (cell) MET #phi (rad);#phi (rad)", 32, -3.2, 3.2); // HLT phi [GeV]
   wk()->addOutput (h_hlt_ex);
   wk()->addOutput (h_hlt_ey);
   wk()->addOutput (h_hlt_met);
@@ -307,6 +307,10 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_bcid_pass_hlt_xe80_topocl);
   wk()->addOutput (h_bcid_pass_l1_XE50_hlt_xe80_topocl);
 
+  // mu threshold study 
+  h_hlt_topocl_met_pass_l1_XE50 = new TH1F("h_hlt_topocl_met_pass_l1_XE50", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  wk()->addOutput (h_hlt_topocl_met_pass_l1_XE50);
+
   // Turn-on Curves
   h_offline_met_pass_hlt_xe60 = new TH1F("h_offline_met_pass_hlt_xe60", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
   h_offline_met_pass_hlt_xe100 = new TH1F("h_offline_met_pass_hlt_xe100", "Offline |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // Offline MET [GeV]
@@ -357,8 +361,8 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   // L1 vs Offline MET
   h_corr_met_l1_offline = new TH2F("h_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_corr_met_l1_offline);
-  // HLT (CELL) vs Offline MET
-  h_corr_met_hlt_offline = new TH2F("h_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  // HLT (cell) vs Offline MET
+  h_corr_met_hlt_offline = new TH2F("h_corr_met_hlt_offline", "HLT (cell) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_corr_met_hlt_offline);
   // HLT (mht) vs Offline MET
   h_corr_met_hlt_mht_offline = new TH2F("h_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
@@ -372,6 +376,19 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   // HLT (topocl_puc) vs Offline MET
   h_corr_met_hlt_topocl_puc_offline = new TH2F("h_corr_met_hlt_topocl_puc_offline", "HLT (topocl_puc) vs Offline |Missing E_{T}|;HLT (topocl_puc) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_corr_met_hlt_topocl_puc_offline);
+  // Asked by Alan
+  // L1 vs HLT (cell) MET
+  h_corr_met_l1_hlt = new TH2F("h_corr_met_l1_hlt", "L1 vs HLT (cell) |Missing E_{T}|;L1 E_{T}^{miss} [GeV];HLT (cell) E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_corr_met_l1_hlt);
+  // HLT (topocl) vs HLT (cell) MET
+  h_corr_met_hlt_topocl_hlt = new TH2F("h_corr_met_hlt_topocl_hlt", "HLT (topocl) vs HLT (cell) |Missing E_{T}|;HLT (topocl) E_{T}^{miss} [GeV];HLT (cell) E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_corr_met_hlt_topocl_hlt);
+  // Offline vs HLT (cell) MET
+  h_corr_met_offline_hlt = new TH2F("h_corr_met_offline_hlt", "Offline vs HLT (cell) |Missing E_{T}|;Offline E_{T}^{miss} [GeV];HLT (cell) E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_corr_met_offline_hlt);
+  // L1 vs HLT (topocl) MET
+  h_corr_met_l1_hlt_topocl = new TH2F("h_corr_met_l1_hlt_topocl", "L1 vs HLT (topocl) |Missing E_{T}|;L1 E_{T}^{miss} [GeV];HLT (topocl) E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  wk()->addOutput (h_corr_met_l1_hlt_topocl);
 
   // MET Resolution
   // Offline MET vs HLT MET
@@ -387,7 +404,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_hlt_topocl_puc_met_vs_offline_met);
 
   // HLT MEx vs Offline SumET
-  h_hlt_ex_offline_sumet = new TH2F("h_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_hlt_ex_offline_sumet = new TH2F("h_hlt_ex_offline_sumet", "HLT (cell) MET Resolution ;Offline SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_hlt_mht_ex_offline_sumet = new TH2F("h_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_hlt_topocl_ex_offline_sumet = new TH2F("h_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -398,7 +415,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_hlt_topocl_ps_ex_offline_sumet);
   wk()->addOutput (h_hlt_topocl_puc_ex_offline_sumet);
   // HLT MEx vs HLT SumET
-  h_hlt_ex_hlt_sumet = new TH2F("h_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_hlt_ex_hlt_sumet = new TH2F("h_hlt_ex_hlt_sumet", "HLT (cell) MET Resolution ;HLT (cell) SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -410,7 +427,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
 
   // Linearity
-  h_hlt_lin = new TH2F("h_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_hlt_lin = new TH2F("h_hlt_lin", "HLT (cell) MET Linearity ;Offline Missing E_{T} [GeV];HLT (cell) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_hlt_mht_lin = new TH2F("h_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_hlt_topocl_lin = new TH2F("h_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_hlt_topocl_ps_lin = new TH2F("h_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
@@ -442,7 +459,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
 
   // Offline and HLT MET
   h_cleanBC_l1_met = new TH1F("h_cleanBC_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
-  h_cleanBC_hlt_met = new TH1F("h_cleanBC_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_cleanBC_hlt_met = new TH1F("h_cleanBC_hlt_met", "HLT (cell) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_cleanBC_hlt_mht_met = new TH1F("h_cleanBC_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_cleanBC_hlt_topocl_met = new TH1F("h_cleanBC_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_cleanBC_hlt_topocl_ps_met = new TH1F("h_cleanBC_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
@@ -511,8 +528,8 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   // L1 vs Offline MET
   h_cleanBC_corr_met_l1_offline = new TH2F("h_cleanBC_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_cleanBC_corr_met_l1_offline);
-  // HLT (CELL) vs Offline MET
-  h_cleanBC_corr_met_hlt_offline = new TH2F("h_cleanBC_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  // HLT (cell) vs Offline MET
+  h_cleanBC_corr_met_hlt_offline = new TH2F("h_cleanBC_corr_met_hlt_offline", "HLT (cell) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_cleanBC_corr_met_hlt_offline);
   // HLT (mht) vs Offline MET
   h_cleanBC_corr_met_hlt_mht_offline = new TH2F("h_cleanBC_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
@@ -542,7 +559,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_cleanBC_hlt_topocl_puc_met_vs_offline_met);
 
   // HLT MEx vs Offline SumET
-  h_cleanBC_hlt_ex_offline_sumet = new TH2F("h_cleanBC_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_ex_offline_sumet = new TH2F("h_cleanBC_hlt_ex_offline_sumet", "HLT (cell) MET Resolution ;Offline SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_cleanBC_hlt_mht_ex_offline_sumet = new TH2F("h_cleanBC_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_cleanBC_hlt_topocl_ex_offline_sumet = new TH2F("h_cleanBC_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_cleanBC_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_cleanBC_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -553,7 +570,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_cleanBC_hlt_topocl_ps_ex_offline_sumet);
   wk()->addOutput (h_cleanBC_hlt_topocl_puc_ex_offline_sumet);
   // HLT MEx vs HLT SumET
-  h_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_cleanBC_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_cleanBC_hlt_ex_hlt_sumet", "HLT (cell) MET Resolution ;HLT (cell) SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_cleanBC_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_cleanBC_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_cleanBC_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_cleanBC_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -565,7 +582,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
 
   // Linearity
-  h_cleanBC_hlt_lin = new TH2F("h_cleanBC_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_cleanBC_hlt_lin = new TH2F("h_cleanBC_hlt_lin", "HLT (cell) MET Linearity ;Offline Missing E_{T} [GeV];HLT (cell) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_cleanBC_hlt_mht_lin = new TH2F("h_cleanBC_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_cleanBC_hlt_topocl_lin = new TH2F("h_cleanBC_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_cleanBC_hlt_topocl_ps_lin = new TH2F("h_cleanBC_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
@@ -600,9 +617,13 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wmunu_bcid_pass_hlt_xe80_topocl);
   wk()->addOutput (h_wmunu_bcid_pass_l1_XE50_hlt_xe80_topocl);
 
+  // mu threshold study 
+  h_wmunu_hlt_topocl_met_pass_l1_XE50 = new TH1F("h_wmunu_hlt_topocl_met_pass_l1_XE50", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  wk()->addOutput (h_wmunu_hlt_topocl_met_pass_l1_XE50);
+
   // Offline and HLT MET
   h_wmunu_l1_met = new TH1F("h_wmunu_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
-  h_wmunu_hlt_met = new TH1F("h_wmunu_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_hlt_met = new TH1F("h_wmunu_hlt_met", "HLT (cell) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wmunu_hlt_mht_met = new TH1F("h_wmunu_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wmunu_hlt_topocl_met = new TH1F("h_wmunu_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wmunu_hlt_topocl_ps_met = new TH1F("h_wmunu_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
@@ -670,8 +691,8 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   // L1 vs Offline MET
   h_wmunu_corr_met_l1_offline = new TH2F("h_wmunu_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_wmunu_corr_met_l1_offline);
-  // HLT (CELL) vs Offline MET
-  h_wmunu_corr_met_hlt_offline = new TH2F("h_wmunu_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  // HLT (cell) vs Offline MET
+  h_wmunu_corr_met_hlt_offline = new TH2F("h_wmunu_corr_met_hlt_offline", "HLT (cell) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_wmunu_corr_met_hlt_offline);
   // HLT (mht) vs Offline MET
   h_wmunu_corr_met_hlt_mht_offline = new TH2F("h_wmunu_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
@@ -700,7 +721,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wmunu_hlt_topocl_puc_met_vs_offline_met);
 
   // HLT MEx vs Offline SumET
-  h_wmunu_hlt_ex_offline_sumet = new TH2F("h_wmunu_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_ex_offline_sumet = new TH2F("h_wmunu_hlt_ex_offline_sumet", "HLT (cell) MET Resolution ;Offline SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_hlt_mht_ex_offline_sumet = new TH2F("h_wmunu_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_hlt_topocl_ex_offline_sumet = new TH2F("h_wmunu_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_wmunu_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -711,7 +732,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wmunu_hlt_topocl_ps_ex_offline_sumet);
   wk()->addOutput (h_wmunu_hlt_topocl_puc_ex_offline_sumet);
   // HLT MEx vs HLT SumET
-  h_wmunu_hlt_ex_hlt_sumet = new TH2F("h_wmunu_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_hlt_ex_hlt_sumet = new TH2F("h_wmunu_hlt_ex_hlt_sumet", "HLT (cell) MET Resolution ;HLT (cell) SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_wmunu_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_wmunu_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_wmunu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -723,7 +744,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wmunu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
 
   // Linearity
-  h_wmunu_hlt_lin = new TH2F("h_wmunu_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_hlt_lin = new TH2F("h_wmunu_hlt_lin", "HLT (cell) MET Linearity ;Offline Missing E_{T} [GeV];HLT (cell) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wmunu_hlt_mht_lin = new TH2F("h_wmunu_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wmunu_hlt_topocl_lin = new TH2F("h_wmunu_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wmunu_hlt_topocl_ps_lin = new TH2F("h_wmunu_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
@@ -755,7 +776,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
 
   // Offline and HLT MET
   h_wmunu_cleanBC_l1_met = new TH1F("h_wmunu_cleanBC_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
-  h_wmunu_cleanBC_hlt_met = new TH1F("h_wmunu_cleanBC_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wmunu_cleanBC_hlt_met = new TH1F("h_wmunu_cleanBC_hlt_met", "HLT (cell) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wmunu_cleanBC_hlt_mht_met = new TH1F("h_wmunu_cleanBC_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wmunu_cleanBC_hlt_topocl_met = new TH1F("h_wmunu_cleanBC_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wmunu_cleanBC_hlt_topocl_ps_met = new TH1F("h_wmunu_cleanBC_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
@@ -824,8 +845,8 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   // L1 vs Offline MET
   h_wmunu_cleanBC_corr_met_l1_offline = new TH2F("h_wmunu_cleanBC_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_wmunu_cleanBC_corr_met_l1_offline);
-  // HLT (CELL) vs Offline MET
-  h_wmunu_cleanBC_corr_met_hlt_offline = new TH2F("h_wmunu_cleanBC_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  // HLT (cell) vs Offline MET
+  h_wmunu_cleanBC_corr_met_hlt_offline = new TH2F("h_wmunu_cleanBC_corr_met_hlt_offline", "HLT (cell) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_wmunu_cleanBC_corr_met_hlt_offline);
   // HLT (mht) vs Offline MET
   h_wmunu_cleanBC_corr_met_hlt_mht_offline = new TH2F("h_wmunu_cleanBC_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
@@ -855,7 +876,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_puc_met_vs_offline_met);
 
   // HLT MEx vs Offline SumET
-  h_wmunu_cleanBC_hlt_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_ex_offline_sumet", "HLT (cell) MET Resolution ;Offline SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_cleanBC_hlt_mht_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_cleanBC_hlt_topocl_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_cleanBC_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -866,7 +887,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_ps_ex_offline_sumet);
   wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_puc_ex_offline_sumet);
   // HLT MEx vs HLT SumET
-  h_wmunu_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_wmunu_cleanBC_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wmunu_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_wmunu_cleanBC_hlt_ex_hlt_sumet", "HLT (cell) MET Resolution ;HLT (cell) SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_cleanBC_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_wmunu_cleanBC_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wmunu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_wmunu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -878,7 +899,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wmunu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
 
   // Linearity
-  h_wmunu_cleanBC_hlt_lin = new TH2F("h_wmunu_cleanBC_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wmunu_cleanBC_hlt_lin = new TH2F("h_wmunu_cleanBC_hlt_lin", "HLT (cell) MET Linearity ;Offline Missing E_{T} [GeV];HLT (cell) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wmunu_cleanBC_hlt_mht_lin = new TH2F("h_wmunu_cleanBC_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wmunu_cleanBC_hlt_topocl_lin = new TH2F("h_wmunu_cleanBC_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wmunu_cleanBC_hlt_topocl_ps_lin = new TH2F("h_wmunu_cleanBC_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
@@ -912,9 +933,13 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wenu_bcid_pass_hlt_xe80_topocl);
   wk()->addOutput (h_wenu_bcid_pass_l1_XE50_hlt_xe80_topocl);
 
+  // mu threshold study 
+  h_wenu_hlt_topocl_met_pass_l1_XE50 = new TH1F("h_wenu_hlt_topocl_met_pass_l1_XE50", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  wk()->addOutput (h_wenu_hlt_topocl_met_pass_l1_XE50);
+
   // Offline and HLT MET
   h_wenu_l1_met = new TH1F("h_wenu_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
-  h_wenu_hlt_met = new TH1F("h_wenu_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_hlt_met = new TH1F("h_wenu_hlt_met", "HLT (cell) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wenu_hlt_mht_met = new TH1F("h_wenu_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wenu_hlt_topocl_met = new TH1F("h_wenu_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wenu_hlt_topocl_ps_met = new TH1F("h_wenu_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
@@ -982,8 +1007,8 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   // L1 vs Offline MET
   h_wenu_corr_met_l1_offline = new TH2F("h_wenu_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_wenu_corr_met_l1_offline);
-  // HLT (CELL) vs Offline MET
-  h_wenu_corr_met_hlt_offline = new TH2F("h_wenu_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  // HLT (cell) vs Offline MET
+  h_wenu_corr_met_hlt_offline = new TH2F("h_wenu_corr_met_hlt_offline", "HLT (cell) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_wenu_corr_met_hlt_offline);
   // HLT (mht) vs Offline MET
   h_wenu_corr_met_hlt_mht_offline = new TH2F("h_wenu_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
@@ -1012,7 +1037,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wenu_hlt_topocl_puc_met_vs_offline_met);
 
   // HLT MEx vs Offline SumET
-  h_wenu_hlt_ex_offline_sumet = new TH2F("h_wenu_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_ex_offline_sumet = new TH2F("h_wenu_hlt_ex_offline_sumet", "HLT (cell) MET Resolution ;Offline SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_hlt_mht_ex_offline_sumet = new TH2F("h_wenu_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_hlt_topocl_ex_offline_sumet = new TH2F("h_wenu_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_wenu_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -1023,7 +1048,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wenu_hlt_topocl_ps_ex_offline_sumet);
   wk()->addOutput (h_wenu_hlt_topocl_puc_ex_offline_sumet);
   // HLT MEx vs HLT SumET
-  h_wenu_hlt_ex_hlt_sumet = new TH2F("h_wenu_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_hlt_ex_hlt_sumet = new TH2F("h_wenu_hlt_ex_hlt_sumet", "HLT (cell) MET Resolution ;HLT (cell) SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_wenu_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_wenu_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_wenu_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -1035,7 +1060,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wenu_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
 
   // Linearity
-  h_wenu_hlt_lin = new TH2F("h_wenu_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_hlt_lin = new TH2F("h_wenu_hlt_lin", "HLT (cell) MET Linearity ;Offline Missing E_{T} [GeV];HLT (cell) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wenu_hlt_mht_lin = new TH2F("h_wenu_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wenu_hlt_topocl_lin = new TH2F("h_wenu_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wenu_hlt_topocl_ps_lin = new TH2F("h_wenu_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
@@ -1067,7 +1092,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
 
   // Offline and HLT MET
   h_wenu_cleanBC_l1_met = new TH1F("h_wenu_cleanBC_l1_met", "L1 |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // L1 MET [GeV]
-  h_wenu_cleanBC_hlt_met = new TH1F("h_wenu_cleanBC_hlt_met", "HLT (CELL) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
+  h_wenu_cleanBC_hlt_met = new TH1F("h_wenu_cleanBC_hlt_met", "HLT (cell) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wenu_cleanBC_hlt_mht_met = new TH1F("h_wenu_cleanBC_hlt_mht_met", "HLT (mht) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wenu_cleanBC_hlt_topocl_met = new TH1F("h_wenu_cleanBC_hlt_topocl_met", "HLT (topocl) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
   h_wenu_cleanBC_hlt_topocl_ps_met = new TH1F("h_wenu_cleanBC_hlt_topocl_ps_met", "HLT (topocl_ps) |Missing E_{T}|;ME_{T} (GeV)", 250, 0, 500); // HLT MET [GeV]
@@ -1135,8 +1160,8 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   // L1 vs Offline MET
   h_wenu_cleanBC_corr_met_l1_offline = new TH2F("h_wenu_cleanBC_corr_met_l1_offline", "L1 vs Offline |Missing E_{T}|;L1 E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_wenu_cleanBC_corr_met_l1_offline);
-  // HLT (CELL) vs Offline MET
-  h_wenu_cleanBC_corr_met_hlt_offline = new TH2F("h_wenu_cleanBC_corr_met_hlt_offline", "HLT (CELL) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
+  // HLT (cell) vs Offline MET
+  h_wenu_cleanBC_corr_met_hlt_offline = new TH2F("h_wenu_cleanBC_corr_met_hlt_offline", "HLT (cell) vs Offline |Missing E_{T}|;HLT (cell) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
   wk()->addOutput (h_wenu_cleanBC_corr_met_hlt_offline);
   // HLT (mht) vs Offline MET
   h_wenu_cleanBC_corr_met_hlt_mht_offline = new TH2F("h_wenu_cleanBC_corr_met_hlt_mht_offline", "HLT (mht) vs Offline |Missing E_{T}|;HLT (mht) E_{T}^{miss} [GeV];Offline E_{T}^{miss} [GeV]",250,0,500,250,0,500);
@@ -1166,7 +1191,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wenu_cleanBC_hlt_topocl_puc_met_vs_offline_met);
 
   // HLT MEx vs Offline SumET
-  h_wenu_cleanBC_hlt_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_ex_offline_sumet", "HLT (CELL) MET Resolution ;Offline SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_ex_offline_sumet", "HLT (cell) MET Resolution ;Offline SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_cleanBC_hlt_mht_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_mht_ex_offline_sumet", "HLT (MHT) MET Resolution ;Offline SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_cleanBC_hlt_topocl_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_ex_offline_sumet", "HLT (Topocl) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_cleanBC_hlt_topocl_ps_ex_offline_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_ps_ex_offline_sumet", "HLT (Topocl_ps) MET Resolution ;Offline SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -1177,7 +1202,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wenu_cleanBC_hlt_topocl_ps_ex_offline_sumet);
   wk()->addOutput (h_wenu_cleanBC_hlt_topocl_puc_ex_offline_sumet);
   // HLT MEx vs HLT SumET
-  h_wenu_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_wenu_cleanBC_hlt_ex_hlt_sumet", "HLT (CELL) MET Resolution ;HLT (CELL) SumE_{T} [GeV];HLT (CELL) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
+  h_wenu_cleanBC_hlt_ex_hlt_sumet = new TH2F("h_wenu_cleanBC_hlt_ex_hlt_sumet", "HLT (cell) MET Resolution ;HLT (cell) SumE_{T} [GeV];HLT (cell) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_cleanBC_hlt_mht_ex_hlt_mht_sumet = new TH2F("h_wenu_cleanBC_hlt_mht_ex_hlt_mht_sumet", "HLT (MHT) MET Resolution ;HLT (MHT) SumE_{T} [GeV];HLT (MHT) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet", "HLT (Topocl) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
   h_wenu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet = new TH2F("h_wenu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet", "HLT (Topocl_ps) MET Resolution ;HLT (Topocl) SumE_{T} [GeV];HLT (Topocl_ps) Missing E_{x} [GeV]",nbins,xbins,150,-150,150);
@@ -1189,7 +1214,7 @@ EL::StatusCode MetTrigxAODAnalysis :: histInitialize ()
   wk()->addOutput (h_wenu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet);
 
   // Linearity
-  h_wenu_cleanBC_hlt_lin = new TH2F("h_wenu_cleanBC_hlt_lin", "HLT (CELL) MET Linearity ;Offline Missing E_{T} [GeV];HLT (CELL) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
+  h_wenu_cleanBC_hlt_lin = new TH2F("h_wenu_cleanBC_hlt_lin", "HLT (cell) MET Linearity ;Offline Missing E_{T} [GeV];HLT (cell) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wenu_cleanBC_hlt_mht_lin = new TH2F("h_wenu_cleanBC_hlt_mht_lin", "HLT (MHT) MET Linearity ;Offline Missing E_{T} [GeV];HLT (MHT) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wenu_cleanBC_hlt_topocl_lin = new TH2F("h_wenu_cleanBC_hlt_topocl_lin", "HLT (Topocl) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
   h_wenu_cleanBC_hlt_topocl_ps_lin = new TH2F("h_wenu_cleanBC_hlt_topocl_ps_lin", "HLT (Topocl_ps) MET Linearity ;Offline Missing E_{T} [GeV];HLT (Topocl_ps) MET / Offline MET", 100, 0, 500, 1000, 0, 100);
@@ -1851,7 +1876,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   }
 
   // retrieve HLT containers
-  // Get HLT (CELL) container
+  // Get HLT (cell) container
   const xAOD::TrigMissingETContainer *m_hlt_met_cont = nullptr;
   if( ! m_event->retrieve( m_hlt_met_cont, "HLT_xAOD__TrigMissingETContainer_TrigEFMissingET" ).isSuccess() ){
     Error("execute()", "Failed to retrieve TrigEFMissingET container. Exiting." );
@@ -1907,7 +1932,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   h_l1_phi->Fill( l1_phi ); // GeV
 
 
-  // HLT (CELL)
+  // HLT (cell)
   float hlt_ex = -9e9;
   float hlt_ey = -9e9;
   float hlt_met = -9e9;
@@ -2852,8 +2877,14 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     h_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
   }
 
+  // mu threshold study
+  // HLT (topocl) MET passing L1_XE50
+  if (l1_met > l1_XE50) {
+    h_hlt_topocl_met_pass_l1_XE50->Fill( hlt_topocl_met );
+  }
+
   // Turn-on Curves
-  // Offline MET passing HLT (CELL) thresholds
+  // Offline MET passing HLT (cell) thresholds
   if (hlt_met > hlt_xe60) {
     h_offline_met_pass_hlt_xe60->Fill( MET ); // GeV
   }
@@ -2927,7 +2958,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   // Correlation plots
   // L1 vs Offline MET
   h_corr_met_l1_offline->Fill( l1_met, MET ); // GeV
-  // HLT (CELL) vs Offline MET
+  // HLT (cell) vs Offline MET
   h_corr_met_hlt_offline->Fill( hlt_met, MET ); // GeV
   // HLT (mht) vs Offline MET
   h_corr_met_hlt_mht_offline->Fill( hlt_mht_met, MET ); // GeV
@@ -2937,6 +2968,15 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
   h_corr_met_hlt_topocl_ps_offline->Fill( hlt_topocl_ps_met, MET ); // GeV
   // HLT (topocl) vs Offline MET
   h_corr_met_hlt_topocl_puc_offline->Fill( hlt_topocl_puc_met, MET ); // GeV
+  // Asked by Alan
+  // L1 vs HLT (cell) MET
+  h_corr_met_l1_hlt->Fill( l1_met, hlt_met ); // GeV
+  // HLT (topocl) vs HLT (cell) MET
+  h_corr_met_hlt_topocl_hlt->Fill( hlt_topocl_met, hlt_met ); // GeV
+  // Offline vs HLT (cell) MET
+  h_corr_met_offline_hlt->Fill( MET, hlt_met ); // GeV
+  // L1 vs HLT (topocl) MET
+  h_corr_met_l1_hlt_topocl->Fill( l1_met, hlt_topocl_met ); // GeV
 
 
   // MET Resolution
@@ -3005,7 +3045,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     h_cleanBC_emulmet_noelec->Fill( emulMET_noelec ); // GeV
 
     // Turn-on Curves
-    // Offline MET passing HLT (CELL) thresholds
+    // Offline MET passing HLT (cell) thresholds
     if (hlt_met > hlt_xe60) {
       h_cleanBC_offline_met_pass_hlt_xe60->Fill( MET ); // GeV
     }
@@ -3079,7 +3119,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     // Correlation plots
     // L1 vs Offline MET
     h_cleanBC_corr_met_l1_offline->Fill( l1_met, MET ); // GeV
-    // HLT (CELL) vs Offline MET
+    // HLT (cell) vs Offline MET
     h_cleanBC_corr_met_hlt_offline->Fill( hlt_met, MET ); // GeV
     // HLT (mht) vs Offline MET
     h_cleanBC_corr_met_hlt_mht_offline->Fill( hlt_mht_met, MET ); // GeV
@@ -3805,6 +3845,12 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                 h_wmunu_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
               }
 
+              // mu threshold study
+              // HLT (topocl) MET passing L1_XE50
+              if (l1_met > l1_XE50) {
+                h_wmunu_hlt_topocl_met_pass_l1_XE50->Fill( hlt_topocl_met );
+              }
+
               // Offline and HLT MET objects
               h_wmunu_l1_met->Fill( l1_met ); // GeV
               h_wmunu_hlt_met->Fill( hlt_met ); // GeV
@@ -3817,7 +3863,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
               h_wmunu_emulmet_noelec->Fill( emulMET_noelec ); // GeV
 
               // Turn-on Curves
-              // Offline MET passing HLT (CELL) thresholds
+              // Offline MET passing HLT (cell) thresholds
               if (hlt_met > hlt_xe60) {
                 h_wmunu_offline_met_pass_hlt_xe60->Fill( emulMET_nomu ); // GeV
               }
@@ -3891,7 +3937,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
               // Correlation plots
               // L1 vs Offline MET
               h_wmunu_corr_met_l1_offline->Fill( l1_met, emulMET_nomu ); // GeV
-              // HLT (CELL) vs Offline MET
+              // HLT (cell) vs Offline MET
               h_wmunu_corr_met_hlt_offline->Fill( hlt_met, emulMET_nomu ); // GeV
               // HLT (mht) vs Offline MET
               h_wmunu_corr_met_hlt_mht_offline->Fill( hlt_mht_met, emulMET_nomu ); // GeV
@@ -3969,7 +4015,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                 h_wmunu_cleanBC_emulmet_noelec->Fill( emulMET_noelec ); // GeV
 
                 // Turn-on Curves
-                // Offline MET passing HLT (CELL) thresholds
+                // Offline MET passing HLT (cell) thresholds
                 if (hlt_met > hlt_xe60) {
                   h_wmunu_cleanBC_offline_met_pass_hlt_xe60->Fill( emulMET_nomu ); // GeV
                 }
@@ -4043,7 +4089,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                 // Correlation plots
                 // L1 vs Offline MET
                 h_wmunu_cleanBC_corr_met_l1_offline->Fill( l1_met, emulMET_nomu ); // GeV
-                // HLT (CELL) vs Offline MET
+                // HLT (cell) vs Offline MET
                 h_wmunu_cleanBC_corr_met_hlt_offline->Fill( hlt_met, emulMET_nomu ); // GeV
                 // HLT (mht) vs Offline MET
                 h_wmunu_cleanBC_corr_met_hlt_mht_offline->Fill( hlt_mht_met, emulMET_nomu ); // GeV
@@ -4135,6 +4181,12 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                 h_wenu_bcid_pass_l1_XE50_hlt_xe80_topocl->Fill( m_Bcid );
               }
 
+              // mu threshold study
+              // HLT (topocl) MET passing L1_XE50
+              if (l1_met > l1_XE50) {
+                h_wenu_hlt_topocl_met_pass_l1_XE50->Fill( hlt_topocl_met );
+              }
+
               // Offline and HLT MET objects
               h_wenu_l1_met->Fill( l1_met ); // GeV
               h_wenu_hlt_met->Fill( hlt_met ); // GeV
@@ -4147,7 +4199,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
               h_wenu_emulmet_noelec->Fill( emulMET_noelec ); // GeV
 
               // Turn-on Curves
-              // Offline MET passing HLT (CELL) thresholds
+              // Offline MET passing HLT (cell) thresholds
               if (hlt_met > hlt_xe60) {
                 h_wenu_offline_met_pass_hlt_xe60->Fill( MET ); // GeV
               }
@@ -4221,7 +4273,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
               // Correlation plots
               // L1 vs Offline MET
               h_wenu_corr_met_l1_offline->Fill( l1_met, MET ); // GeV
-              // HLT (CELL) vs Offline MET
+              // HLT (cell) vs Offline MET
               h_wenu_corr_met_hlt_offline->Fill( hlt_met, MET ); // GeV
               // HLT (mht) vs Offline MET
               h_wenu_corr_met_hlt_mht_offline->Fill( hlt_mht_met, MET ); // GeV
@@ -4299,7 +4351,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                 h_wenu_cleanBC_emulmet_noelec->Fill( emulMET_noelec ); // GeV
 
                 // Turn-on Curves
-                // Offline MET passing HLT (CELL) thresholds
+                // Offline MET passing HLT (cell) thresholds
                 if (hlt_met > hlt_xe60) {
                   h_wenu_cleanBC_offline_met_pass_hlt_xe60->Fill( MET ); // GeV
                 }
@@ -4373,7 +4425,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                 // Correlation plots
                 // L1 vs Offline MET
                 h_wenu_cleanBC_corr_met_l1_offline->Fill( l1_met, MET ); // GeV
-                // HLT (CELL) vs Offline MET
+                // HLT (cell) vs Offline MET
                 h_wenu_cleanBC_corr_met_hlt_offline->Fill( hlt_met, MET ); // GeV
                 // HLT (mht) vs Offline MET
                 h_wenu_cleanBC_corr_met_hlt_mht_offline->Fill( hlt_mht_met, MET ); // GeV

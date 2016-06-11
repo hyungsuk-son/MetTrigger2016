@@ -279,6 +279,9 @@ public:
     TH1 *h_bcid_pass_hlt_xe80_topocl; //!
     TH1 *h_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
 
+    // mu threshold sutdy
+    TH1 *h_hlt_topocl_met_pass_l1_XE50; //!
+
     // Turn-on Curves
     TH1 *h_offline_met_pass_hlt_xe60; //!
     TH1 *h_offline_met_pass_hlt_xe100; //!
@@ -336,6 +339,11 @@ public:
     TH2 *h_corr_met_hlt_topocl_offline; //!
     TH2 *h_corr_met_hlt_topocl_ps_offline; //!
     TH2 *h_corr_met_hlt_topocl_puc_offline; //!
+    // Asked by Alan
+    TH2 *h_corr_met_l1_hlt; //!
+    TH2 *h_corr_met_hlt_topocl_hlt; //!
+    TH2 *h_corr_met_offline_hlt; //!
+    TH2 *h_corr_met_l1_hlt_topocl; //!
 
 
     // HLT Trigger study
@@ -430,6 +438,9 @@ public:
     TH1 *h_wmunu_bcid_pass_l1_XE50_hlt_xe80_mht; //!
     TH1 *h_wmunu_bcid_pass_hlt_xe80_topocl; //!
     TH1 *h_wmunu_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
+
+    // mu threshold sutdy
+    TH1 *h_wmunu_hlt_topocl_met_pass_l1_XE50; //!
 
     // HLT and Offline MET objects
     TH1 *h_wmunu_l1_met; //!
@@ -593,6 +604,9 @@ public:
     TH1 *h_wenu_bcid_pass_l1_XE50_hlt_xe80_mht; //!
     TH1 *h_wenu_bcid_pass_hlt_xe80_topocl; //!
     TH1 *h_wenu_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
+
+    // mu threshold sutdy
+    TH1 *h_wenu_hlt_topocl_met_pass_l1_XE50; //!
 
     // HLT and Offline MET objects
     TH1 *h_wenu_l1_met; //!
