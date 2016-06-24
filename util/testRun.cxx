@@ -29,7 +29,8 @@ int main( int argc, char* argv[] ) {
   //SH::ScanDir().sampleDepth(1).samplePattern("AOD.05352803._000031.pool.root.1").scan(sh, inputFilePath);
   const char* inputFilePath = gSystem->ExpandPathName ("/cluster/tufts/atlas08/DATA/Run2");
   //SH::ScanDir().filePattern("AOD.06828599._000351.pool.root.1").scan(sh,inputFilePath); // Data15
-  SH::ScanDir().filePattern("AOD.08517453._*.pool.root.1").scan(sh,inputFilePath); // Data16
+  SH::ScanDir().filePattern("data16_13TeV.00301932.physics_Main.merge.AOD.f709_m1611._lb0840._0003.1").scan(sh,inputFilePath); // Data16
+  //SH::ScanDir().filePattern("data15_13TeV.00282992.physics_ZeroBias.merge.AOD.f640_m1511._lb0211-lb0220._0001.1").scan(sh,inputFilePath); // ZeroBias Data15
   //SH::ScanDir().filePattern("DAOD_EXOT5.07992543._000007.pool.root.1").scan(sh,inputFilePath); // MC Zvv
   //SH::ScanDir().filePattern("DAOD_EXOT5.07992459._000012.pool.root.1").scan(sh,inputFilePath); // MC Zmumu
 

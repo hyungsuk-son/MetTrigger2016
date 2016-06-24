@@ -63,11 +63,6 @@
 #include "JetResolution/JERSmearingTool.h"
 #include "JetUncertainties/JetUncertaintiesTool.h"
 
-// CaloCluster
-#include "xAODCaloEvent/CaloCluster.h"
-#include "xAODCaloEvent/CaloClusterContainer.h"
-
-
 // MET builder
 #include "METUtilities/METMaker.h"
 #include "METUtilities/CutsMETMaker.h"
@@ -104,6 +99,9 @@
 #include <TH2.h>
 #include <TH3.h>
 #include <TTree.h>
+#include <string>
+#include <vector>
+#include <map>
 
 // include files for using the trigger tools
 #include "TrigConfxAOD/xAODConfigTool.h"
@@ -129,7 +127,6 @@ public:
     xAOD::TEvent *m_event; //!
     int m_eventCounter; //!
     int m_numCleanEvents; //!
-
     float mcEventWeight; //!
     float mcEventWeight_Zmumu; //!
     float mcEventWeight_Wmunu; //!
@@ -198,11 +195,7 @@ public:
     TH1 *h_act_interaction; //!
 
     TH1 *h_bcid; //!
-    TH1 *h_cleanBC_bcid; //!
-
-    TH1 *h_eventcount; //!
-    TH1 *h_eventcount_pass_L1_XE50; //!
-    TH1 *h_eventcount_pass_HLT_xe80_tc_lcw_L1XE50; //!
+    //TH1 *h_cleanBC_bcid; //!
 
     TH1 *h_l1_mex; //!
     TH1 *h_l1_mey; //!
@@ -240,12 +233,9 @@ public:
     TH1 *h_hlt_topocl_puc_sumet; //!
     TH1 *h_hlt_topocl_puc_phi; //!
 
-    TH1 *h_calocluster_n; //!
-    TH1 *h_calocluster_e; //!
-    TH1 *h_calocluster_eta; //!
-    TH1 *h_calocluster_phi; //!
 
     TH1 *h_jet_selection_pt; //!
+
 
     TH1 *h_met_ex; //!
     TH1 *h_met_ey; //!
@@ -266,21 +256,35 @@ public:
     TH1 *h_emulmet_noelec_phi; //!
 
 
+    std::vector<std::string> m_channelList; //!
+    std::vector<std::string> m_jetList; //!
+    std::vector<std::string> m_hltAlgList; //!
+    std::map<std::string, std::string> m_trigMetContainerName; //
+
+    std::map<std::string, TH1*> m_hist_allhltmex; //!
+    std::map<std::string, TH1*> m_hist_allhltmey; //!
+    std::map<std::string, TH1*> m_hist_allhltmet; //!
+    std::map<std::string, TH1*> m_hist_allhltsumet; //!
+    std::map<std::string, TH1*> m_hist_allhltphi; //!
+
+    std::map<std::string, std::map<std::string, TH1*>> m_hist_l1met; //!
+    std::map<std::string, std::map<std::string, TH1*>> m_hist_offmet; //!
+    std::map<std::string, std::map<std::string, TH1*>> m_hist_offmet_nomu; //!
+    std::map<std::string, std::map<std::string, TH1*>> m_hist_offmet_noelec; //!
+    std::map<std::string, std::map<std::string, TH2*>> m_hist_l1_corr; //!
+    std::map<std::string, std::map<std::string, std::map<std::string, TH1*>>> m_hist_hltmet; //!
+    std::map<std::string, std::map<std::string, std::map<std::string, TH1*>>> m_hist_turnon; //!
+    std::map<std::string, std::map<std::string, std::map<std::string, TH2*>>> m_hist_hlt_corr; //!
+    std::map<std::string, std::map<std::string, std::map<std::string, TH2*>>> m_hist_resol_offsumet; //!
+    std::map<std::string, std::map<std::string, std::map<std::string, TH2*>>> m_hist_resol_hltsumet; //!
+    std::map<std::string, std::map<std::string, std::map<std::string, TH2*>>> m_hist_linearity; //!
+
+
+    /*
     // HLT Trigger study
     //////////////////
     // No selection //
     //////////////////
-
-    // BCID study
-    TH1 *h_bcid_pass_hlt_xe60; //!
-    TH1 *h_bcid_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_bcid_pass_hlt_xe80_mht; //!
-    TH1 *h_bcid_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_bcid_pass_hlt_xe80_topocl; //!
-    TH1 *h_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
-
-    // mu threshold sutdy
-    TH1 *h_hlt_topocl_met_pass_l1_XE50; //!
 
     // Turn-on Curves
     TH1 *h_offline_met_pass_hlt_xe60; //!
@@ -339,108 +343,11 @@ public:
     TH2 *h_corr_met_hlt_topocl_offline; //!
     TH2 *h_corr_met_hlt_topocl_ps_offline; //!
     TH2 *h_corr_met_hlt_topocl_puc_offline; //!
-    // Asked by Alan
-    TH2 *h_corr_met_l1_hlt; //!
-    TH2 *h_corr_met_hlt_topocl_hlt; //!
-    TH2 *h_corr_met_offline_hlt; //!
-    TH2 *h_corr_met_l1_hlt_topocl; //!
-
-
-    // HLT Trigger study
-    // pass cleanBC
-
-    // BCID study
-    TH1 *h_cleanBC_bcid_pass_hlt_xe60; //!
-    TH1 *h_cleanBC_bcid_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_cleanBC_bcid_pass_hlt_xe80_mht; //!
-    TH1 *h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_cleanBC_bcid_pass_hlt_xe80_topocl; //!
-    TH1 *h_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
-
-    // HLT and Offline MET objects
-    TH1 *h_cleanBC_l1_met; //!
-    TH1 *h_cleanBC_hlt_met; //!
-    TH1 *h_cleanBC_hlt_mht_met; //!
-    TH1 *h_cleanBC_hlt_topocl_met; //!
-    TH1 *h_cleanBC_hlt_topocl_ps_met; //!
-    TH1 *h_cleanBC_hlt_topocl_puc_met; //!
-    TH1 *h_cleanBC_met; //!
-    TH1 *h_cleanBC_emulmet_nomu; //!
-    TH1 *h_cleanBC_emulmet_noelec; //!
-
-    // Turn-on Curves
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe60; //!
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe100; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe100; //!
-
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe80_mht; //!
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe120_mht; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht; //!
-
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe80_topocl; //!
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe120_topocl; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl; //!
-
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe80_topocl_ps; //!
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe120_topocl_ps; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps; //!
-
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe80_topocl_puc; //!
-    TH1 *h_cleanBC_offline_met_pass_hlt_xe120_topocl_puc; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc; //!
-    TH1 *h_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc; //!
-
-    // Resolution
-    TH1 *h_cleanBC_hlt_met_vs_offline_met; //!
-    TH1 *h_cleanBC_hlt_mht_met_vs_offline_met; //!
-    TH1 *h_cleanBC_hlt_topocl_met_vs_offline_met; //!
-    TH1 *h_cleanBC_hlt_topocl_ps_met_vs_offline_met; //!
-    TH1 *h_cleanBC_hlt_topocl_puc_met_vs_offline_met; //!
-    TH2 *h_cleanBC_hlt_ex_offline_sumet; //!
-    TH2 *h_cleanBC_hlt_mht_ex_offline_sumet; //!
-    TH2 *h_cleanBC_hlt_topocl_ex_offline_sumet; //!
-    TH2 *h_cleanBC_hlt_topocl_ps_ex_offline_sumet; //!
-    TH2 *h_cleanBC_hlt_topocl_puc_ex_offline_sumet; //!
-    TH2 *h_cleanBC_hlt_ex_hlt_sumet; //!
-    TH2 *h_cleanBC_hlt_mht_ex_hlt_mht_sumet; //!
-    TH2 *h_cleanBC_hlt_topocl_ex_hlt_topocl_sumet; //!
-    TH2 *h_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet; //!
-    TH2 *h_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet; //!
-
-    // Linearily
-    TH2 *h_cleanBC_hlt_lin; //!
-    TH2 *h_cleanBC_hlt_mht_lin; //!
-    TH2 *h_cleanBC_hlt_topocl_lin; //!
-    TH2 *h_cleanBC_hlt_topocl_ps_lin; //!
-    TH2 *h_cleanBC_hlt_topocl_puc_lin; //!
-
-    // Correlation plots
-    TH2 *h_cleanBC_corr_met_l1_offline; //!
-    TH2 *h_cleanBC_corr_met_hlt_offline; //!
-    TH2 *h_cleanBC_corr_met_hlt_mht_offline; //!
-    TH2 *h_cleanBC_corr_met_hlt_topocl_offline; //!
-    TH2 *h_cleanBC_corr_met_hlt_topocl_ps_offline; //!
-    TH2 *h_cleanBC_corr_met_hlt_topocl_puc_offline; //!
 
 
     ///////////////////
     // Wmunu channel //
     ///////////////////
-
-    // BCID study
-    TH1 *h_wmunu_bcid_pass_hlt_xe60; //!
-    TH1 *h_wmunu_bcid_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_wmunu_bcid_pass_hlt_xe80_mht; //!
-    TH1 *h_wmunu_bcid_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_wmunu_bcid_pass_hlt_xe80_topocl; //!
-    TH1 *h_wmunu_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
-
-    // mu threshold sutdy
-    TH1 *h_wmunu_hlt_topocl_met_pass_l1_XE50; //!
 
     // HLT and Offline MET objects
     TH1 *h_wmunu_l1_met; //!
@@ -512,101 +419,9 @@ public:
     TH2 *h_wmunu_corr_met_hlt_topocl_puc_offline; //!
 
 
-    // HLT Trigger study
-    // pass cleanBC
-
-    // BCID study
-    TH1 *h_wmunu_cleanBC_bcid_pass_hlt_xe60; //!
-    TH1 *h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_wmunu_cleanBC_bcid_pass_hlt_xe80_mht; //!
-    TH1 *h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_wmunu_cleanBC_bcid_pass_hlt_xe80_topocl; //!
-    TH1 *h_wmunu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
-
-    // HLT and Offline MET objects
-    TH1 *h_wmunu_cleanBC_l1_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_mht_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_topocl_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_topocl_ps_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_topocl_puc_met; //!
-    TH1 *h_wmunu_cleanBC_met; //!
-    TH1 *h_wmunu_cleanBC_emulmet_nomu; //!
-    TH1 *h_wmunu_cleanBC_emulmet_noelec; //!
-
-    // Turn-on Curves
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe60; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe100; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100; //!
-
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe80_mht; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe120_mht; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht; //!
-
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl; //!
-
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps; //!
-
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc; //!
-    TH1 *h_wmunu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc; //!
-
-    // Resolution
-    TH1 *h_wmunu_cleanBC_hlt_met_vs_offline_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_mht_met_vs_offline_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_topocl_met_vs_offline_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_topocl_ps_met_vs_offline_met; //!
-    TH1 *h_wmunu_cleanBC_hlt_topocl_puc_met_vs_offline_met; //!
-    TH2 *h_wmunu_cleanBC_hlt_ex_offline_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_mht_ex_offline_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_ex_offline_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_ps_ex_offline_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_puc_ex_offline_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_ex_hlt_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_mht_ex_hlt_mht_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet; //!
-
-    // Linearily
-    TH2 *h_wmunu_cleanBC_hlt_lin; //!
-    TH2 *h_wmunu_cleanBC_hlt_mht_lin; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_lin; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_ps_lin; //!
-    TH2 *h_wmunu_cleanBC_hlt_topocl_puc_lin; //!
-
-    // Correlation plots
-    TH2 *h_wmunu_cleanBC_corr_met_l1_offline; //!
-    TH2 *h_wmunu_cleanBC_corr_met_hlt_offline; //!
-    TH2 *h_wmunu_cleanBC_corr_met_hlt_mht_offline; //!
-    TH2 *h_wmunu_cleanBC_corr_met_hlt_topocl_offline; //!
-    TH2 *h_wmunu_cleanBC_corr_met_hlt_topocl_ps_offline; //!
-    TH2 *h_wmunu_cleanBC_corr_met_hlt_topocl_puc_offline; //!
-
-
     //////////////////
     // Wenu channel //
     //////////////////
-
-    // BCID study
-    TH1 *h_wenu_bcid_pass_hlt_xe60; //!
-    TH1 *h_wenu_bcid_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_wenu_bcid_pass_hlt_xe80_mht; //!
-    TH1 *h_wenu_bcid_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_wenu_bcid_pass_hlt_xe80_topocl; //!
-    TH1 *h_wenu_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
-
-    // mu threshold sutdy
-    TH1 *h_wenu_hlt_topocl_met_pass_l1_XE50; //!
 
     // HLT and Offline MET objects
     TH1 *h_wenu_l1_met; //!
@@ -676,96 +491,12 @@ public:
     TH2 *h_wenu_corr_met_hlt_topocl_offline; //!
     TH2 *h_wenu_corr_met_hlt_topocl_ps_offline; //!
     TH2 *h_wenu_corr_met_hlt_topocl_puc_offline; //!
-
-
-    // HLT Trigger study
-    // pass cleanBC
-
-    // BCID study
-    TH1 *h_wenu_cleanBC_bcid_pass_hlt_xe60; //!
-    TH1 *h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_wenu_cleanBC_bcid_pass_hlt_xe80_mht; //!
-    TH1 *h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_wenu_cleanBC_bcid_pass_hlt_xe80_topocl; //!
-    TH1 *h_wenu_cleanBC_bcid_pass_l1_XE50_hlt_xe80_topocl; //!
-
-    // HLT and Offline MET objects
-    TH1 *h_wenu_cleanBC_l1_met; //!
-    TH1 *h_wenu_cleanBC_hlt_met; //!
-    TH1 *h_wenu_cleanBC_hlt_mht_met; //!
-    TH1 *h_wenu_cleanBC_hlt_topocl_met; //!
-    TH1 *h_wenu_cleanBC_hlt_topocl_ps_met; //!
-    TH1 *h_wenu_cleanBC_hlt_topocl_puc_met; //!
-    TH1 *h_wenu_cleanBC_met; //!
-    TH1 *h_wenu_cleanBC_emulmet_nomu; //!
-    TH1 *h_wenu_cleanBC_emulmet_noelec; //!
-
-    // Turn-on Curves
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe60; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe100; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe60; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe100; //!
-
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe80_mht; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe120_mht; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_mht; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_mht; //!
-
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl; //!
-
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_ps; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_ps; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_ps; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_ps; //!
-
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe80_topocl_puc; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_hlt_xe120_topocl_puc; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe80_topocl_puc; //!
-    TH1 *h_wenu_cleanBC_offline_met_pass_l1_XE50_hlt_xe120_topocl_puc; //!
-
-    // Resolution
-    TH1 *h_wenu_cleanBC_hlt_met_vs_offline_met; //!
-    TH1 *h_wenu_cleanBC_hlt_mht_met_vs_offline_met; //!
-    TH1 *h_wenu_cleanBC_hlt_topocl_met_vs_offline_met; //!
-    TH1 *h_wenu_cleanBC_hlt_topocl_ps_met_vs_offline_met; //!
-    TH1 *h_wenu_cleanBC_hlt_topocl_puc_met_vs_offline_met; //!
-    TH2 *h_wenu_cleanBC_hlt_ex_offline_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_mht_ex_offline_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_ex_offline_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_ps_ex_offline_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_puc_ex_offline_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_ex_hlt_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_mht_ex_hlt_mht_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_ex_hlt_topocl_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_ps_ex_hlt_topocl_ps_sumet; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_puc_ex_hlt_topocl_puc_sumet; //!
-
-    // Linearily
-    TH2 *h_wenu_cleanBC_hlt_lin; //!
-    TH2 *h_wenu_cleanBC_hlt_mht_lin; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_lin; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_ps_lin; //!
-    TH2 *h_wenu_cleanBC_hlt_topocl_puc_lin; //!
-
-    // Correlation plots
-    TH2 *h_wenu_cleanBC_corr_met_l1_offline; //!
-    TH2 *h_wenu_cleanBC_corr_met_hlt_offline; //!
-    TH2 *h_wenu_cleanBC_corr_met_hlt_mht_offline; //!
-    TH2 *h_wenu_cleanBC_corr_met_hlt_topocl_offline; //!
-    TH2 *h_wenu_cleanBC_corr_met_hlt_topocl_ps_offline; //!
-    TH2 *h_wenu_cleanBC_corr_met_hlt_topocl_puc_offline; //!
-
-
-
-
+*/
 
 
 
     // Zinv study
-    TH1 *h_zvv_offline_met; //!
+    //TH1 *h_zvv_offline_met; //!
 
 
     // trigger tools member variables
