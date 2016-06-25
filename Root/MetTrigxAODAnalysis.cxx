@@ -2293,6 +2293,7 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
     }
   }
 
+
   //---------------------------------
   // W -> munu + JET EVENT SELECTION
   //---------------------------------
@@ -2437,360 +2438,360 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                   for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
                     hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
                   }
-
-                  if ( m_signalJet->size() == 1 && signalJet_ht >= 60. ) {
-
-                    //////////////////////////////////////////////////////////////
-                    // MET Trigger Performance study (wmunu, Njet=1, pT>=60GeV) //
-                    //////////////////////////////////////////////////////////////
-                    std::string m_list_channel = "wmunu";
-                    std::string m_list_jet = "1jet_ht60";
-
-                    // L1 MET
-                    m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                    // Offline MET
-                    m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                    m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                    m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                    // Correlation plot (L1 vs Offline MET)
-                    m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                    // HLT MET objects
-                    for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                    }
-                    // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                    for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                      if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                        hltAlg.second->Fill( emulMET_nomu );
-                      }
-                    }
-                    // Correlation plots (HLT MET vs Offline MET)
-                    for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                    }
-                    // MET Resolution (HLT MEx vs Offline SumET)
-                    for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                    }
-                    // MET Resolution (HLT MEx vs HLT SumET)
-                    for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                    }
-                    // Linearity
-                    for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                    }
-
-                    if ( m_signalJet->size() == 1 && signalJet_ht >= 90. ) {
-
-                      //////////////////////////////////////////////////////////////
-                      // MET Trigger Performance study (wmunu, Njet=1, pT>=90GeV) //
-                      //////////////////////////////////////////////////////////////
-                      std::string m_list_channel = "wmunu";
-                      std::string m_list_jet = "1jet_ht90";
-
-                      // L1 MET
-                      m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                      // Offline MET
-                      m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                      m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                      m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                      // Correlation plot (L1 vs Offline MET)
-                      m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                      // HLT MET objects
-                      for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                      }
-                      // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                      for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                        if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                          hltAlg.second->Fill( emulMET_nomu );
-                        }
-                      }
-                      // Correlation plots (HLT MET vs Offline MET)
-                      for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                      }
-                      // MET Resolution (HLT MEx vs Offline SumET)
-                      for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                      }
-                      // MET Resolution (HLT MEx vs HLT SumET)
-                      for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                      }
-                      // Linearity
-                      for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                      }
-
-                      if ( m_signalJet->size() == 2 && signalJet_ht >= 60. ) {
-
-                        //////////////////////////////////////////////////////////////
-                        // MET Trigger Performance study (wmunu, Njet=2, HT>=60GeV) //
-                        //////////////////////////////////////////////////////////////
-                        std::string m_list_channel = "wmunu";
-                        std::string m_list_jet = "2jet_ht60";
-
-                        // L1 MET
-                        m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                        // Offline MET
-                        m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                        m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                        m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                        // Correlation plot (L1 vs Offline MET)
-                        m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                        // HLT MET objects
-                        for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                        }
-                        // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                        for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                          if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                            hltAlg.second->Fill( emulMET_nomu );
-                          }
-                        }
-                        // Correlation plots (HLT MET vs Offline MET)
-                        for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                        }
-                        // MET Resolution (HLT MEx vs Offline SumET)
-                        for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                        }
-                        // MET Resolution (HLT MEx vs HLT SumET)
-                        for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                        }
-                        // Linearity
-                        for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                        }
-
-                        if ( m_signalJet->size() == 2 && signalJet_ht >= 100. ) {
-
-                          ///////////////////////////////////////////////////////////////
-                          // MET Trigger Performance study (wmunu, Njet=2, HT>=100GeV) //
-                          ///////////////////////////////////////////////////////////////
-                          std::string m_list_channel = "wmunu";
-                          std::string m_list_jet = "2jet_ht100";
-
-                          // L1 MET
-                          m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                          // Offline MET
-                          m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                          m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                          m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                          // Correlation plot (L1 vs Offline MET)
-                          m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                          // HLT MET objects
-                          for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                          }
-                          // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                          for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                            if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                              hltAlg.second->Fill( emulMET_nomu );
-                            }
-                          }
-                          // Correlation plots (HLT MET vs Offline MET)
-                          for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                          }
-                          // MET Resolution (HLT MEx vs Offline SumET)
-                          for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                          }
-                          // MET Resolution (HLT MEx vs HLT SumET)
-                          for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                          }
-                          // Linearity
-                          for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                          }
-
-                          if ( m_signalJet->size() == 2 && signalJet_ht >= 200. ) {
-
-                            ///////////////////////////////////////////////////////////////
-                            // MET Trigger Performance study (wmunu, Njet=2, HT>=200GeV) //
-                            ///////////////////////////////////////////////////////////////
-                            std::string m_list_channel = "wmunu";
-                            std::string m_list_jet = "2jet_ht200";
-
-                            // L1 MET
-                            m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                            // Offline MET
-                            m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                            m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                            m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                            // Correlation plot (L1 vs Offline MET)
-                            m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                            // HLT MET objects
-                            for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                            }
-                            // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                            for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                              if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                hltAlg.second->Fill( emulMET_nomu );
-                              }
-                            }
-                            // Correlation plots (HLT MET vs Offline MET)
-                            for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                            }
-                            // MET Resolution (HLT MEx vs Offline SumET)
-                            for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                            }
-                            // MET Resolution (HLT MEx vs HLT SumET)
-                            for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                            }
-                            // Linearity
-                            for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                            }
-
-                            if ( m_signalJet->size() >= 4 && signalJet_ht >= 100. ) {
-
-                              ////////////////////////////////////////////////////////////////
-                              // MET Trigger Performance study (wmunu, Njet>=4, HT>=100GeV) //
-                              ////////////////////////////////////////////////////////////////
-                              std::string m_list_channel = "wmunu";
-                              std::string m_list_jet = "4jet_ht100";
-
-                              // L1 MET
-                              m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                              // Offline MET
-                              m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                              m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                              m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                              // Correlation plot (L1 vs Offline MET)
-                              m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                              // HLT MET objects
-                              for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                              }
-                              // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                              for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                  hltAlg.second->Fill( emulMET_nomu );
-                                }
-                              }
-                              // Correlation plots (HLT MET vs Offline MET)
-                              for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                              }
-                              // MET Resolution (HLT MEx vs Offline SumET)
-                              for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                              }
-                              // MET Resolution (HLT MEx vs HLT SumET)
-                              for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                              }
-                              // Linearity
-                              for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                              }
-
-                              if ( m_signalJet->size() >= 4 && signalJet_ht >= 200. ) {
-
-                                ////////////////////////////////////////////////////////////////
-                                // MET Trigger Performance study (wmunu, Njet>=4, HT>=200GeV) //
-                                ////////////////////////////////////////////////////////////////
-                                std::string m_list_channel = "wmunu";
-                                std::string m_list_jet = "4jet_ht200";
-
-                                // L1 MET
-                                m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                                // Offline MET
-                                m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                                m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                                m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                                // Correlation plot (L1 vs Offline MET)
-                                m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                                // HLT MET objects
-                                for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                                }
-                                // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                                for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                  if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                    hltAlg.second->Fill( emulMET_nomu );
-                                  }
-                                }
-                                // Correlation plots (HLT MET vs Offline MET)
-                                for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                                }
-                                // MET Resolution (HLT MEx vs Offline SumET)
-                                for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                                }
-                                // MET Resolution (HLT MEx vs HLT SumET)
-                                for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                                }
-                                // Linearity
-                                for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                                }
-
-                                if ( m_signalJet->size() >= 4 && signalJet_ht >= 500. ) {
-
-                                  ////////////////////////////////////////////////////////////////
-                                  // MET Trigger Performance study (wmunu, Njet>=4, HT>=500GeV) //
-                                  ////////////////////////////////////////////////////////////////
-                                  std::string m_list_channel = "wmunu";
-                                  std::string m_list_jet = "4jet_ht500";
-
-                                  // L1 MET
-                                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                                  // Offline MET
-                                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                                  // Correlation plot (L1 vs Offline MET)
-                                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                                  // HLT MET objects
-                                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                                  }
-                                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                      hltAlg.second->Fill( emulMET_nomu );
-                                    }
-                                  }
-                                  // Correlation plots (HLT MET vs Offline MET)
-                                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                                  }
-                                  // MET Resolution (HLT MEx vs Offline SumET)
-                                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                                  }
-                                  // MET Resolution (HLT MEx vs HLT SumET)
-                                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                                  }
-                                  // Linearity
-                                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                                  }
-
-                                } // 4jet_ht500
-                              } // 4jet_ht200
-                            } // 4jet_ht100
-                          } // 2jet_ht200
-                        } // 2jet_ht100
-                      } // 2jet_ht60
-                    } // 1jet_ht90
-                  } // 1jet_ht60
                 } // 1jet_ht30
+
+                if ( m_signalJet->size() == 1 && signalJet_ht >= 60. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wmunu, Njet=1, pT>=60GeV) //
+                  //////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "wmunu";
+                  std::string m_list_jet = "1jet_ht60";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 1jet_ht60
+
+                if ( m_signalJet->size() == 1 && signalJet_ht >= 90. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wmunu, Njet=1, pT>=90GeV) //
+                  //////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "wmunu";
+                  std::string m_list_jet = "1jet_ht90";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 1jet_ht90
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 60. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wmunu, Njet=2, HT>=60GeV) //
+                  //////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "wmunu";
+                  std::string m_list_jet = "2jet_ht60";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 2jet_ht60
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 100. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wmunu, Njet=2, HT>=100GeV) //
+                  ///////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "wmunu";
+                  std::string m_list_jet = "2jet_ht100";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 2jet_ht100
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 200. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wmunu, Njet=2, HT>=200GeV) //
+                  ///////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "wmunu";
+                  std::string m_list_jet = "2jet_ht200";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 2jet_ht200
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 100. ) {
+
+                  ////////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wmunu, Njet>=4, HT>=100GeV) //
+                  ////////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "wmunu";
+                  std::string m_list_jet = "4jet_ht100";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 4jet_ht100
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 200. ) {
+
+                  ////////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wmunu, Njet>=4, HT>=200GeV) //
+                  ////////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "wmunu";
+                  std::string m_list_jet = "4jet_ht200";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 4jet_ht200
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 500. ) {
+
+                  ////////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wmunu, Njet>=4, HT>=500GeV) //
+                  ////////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "wmunu";
+                  std::string m_list_jet = "4jet_ht500";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 4jet_ht500
+
               } // Njet>=1
             } //backjet
           }
@@ -2950,376 +2951,376 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                   for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
                     hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
                   }
-
-                  if ( m_signalJet->size() == 1 && signalJet_ht >= 60. ) {
-
-                    /////////////////////////////////////////////////////////////
-                    // MET Trigger Performance study (wenu, Njet=1, pT>=60GeV) //
-                    /////////////////////////////////////////////////////////////
-
-                    std::string m_list_channel = "wenu";
-                    std::string m_list_jet = "1jet_ht60";
-
-                    // L1 MET
-                    m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                    // Offline MET
-                    m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                    m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                    m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                    // Correlation plot (L1 vs Offline MET)
-                    m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                    // HLT MET objects
-                    for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                    }
-                    // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                    for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                      if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                        //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                        hltAlg.second->Fill( MET );
-                      }
-                    }
-                    // Correlation plots (HLT MET vs Offline MET)
-                    for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                    }
-                    // MET Resolution (HLT MEx vs Offline SumET)
-                    for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                    }
-                    // MET Resolution (HLT MEx vs HLT SumET)
-                    for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                    }
-                    // Linearity
-                    for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                    }
-
-                    if ( m_signalJet->size() == 1 && signalJet_ht >= 90. ) {
-
-                      /////////////////////////////////////////////////////////////
-                      // MET Trigger Performance study (wenu, Njet=1, pT>=90GeV) //
-                      /////////////////////////////////////////////////////////////
-
-                      std::string m_list_channel = "wenu";
-                      std::string m_list_jet = "1jet_ht90";
-
-                      // L1 MET
-                      m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                      // Offline MET
-                      m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                      m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                      m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                      // Correlation plot (L1 vs Offline MET)
-                      m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                      // HLT MET objects
-                      for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                      }
-                      // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                      for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                        if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                          //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                          hltAlg.second->Fill( MET );
-                        }
-                      }
-                      // Correlation plots (HLT MET vs Offline MET)
-                      for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                      }
-                      // MET Resolution (HLT MEx vs Offline SumET)
-                      for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                      }
-                      // MET Resolution (HLT MEx vs HLT SumET)
-                      for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                      }
-                      // Linearity
-                      for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                      }
-
-                      if ( m_signalJet->size() == 2 && signalJet_ht >= 60. ) {
-
-                        /////////////////////////////////////////////////////////////
-                        // MET Trigger Performance study (wenu, Njet=2, HT>=60GeV) //
-                        /////////////////////////////////////////////////////////////
-
-                        std::string m_list_channel = "wenu";
-                        std::string m_list_jet = "2jet_ht60";
-
-                        // L1 MET
-                        m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                        // Offline MET
-                        m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                        m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                        m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                        // Correlation plot (L1 vs Offline MET)
-                        m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                        // HLT MET objects
-                        for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                        }
-                        // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                        for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                          if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                            //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                            hltAlg.second->Fill( MET );
-                          }
-                        }
-                        // Correlation plots (HLT MET vs Offline MET)
-                        for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                        }
-                        // MET Resolution (HLT MEx vs Offline SumET)
-                        for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                        }
-                        // MET Resolution (HLT MEx vs HLT SumET)
-                        for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                        }
-                        // Linearity
-                        for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                        }
-
-                        if ( m_signalJet->size() == 2 && signalJet_ht >= 100. ) {
-
-                          //////////////////////////////////////////////////////////////
-                          // MET Trigger Performance study (wenu, Njet=2, HT>=100GeV) //
-                          //////////////////////////////////////////////////////////////
-
-                          std::string m_list_channel = "wenu";
-                          std::string m_list_jet = "2jet_ht100";
-
-                          // L1 MET
-                          m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                          // Offline MET
-                          m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                          m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                          m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                          // Correlation plot (L1 vs Offline MET)
-                          m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                          // HLT MET objects
-                          for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                          }
-                          // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                          for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                            if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                              //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                              hltAlg.second->Fill( MET );
-                            }
-                          }
-                          // Correlation plots (HLT MET vs Offline MET)
-                          for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                          }
-                          // MET Resolution (HLT MEx vs Offline SumET)
-                          for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                          }
-                          // MET Resolution (HLT MEx vs HLT SumET)
-                          for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                          }
-                          // Linearity
-                          for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                          }
-
-                          if ( m_signalJet->size() == 2 && signalJet_ht >= 200. ) {
-
-                            //////////////////////////////////////////////////////////////
-                            // MET Trigger Performance study (wenu, Njet=2, HT>=200GeV) //
-                            //////////////////////////////////////////////////////////////
-
-                            std::string m_list_channel = "wenu";
-                            std::string m_list_jet = "2jet_ht200";
-
-                            // L1 MET
-                            m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                            // Offline MET
-                            m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                            m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                            m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                            // Correlation plot (L1 vs Offline MET)
-                            m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                            // HLT MET objects
-                            for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                            }
-                            // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                            for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                              if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                                hltAlg.second->Fill( MET );
-                              }
-                            }
-                            // Correlation plots (HLT MET vs Offline MET)
-                            for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                            }
-                            // MET Resolution (HLT MEx vs Offline SumET)
-                            for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                            }
-                            // MET Resolution (HLT MEx vs HLT SumET)
-                            for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                            }
-                            // Linearity
-                            for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                            }
-
-                            if ( m_signalJet->size() >= 4 && signalJet_ht >= 100. ) {
-
-                              ///////////////////////////////////////////////////////////////
-                              // MET Trigger Performance study (wenu, Njet>=4, HT>=100GeV) //
-                              ///////////////////////////////////////////////////////////////
-
-                              std::string m_list_channel = "wenu";
-                              std::string m_list_jet = "4jet_ht100";
-
-                              // L1 MET
-                              m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                              // Offline MET
-                              m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                              m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                              m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                              // Correlation plot (L1 vs Offline MET)
-                              m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                              // HLT MET objects
-                              for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                              }
-                              // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                              for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                  //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                                  hltAlg.second->Fill( MET );
-                                }
-                              }
-                              // Correlation plots (HLT MET vs Offline MET)
-                              for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                              }
-                              // MET Resolution (HLT MEx vs Offline SumET)
-                              for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                              }
-                              // MET Resolution (HLT MEx vs HLT SumET)
-                              for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                              }
-                              // Linearity
-                              for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                              }
-
-                              if ( m_signalJet->size() >= 4 && signalJet_ht >= 200. ) {
-
-                                ///////////////////////////////////////////////////////////////
-                                // MET Trigger Performance study (wenu, Njet>=4, HT>=200GeV) //
-                                ///////////////////////////////////////////////////////////////
-
-                                std::string m_list_channel = "wenu";
-                                std::string m_list_jet = "4jet_ht200";
-
-                                // L1 MET
-                                m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                                // Offline MET
-                                m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                                m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                                m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                                // Correlation plot (L1 vs Offline MET)
-                                m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                                // HLT MET objects
-                                for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                                }
-                                // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                                for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                  if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                    //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                                    hltAlg.second->Fill( MET );
-                                  }
-                                }
-                                // Correlation plots (HLT MET vs Offline MET)
-                                for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                                }
-                                // MET Resolution (HLT MEx vs Offline SumET)
-                                for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                                }
-                                // MET Resolution (HLT MEx vs HLT SumET)
-                                for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                                }
-                                // Linearity
-                                for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                                }
-
-                                if ( m_signalJet->size() >= 4 && signalJet_ht >= 500. ) {
-
-                                  ///////////////////////////////////////////////////////////////
-                                  // MET Trigger Performance study (wenu, Njet>=4, HT>=500GeV) //
-                                  ///////////////////////////////////////////////////////////////
-
-                                  std::string m_list_channel = "wenu";
-                                  std::string m_list_jet = "4jet_ht500";
-
-                                  // L1 MET
-                                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                                  // Offline MET
-                                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                                  // Correlation plot (L1 vs Offline MET)
-                                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                                  // HLT MET objects
-                                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                                  }
-                                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                                      hltAlg.second->Fill( MET );
-                                    }
-                                  }
-                                  // Correlation plots (HLT MET vs Offline MET)
-                                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                                  }
-                                  // MET Resolution (HLT MEx vs Offline SumET)
-                                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                                  }
-                                  // MET Resolution (HLT MEx vs HLT SumET)
-                                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                                  }
-                                  // Linearity
-                                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                                  }
-
-                                } // 4jet_ht500
-                              } // 4jet_ht200
-                            } // 4jet_ht100
-                          } // 2jet_ht200
-                        } // 2jet_ht100
-                      } // 2jet_ht60
-                    } // 1jet_ht90
-                  } // 1jet_ht60
                 } // 1jet_ht30
+
+                if ( m_signalJet->size() == 1 && signalJet_ht >= 60. ) {
+
+                  /////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wenu, Njet=1, pT>=60GeV) //
+                  /////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "wenu";
+                  std::string m_list_jet = "1jet_ht60";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 1jet_ht60
+
+                if ( m_signalJet->size() == 1 && signalJet_ht >= 90. ) {
+
+                  /////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wenu, Njet=1, pT>=90GeV) //
+                  /////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "wenu";
+                  std::string m_list_jet = "1jet_ht90";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 1jet_ht90
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 60. ) {
+
+                  /////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wenu, Njet=2, HT>=60GeV) //
+                  /////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "wenu";
+                  std::string m_list_jet = "2jet_ht60";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 2jet_ht60
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 100. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wenu, Njet=2, HT>=100GeV) //
+                  //////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "wenu";
+                  std::string m_list_jet = "2jet_ht100";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 2jet_ht100
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 200. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wenu, Njet=2, HT>=200GeV) //
+                  //////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "wenu";
+                  std::string m_list_jet = "2jet_ht200";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 2jet_ht200
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 100. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wenu, Njet>=4, HT>=100GeV) //
+                  ///////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "wenu";
+                  std::string m_list_jet = "4jet_ht100";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 4jet_ht100
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 200. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wenu, Njet>=4, HT>=200GeV) //
+                  ///////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "wenu";
+                  std::string m_list_jet = "4jet_ht200";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 4jet_ht200
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 500. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (wenu, Njet>=4, HT>=500GeV) //
+                  ///////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "wenu";
+                  std::string m_list_jet = "4jet_ht500";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 4jet_ht500
+
               } // jets
             } // backjet
           }
@@ -3474,360 +3475,360 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                   for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
                     hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
                   }
-
-                  if ( m_signalJet->size() == 1 && signalJet_ht >= 60. ) {
-
-                    //////////////////////////////////////////////////////////////
-                    // MET Trigger Performance study (zmumu, Njet=1, pT>=60GeV) //
-                    //////////////////////////////////////////////////////////////
-                    std::string m_list_channel = "zmumu";
-                    std::string m_list_jet = "1jet_ht60";
-
-                    // L1 MET
-                    m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                    // Offline MET
-                    m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                    m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                    m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                    // Correlation plot (L1 vs Offline MET)
-                    m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                    // HLT MET objects
-                    for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                    }
-                    // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                    for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                      if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                        hltAlg.second->Fill( emulMET_nomu );
-                      }
-                    }
-                    // Correlation plots (HLT MET vs Offline MET)
-                    for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                    }
-                    // MET Resolution (HLT MEx vs Offline SumET)
-                    for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                    }
-                    // MET Resolution (HLT MEx vs HLT SumET)
-                    for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                    }
-                    // Linearity
-                    for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                    }
-
-                    if ( m_signalJet->size() == 1 && signalJet_ht >= 90. ) {
-
-                      //////////////////////////////////////////////////////////////
-                      // MET Trigger Performance study (zmumu, Njet=1, pT>=90GeV) //
-                      //////////////////////////////////////////////////////////////
-                      std::string m_list_channel = "zmumu";
-                      std::string m_list_jet = "1jet_ht90";
-
-                      // L1 MET
-                      m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                      // Offline MET
-                      m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                      m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                      m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                      // Correlation plot (L1 vs Offline MET)
-                      m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                      // HLT MET objects
-                      for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                      }
-                      // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                      for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                        if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                          hltAlg.second->Fill( emulMET_nomu );
-                        }
-                      }
-                      // Correlation plots (HLT MET vs Offline MET)
-                      for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                      }
-                      // MET Resolution (HLT MEx vs Offline SumET)
-                      for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                      }
-                      // MET Resolution (HLT MEx vs HLT SumET)
-                      for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                      }
-                      // Linearity
-                      for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                      }
-
-                      if ( m_signalJet->size() == 2 && signalJet_ht >= 60. ) {
-
-                        //////////////////////////////////////////////////////////////
-                        // MET Trigger Performance study (zmumu, Njet=2, HT>=60GeV) //
-                        //////////////////////////////////////////////////////////////
-                        std::string m_list_channel = "zmumu";
-                        std::string m_list_jet = "2jet_ht60";
-
-                        // L1 MET
-                        m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                        // Offline MET
-                        m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                        m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                        m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                        // Correlation plot (L1 vs Offline MET)
-                        m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                        // HLT MET objects
-                        for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                        }
-                        // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                        for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                          if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                            hltAlg.second->Fill( emulMET_nomu );
-                          }
-                        }
-                        // Correlation plots (HLT MET vs Offline MET)
-                        for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                        }
-                        // MET Resolution (HLT MEx vs Offline SumET)
-                        for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                        }
-                        // MET Resolution (HLT MEx vs HLT SumET)
-                        for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                        }
-                        // Linearity
-                        for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                        }
-
-                        if ( m_signalJet->size() == 2 && signalJet_ht >= 100. ) {
-
-                          ///////////////////////////////////////////////////////////////
-                          // MET Trigger Performance study (zmumu, Njet=2, HT>=100GeV) //
-                          ///////////////////////////////////////////////////////////////
-                          std::string m_list_channel = "zmumu";
-                          std::string m_list_jet = "2jet_ht100";
-
-                          // L1 MET
-                          m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                          // Offline MET
-                          m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                          m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                          m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                          // Correlation plot (L1 vs Offline MET)
-                          m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                          // HLT MET objects
-                          for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                          }
-                          // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                          for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                            if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                              hltAlg.second->Fill( emulMET_nomu );
-                            }
-                          }
-                          // Correlation plots (HLT MET vs Offline MET)
-                          for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                          }
-                          // MET Resolution (HLT MEx vs Offline SumET)
-                          for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                          }
-                          // MET Resolution (HLT MEx vs HLT SumET)
-                          for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                          }
-                          // Linearity
-                          for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                          }
-
-                          if ( m_signalJet->size() == 2 && signalJet_ht >= 200. ) {
-
-                            ///////////////////////////////////////////////////////////////
-                            // MET Trigger Performance study (zmumu, Njet=2, HT>=200GeV) //
-                            ///////////////////////////////////////////////////////////////
-                            std::string m_list_channel = "zmumu";
-                            std::string m_list_jet = "2jet_ht200";
-
-                            // L1 MET
-                            m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                            // Offline MET
-                            m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                            m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                            m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                            // Correlation plot (L1 vs Offline MET)
-                            m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                            // HLT MET objects
-                            for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                            }
-                            // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                            for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                              if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                hltAlg.second->Fill( emulMET_nomu );
-                              }
-                            }
-                            // Correlation plots (HLT MET vs Offline MET)
-                            for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                            }
-                            // MET Resolution (HLT MEx vs Offline SumET)
-                            for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                            }
-                            // MET Resolution (HLT MEx vs HLT SumET)
-                            for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                            }
-                            // Linearity
-                            for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                            }
-
-                            if ( m_signalJet->size() >= 4 && signalJet_ht >= 100. ) {
-
-                              ////////////////////////////////////////////////////////////////
-                              // MET Trigger Performance study (zmumu, Njet>=4, HT>=100GeV) //
-                              ////////////////////////////////////////////////////////////////
-                              std::string m_list_channel = "zmumu";
-                              std::string m_list_jet = "4jet_ht100";
-
-                              // L1 MET
-                              m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                              // Offline MET
-                              m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                              m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                              m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                              // Correlation plot (L1 vs Offline MET)
-                              m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                              // HLT MET objects
-                              for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                              }
-                              // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                              for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                  hltAlg.second->Fill( emulMET_nomu );
-                                }
-                              }
-                              // Correlation plots (HLT MET vs Offline MET)
-                              for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                              }
-                              // MET Resolution (HLT MEx vs Offline SumET)
-                              for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                              }
-                              // MET Resolution (HLT MEx vs HLT SumET)
-                              for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                              }
-                              // Linearity
-                              for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                              }
-
-                              if ( m_signalJet->size() >= 4 && signalJet_ht >= 200. ) {
-
-                                ////////////////////////////////////////////////////////////////
-                                // MET Trigger Performance study (zmumu, Njet>=4, HT>=200GeV) //
-                                ////////////////////////////////////////////////////////////////
-                                std::string m_list_channel = "zmumu";
-                                std::string m_list_jet = "4jet_ht200";
-
-                                // L1 MET
-                                m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                                // Offline MET
-                                m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                                m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                                m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                                // Correlation plot (L1 vs Offline MET)
-                                m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                                // HLT MET objects
-                                for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                                }
-                                // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                                for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                  if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                    hltAlg.second->Fill( emulMET_nomu );
-                                  }
-                                }
-                                // Correlation plots (HLT MET vs Offline MET)
-                                for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                                }
-                                // MET Resolution (HLT MEx vs Offline SumET)
-                                for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                                }
-                                // MET Resolution (HLT MEx vs HLT SumET)
-                                for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                                }
-                                // Linearity
-                                for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                                }
-
-                                if ( m_signalJet->size() >= 4 && signalJet_ht >= 500. ) {
-
-                                  ////////////////////////////////////////////////////////////////
-                                  // MET Trigger Performance study (zmumu, Njet>=4, HT>=500GeV) //
-                                  ////////////////////////////////////////////////////////////////
-                                  std::string m_list_channel = "zmumu";
-                                  std::string m_list_jet = "4jet_ht500";
-
-                                  // L1 MET
-                                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                                  // Offline MET
-                                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                                  // Correlation plot (L1 vs Offline MET)
-                                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
-                                  // HLT MET objects
-                                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                                  }
-                                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                      hltAlg.second->Fill( emulMET_nomu );
-                                    }
-                                  }
-                                  // Correlation plots (HLT MET vs Offline MET)
-                                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
-                                  }
-                                  // MET Resolution (HLT MEx vs Offline SumET)
-                                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
-                                  }
-                                  // MET Resolution (HLT MEx vs HLT SumET)
-                                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                                  }
-                                  // Linearity
-                                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
-                                  }
-
-                                } // 4jet_ht500
-                              } // 4jet_ht200
-                            } // 4jet_ht100
-                          } // 2jet_ht200
-                        } // 2jet_ht100
-                      } // 2jet_ht60
-                    } // 1jet_ht90
-                  } // 1jet_ht60
                 } // 1jet_ht30
+
+                if ( m_signalJet->size() == 1 && signalJet_ht >= 60. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zmumu, Njet=1, pT>=60GeV) //
+                  //////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "zmumu";
+                  std::string m_list_jet = "1jet_ht60";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 1jet_ht60
+
+                if ( m_signalJet->size() == 1 && signalJet_ht >= 90. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zmumu, Njet=1, pT>=90GeV) //
+                  //////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "zmumu";
+                  std::string m_list_jet = "1jet_ht90";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 1jet_ht90
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 60. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zmumu, Njet=2, HT>=60GeV) //
+                  //////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "zmumu";
+                  std::string m_list_jet = "2jet_ht60";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 2jet_ht60
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 100. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zmumu, Njet=2, HT>=100GeV) //
+                  ///////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "zmumu";
+                  std::string m_list_jet = "2jet_ht100";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 2jet_ht100
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 200. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zmumu, Njet=2, HT>=200GeV) //
+                  ///////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "zmumu";
+                  std::string m_list_jet = "2jet_ht200";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 2jet_ht200
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 100. ) {
+
+                  ////////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zmumu, Njet>=4, HT>=100GeV) //
+                  ////////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "zmumu";
+                  std::string m_list_jet = "4jet_ht100";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 4jet_ht100
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 200. ) {
+
+                  ////////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zmumu, Njet>=4, HT>=200GeV) //
+                  ////////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "zmumu";
+                  std::string m_list_jet = "4jet_ht200";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 4jet_ht200
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 500. ) {
+
+                  ////////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zmumu, Njet>=4, HT>=500GeV) //
+                  ////////////////////////////////////////////////////////////////
+                  std::string m_list_channel = "zmumu";
+                  std::string m_list_jet = "4jet_ht500";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, emulMET_nomu);
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      hltAlg.second->Fill( emulMET_nomu );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), emulMET_nomu );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulSumET_nomu, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( emulMET_nomu, m_hlt_met.at(hltAlg.first)/emulMET_nomu );
+                  }
+                } // 4jet_ht500
+
               } // Njet>=1
             } //backjet
           } // Tau veto
@@ -3987,376 +3988,376 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
                   for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
                     hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
                   }
-
-                  if ( m_signalJet->size() == 1 && signalJet_ht >= 60. ) {
-
-                    /////////////////////////////////////////////////////////////
-                    // MET Trigger Performance study (zee, Njet=1, pT>=60GeV) //
-                    /////////////////////////////////////////////////////////////
-
-                    std::string m_list_channel = "zee";
-                    std::string m_list_jet = "1jet_ht60";
-
-                    // L1 MET
-                    m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                    // Offline MET
-                    m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                    m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                    m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                    // Correlation plot (L1 vs Offline MET)
-                    m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                    // HLT MET objects
-                    for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                    }
-                    // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                    for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                      if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                        //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                        hltAlg.second->Fill( MET );
-                      }
-                    }
-                    // Correlation plots (HLT MET vs Offline MET)
-                    for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                    }
-                    // MET Resolution (HLT MEx vs Offline SumET)
-                    for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                    }
-                    // MET Resolution (HLT MEx vs HLT SumET)
-                    for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                    }
-                    // Linearity
-                    for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                      hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                    }
-
-                    if ( m_signalJet->size() == 1 && signalJet_ht >= 90. ) {
-
-                      /////////////////////////////////////////////////////////////
-                      // MET Trigger Performance study (zee, Njet=1, pT>=90GeV) //
-                      /////////////////////////////////////////////////////////////
-
-                      std::string m_list_channel = "zee";
-                      std::string m_list_jet = "1jet_ht90";
-
-                      // L1 MET
-                      m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                      // Offline MET
-                      m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                      m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                      m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                      // Correlation plot (L1 vs Offline MET)
-                      m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                      // HLT MET objects
-                      for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                      }
-                      // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                      for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                        if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                          //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                          hltAlg.second->Fill( MET );
-                        }
-                      }
-                      // Correlation plots (HLT MET vs Offline MET)
-                      for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                      }
-                      // MET Resolution (HLT MEx vs Offline SumET)
-                      for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                      }
-                      // MET Resolution (HLT MEx vs HLT SumET)
-                      for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                      }
-                      // Linearity
-                      for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                        hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                      }
-
-                      if ( m_signalJet->size() == 2 && signalJet_ht >= 60. ) {
-
-                        /////////////////////////////////////////////////////////////
-                        // MET Trigger Performance study (zee, Njet=2, HT>=60GeV) //
-                        /////////////////////////////////////////////////////////////
-
-                        std::string m_list_channel = "zee";
-                        std::string m_list_jet = "2jet_ht60";
-
-                        // L1 MET
-                        m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                        // Offline MET
-                        m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                        m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                        m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                        // Correlation plot (L1 vs Offline MET)
-                        m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                        // HLT MET objects
-                        for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                        }
-                        // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                        for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                          if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                            //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                            hltAlg.second->Fill( MET );
-                          }
-                        }
-                        // Correlation plots (HLT MET vs Offline MET)
-                        for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                        }
-                        // MET Resolution (HLT MEx vs Offline SumET)
-                        for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                        }
-                        // MET Resolution (HLT MEx vs HLT SumET)
-                        for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                        }
-                        // Linearity
-                        for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                          hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                        }
-
-                        if ( m_signalJet->size() == 2 && signalJet_ht >= 100. ) {
-
-                          //////////////////////////////////////////////////////////////
-                          // MET Trigger Performance study (zee, Njet=2, HT>=100GeV) //
-                          //////////////////////////////////////////////////////////////
-
-                          std::string m_list_channel = "zee";
-                          std::string m_list_jet = "2jet_ht100";
-
-                          // L1 MET
-                          m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                          // Offline MET
-                          m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                          m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                          m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                          // Correlation plot (L1 vs Offline MET)
-                          m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                          // HLT MET objects
-                          for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                          }
-                          // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                          for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                            if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                              //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                              hltAlg.second->Fill( MET );
-                            }
-                          }
-                          // Correlation plots (HLT MET vs Offline MET)
-                          for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                          }
-                          // MET Resolution (HLT MEx vs Offline SumET)
-                          for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                          }
-                          // MET Resolution (HLT MEx vs HLT SumET)
-                          for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                          }
-                          // Linearity
-                          for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                            hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                          }
-
-                          if ( m_signalJet->size() == 2 && signalJet_ht >= 200. ) {
-
-                            //////////////////////////////////////////////////////////////
-                            // MET Trigger Performance study (zee, Njet=2, HT>=200GeV) //
-                            //////////////////////////////////////////////////////////////
-
-                            std::string m_list_channel = "zee";
-                            std::string m_list_jet = "2jet_ht200";
-
-                            // L1 MET
-                            m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                            // Offline MET
-                            m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                            m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                            m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                            // Correlation plot (L1 vs Offline MET)
-                            m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                            // HLT MET objects
-                            for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                            }
-                            // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                            for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                              if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                                hltAlg.second->Fill( MET );
-                              }
-                            }
-                            // Correlation plots (HLT MET vs Offline MET)
-                            for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                            }
-                            // MET Resolution (HLT MEx vs Offline SumET)
-                            for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                            }
-                            // MET Resolution (HLT MEx vs HLT SumET)
-                            for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                            }
-                            // Linearity
-                            for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                              hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                            }
-
-                            if ( m_signalJet->size() >= 4 && signalJet_ht >= 100. ) {
-
-                              ///////////////////////////////////////////////////////////////
-                              // MET Trigger Performance study (zee, Njet>=4, HT>=100GeV) //
-                              ///////////////////////////////////////////////////////////////
-
-                              std::string m_list_channel = "zee";
-                              std::string m_list_jet = "4jet_ht100";
-
-                              // L1 MET
-                              m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                              // Offline MET
-                              m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                              m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                              m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                              // Correlation plot (L1 vs Offline MET)
-                              m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                              // HLT MET objects
-                              for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                              }
-                              // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                              for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                  //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                                  hltAlg.second->Fill( MET );
-                                }
-                              }
-                              // Correlation plots (HLT MET vs Offline MET)
-                              for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                              }
-                              // MET Resolution (HLT MEx vs Offline SumET)
-                              for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                              }
-                              // MET Resolution (HLT MEx vs HLT SumET)
-                              for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                              }
-                              // Linearity
-                              for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                              }
-
-                              if ( m_signalJet->size() >= 4 && signalJet_ht >= 200. ) {
-
-                                ///////////////////////////////////////////////////////////////
-                                // MET Trigger Performance study (zee, Njet>=4, HT>=200GeV) //
-                                ///////////////////////////////////////////////////////////////
-
-                                std::string m_list_channel = "zee";
-                                std::string m_list_jet = "4jet_ht200";
-
-                                // L1 MET
-                                m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                                // Offline MET
-                                m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                                m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                                m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                                // Correlation plot (L1 vs Offline MET)
-                                m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                                // HLT MET objects
-                                for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                                }
-                                // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                                for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                  if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                    //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                                    hltAlg.second->Fill( MET );
-                                  }
-                                }
-                                // Correlation plots (HLT MET vs Offline MET)
-                                for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                                }
-                                // MET Resolution (HLT MEx vs Offline SumET)
-                                for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                                }
-                                // MET Resolution (HLT MEx vs HLT SumET)
-                                for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                                }
-                                // Linearity
-                                for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                  hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                                }
-
-                                if ( m_signalJet->size() >= 4 && signalJet_ht >= 500. ) {
-
-                                  ///////////////////////////////////////////////////////////////
-                                  // MET Trigger Performance study (zee, Njet>=4, HT>=500GeV) //
-                                  ///////////////////////////////////////////////////////////////
-
-                                  std::string m_list_channel = "zee";
-                                  std::string m_list_jet = "4jet_ht500";
-
-                                  // L1 MET
-                                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
-                                  // Offline MET
-                                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
-                                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
-                                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
-                                  // Correlation plot (L1 vs Offline MET)
-                                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
-                                  // HLT MET objects
-                                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
-                                  }
-                                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
-                                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
-                                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
-                                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
-                                      hltAlg.second->Fill( MET );
-                                    }
-                                  }
-                                  // Correlation plots (HLT MET vs Offline MET)
-                                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
-                                  }
-                                  // MET Resolution (HLT MEx vs Offline SumET)
-                                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
-                                  }
-                                  // MET Resolution (HLT MEx vs HLT SumET)
-                                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
-                                  }
-                                  // Linearity
-                                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
-                                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
-                                  }
-
-                                } // 4jet_ht500
-                              } // 4jet_ht200
-                            } // 4jet_ht100
-                          } // 2jet_ht200
-                        } // 2jet_ht100
-                      } // 2jet_ht60
-                    } // 1jet_ht90
-                  } // 1jet_ht60
                 } // 1jet_ht30
+
+                if ( m_signalJet->size() == 1 && signalJet_ht >= 60. ) {
+
+                  /////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zee, Njet=1, pT>=60GeV) //
+                  /////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "zee";
+                  std::string m_list_jet = "1jet_ht60";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 1jet_ht60
+
+                if ( m_signalJet->size() == 1 && signalJet_ht >= 90. ) {
+
+                  /////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zee, Njet=1, pT>=90GeV) //
+                  /////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "zee";
+                  std::string m_list_jet = "1jet_ht90";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 1jet_ht90
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 60. ) {
+
+                  /////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zee, Njet=2, HT>=60GeV) //
+                  /////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "zee";
+                  std::string m_list_jet = "2jet_ht60";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 2jet_ht60
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 100. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zee, Njet=2, HT>=100GeV) //
+                  //////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "zee";
+                  std::string m_list_jet = "2jet_ht100";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 2jet_ht100
+
+                if ( m_signalJet->size() == 2 && signalJet_ht >= 200. ) {
+
+                  //////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zee, Njet=2, HT>=200GeV) //
+                  //////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "zee";
+                  std::string m_list_jet = "2jet_ht200";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 2jet_ht200
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 100. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zee, Njet>=4, HT>=100GeV) //
+                  ///////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "zee";
+                  std::string m_list_jet = "4jet_ht100";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 4jet_ht100
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 200. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zee, Njet>=4, HT>=200GeV) //
+                  ///////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "zee";
+                  std::string m_list_jet = "4jet_ht200";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 4jet_ht200
+
+                if ( m_signalJet->size() >= 4 && signalJet_ht >= 500. ) {
+
+                  ///////////////////////////////////////////////////////////////
+                  // MET Trigger Performance study (zee, Njet>=4, HT>=500GeV) //
+                  ///////////////////////////////////////////////////////////////
+
+                  std::string m_list_channel = "zee";
+                  std::string m_list_jet = "4jet_ht500";
+
+                  // L1 MET
+                  m_hist_l1met.at(m_list_channel).at(m_list_jet)->Fill( l1_met );
+                  // Offline MET
+                  m_hist_offmet.at(m_list_channel).at(m_list_jet)->Fill( MET );
+                  m_hist_offmet_nomu.at(m_list_channel).at(m_list_jet)->Fill( emulMET_nomu );
+                  m_hist_offmet_noelec.at(m_list_channel).at(m_list_jet)->Fill( emulMET_noelec );
+                  // Correlation plot (L1 vs Offline MET)
+                  m_hist_l1_corr.at(m_list_channel).at(m_list_jet)->Fill( l1_met, MET );
+                  // HLT MET objects
+                  for (const auto hltAlg : m_hist_hltmet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first) );
+                  }
+                  // Turn-on Curve (Offline MET passing HLT MET thresholds)
+                  for (const auto hltAlg : m_hist_turnon.at(m_list_channel).at(m_list_jet) ) {
+                    if ( l1_met > 50. && m_hlt_met.at(hltAlg.first) > m_hlt_threshold.at(hltAlg.first) ){
+                      //Info("execute()", ("  HLT ("+hltAlg.first+") MET threshold = %.2f GeV").c_str(), m_hlt_threshold.at(hltAlg.first));
+                      hltAlg.second->Fill( MET );
+                    }
+                  }
+                  // Correlation plots (HLT MET vs Offline MET)
+                  for (const auto hltAlg : m_hist_hlt_corr.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_met.at(hltAlg.first), MET );
+                  }
+                  // MET Resolution (HLT MEx vs Offline SumET)
+                  for (const auto hltAlg : m_hist_resol_offsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( SumET, m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // MET Resolution (HLT MEx vs HLT SumET)
+                  for (const auto hltAlg : m_hist_resol_hltsumet.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( m_hlt_sumet.at(hltAlg.first), m_hlt_mex.at(hltAlg.first) );
+                  }
+                  // Linearity
+                  for (const auto hltAlg : m_hist_linearity.at(m_list_channel).at(m_list_jet) ) {
+                    hltAlg.second->Fill( MET, m_hlt_met.at(hltAlg.first)/MET );
+                  }
+                } // 4jet_ht500
+
               } // jets
             } // backjet
           }
@@ -4364,8 +4365,6 @@ EL::StatusCode MetTrigxAODAnalysis :: execute ()
       }
     }
   }
-
-
 
 
 
